@@ -1,7 +1,10 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
 
+
 const User = require("../models/User");
+const JWT_SECRET = process.env.JWT_SECRET;
 
 async function register(name, email, password) {
   const existingEmail = await User.findOne({ email }).collation({
@@ -29,6 +32,21 @@ async function register(name, email, password) {
 
   const token = createToken(user);
   return token;
+}
+
+function createToken(user) {
+  const payload = {
+    _id: user._id,
+    email: user.email,
+  };
+
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "6h" });
+
+  return {
+    _id: user._id,
+    email: user.email,
+    accessToken: token,
+  };
 }
 
 module.exports = {

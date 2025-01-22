@@ -14,6 +14,7 @@ async function start() {
     await databaseConfig(app);
 
     // Middleware
+    app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
 
     // Routes

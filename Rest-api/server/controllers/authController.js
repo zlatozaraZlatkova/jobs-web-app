@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const { body, validationResult } = require("express-validator");
 
+const { register } = require("../services/authService");
+
 router.post("/register",
   body("name", "Name is required").not().isEmpty(),
   body("name", "Please enter a name with 2 or more character").isLength({ min: 2 }),
@@ -14,9 +16,20 @@ router.post("/register",
       return res.status(400).json({ errors: errors.array() });
     }
 
-    res.status(200).json({ message: "Registered user" })
-  });
+    try {
+      const token = await register(
+        req.body.name,
+        req.body.email,
+        req.body.password
+      );
 
+      res.status(200).json(token);
 
+    } catch(err) {
+      console.log(err.message);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
 
 module.exports = router;

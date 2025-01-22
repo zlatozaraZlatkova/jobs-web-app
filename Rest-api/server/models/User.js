@@ -35,9 +35,10 @@ const userSchema = new Schema({
     },
     hashedPassword: { type: String, required: true },
     avatar: { type: String },
-    timestamps: true,
 
-});
+    
+
+}, {timestamps: true} );
 
 userSchema.index(
     { email: 1 },
