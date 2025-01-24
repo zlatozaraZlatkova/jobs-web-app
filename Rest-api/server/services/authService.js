@@ -2,26 +2,28 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
 
-
-const User = require("../models/User");
+require("dotenv").config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
+const User = require("../models/User");
+const tokenBlackList = new Set();
+
+
 async function register(name, email, password) {
-  const existingEmail = await User.findOne({ email }).collation({
-    locale: "en",
-    strength: 2,
-  });
+  const existingEmail = await User.findOne({ email });
 
   if (existingEmail) {
     throw new Error("Username or Email is already taken");
   }
-  const hashedPassword = await bcrypt.hash(password, 10);
 
   const avatar = gravatar.url(email, {
     s: "200",
-    r: "pg",
-    d: "mm",
-  });
+    r: "aa",
+    d: "mm"
+  })
+
+
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await User.create({
     name,
@@ -30,8 +32,16 @@ async function register(name, email, password) {
     hashedPassword,
   });
 
-  const token = createToken(user);
-  return token;
+  return createToken(user);
+}
+
+
+function verifyToken(token) {
+  if (tokenBlackList.has(token)) {
+    throw new Error("Invalid token!");
+  }
+  const payloadData = jwt.verify(token, JWT_SECRET);
+  return payloadData;
 }
 
 function createToken(user) {
@@ -40,7 +50,7 @@ function createToken(user) {
     email: user.email,
   };
 
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "6h" });
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: 3600000 });
 
   return {
     _id: user._id,
@@ -51,4 +61,5 @@ function createToken(user) {
 
 module.exports = {
   register,
+  verifyToken,
 };

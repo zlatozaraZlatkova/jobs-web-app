@@ -17,17 +17,23 @@ router.post("/register",
     }
 
     try {
-      const token = await register(
+      const { _id, email, accessToken } = await register(
         req.body.name,
-        req.body.email,
+        req.body.email, 
         req.body.password
       );
-
-      res.status(200).json(token);
+  
+      res.cookie('jwt', accessToken, {
+        httpOnly: true,
+        maxAge: 3600000, // 1 hour in ms
+        secure: false, // true in production
+        sameSite: 'lax'
+      });
+  
+      res.status(200).json({ _id, email });
 
     } catch(err) {
-      console.log(err.message);
-      res.status(500).json({ message: "Server error" });
+      res.status(400).json({ message: err.message });
     }
   }
 );
