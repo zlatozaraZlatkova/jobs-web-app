@@ -35,6 +35,22 @@ async function register(name, email, password) {
   return createToken(user);
 }
 
+async function login(email, password) {
+  const user = await User.findOne({ email });
+  
+  if(!user) {
+    throw new Error("Incorrect email or password");
+  }
+  
+  const match = await bcrypt.compare(password, user.hashedPassword);
+
+  if(!match) {
+    throw new Error("Incorrect email or password");
+  }
+
+  return createToken(user);
+
+}
 
 function verifyToken(token) {
   if (tokenBlackList.has(token)) {
@@ -62,4 +78,5 @@ function createToken(user) {
 module.exports = {
   register,
   verifyToken,
+  login
 };

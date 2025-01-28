@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { body, validationResult } = require("express-validator");
 
-const { register } = require("../services/authService");
+const { register, login } = require("../services/authService");
 
 router.post("/register",
   body("name", "Name is required").not().isEmpty(),
@@ -19,23 +19,58 @@ router.post("/register",
     try {
       const { _id, email, accessToken } = await register(
         req.body.name,
-        req.body.email, 
+        req.body.email,
         req.body.password
       );
-  
+
       res.cookie('jwt', accessToken, {
         httpOnly: true,
         maxAge: 3600000, // 1 hour in ms
         secure: false, // true in production
         sameSite: 'lax'
       });
-  
+
       res.status(200).json({ _id, email });
 
-    } catch(err) {
+    } catch (err) {
       res.status(400).json({ message: err.message });
     }
-  }
-);
+  });
+
+router.post("/login",
+  body("email", "Email is required").not().isEmpty(),
+  body("email", "Please provide a valid email address").isEmail(),
+  body("password", "Password is required").not().isEmpty(),
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const { _id, email, accessToken } = await login(
+        req.body.email,
+        req.body.password
+      );
+
+      res.cookie('jwt', accessToken, {
+        httpOnly: true,
+        maxAge: 3600000, // 1 hour in ms
+        secure: false, // true in production
+        sameSite: 'lax'
+      });
+
+      res.status(200).json({ _id, email });
+
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+
+    }
+
+  })
+
+
 
 module.exports = router;
+
