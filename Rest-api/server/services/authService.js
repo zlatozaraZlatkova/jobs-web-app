@@ -52,6 +52,11 @@ async function login(email, password) {
 
 }
 
+async function logout(token) {
+  tokenBlackList.add(token);
+}
+
+
 function verifyToken(token) {
   if (tokenBlackList.has(token)) {
     throw new Error("Invalid token!");
@@ -78,5 +83,6 @@ function createToken(user) {
 module.exports = {
   register,
   verifyToken,
-  login
+  login,
+  logout
 };

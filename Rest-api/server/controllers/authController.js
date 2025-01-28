@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const { body, validationResult } = require("express-validator");
 
-const { register, login } = require("../services/authService");
+const { register, login, logout } = require("../services/authService");
+const { hasUser } = require("../middlewares/guards");
 
 router.post("/register",
   body("name", "Name is required").not().isEmpty(),
@@ -69,6 +70,31 @@ router.post("/login",
     }
 
   })
+
+
+router.get("/logout", hasUser(), async (req, res) => {
+  try {
+    const token = req.cookies.jwt;
+
+    if (!token) {
+      return res.status(401).json({ message: "No token found" });
+    }
+
+    await logout(token);
+
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      secure: false, // true in production
+      sameSite: 'lax'
+    });
+
+    res.status(204).end();
+
+  } catch (err) {
+    console.error("Logout error:", err);
+    res.status(500).json({ message: "Error during logout" });
+  }
+})
 
 
 
