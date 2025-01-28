@@ -3,6 +3,7 @@ const { body, validationResult } = require("express-validator");
 
 const { register, login, logout } = require("../services/authService");
 const { hasUser } = require("../middlewares/guards");
+const { errorParser } = require("../util/errorParser");
 
 router.post("/register",
   body("name", "Name is required").not().isEmpty(),
@@ -14,8 +15,9 @@ router.post("/register",
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+      const message = errorParser(errors.array());
+      return res.status(400).json({ message });
+    }  
 
     try {
       const { _id, email, accessToken } = await register(
@@ -33,8 +35,9 @@ router.post("/register",
 
       res.status(200).json({ _id, email });
 
-    } catch (err) {
-      res.status(400).json({ message: err.message });
+    } catch (error) {
+      const message = errorParser(error);
+      res.status(400).json({ message });
     }
   });
 
@@ -46,7 +49,8 @@ router.post("/login",
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      const message = errorParser(errors.array());
+      return res.status(400).json({ message });
     }
 
     try {
@@ -64,8 +68,9 @@ router.post("/login",
 
       res.status(200).json({ _id, email });
 
-    } catch (err) {
-      res.status(400).json({ message: err.message });
+    } catch (error) {
+      const message = errorParser(error);
+      res.status(400).json({ message });
 
     }
 
@@ -90,9 +95,9 @@ router.get("/logout", hasUser(), async (req, res) => {
 
     res.status(204).end();
 
-  } catch (err) {
-    console.error("Logout error:", err);
-    res.status(500).json({ message: "Error during logout" });
+  } catch (error) {
+    const message = errorParser(error);
+    res.status(500).json({ message });
   }
 })
 
