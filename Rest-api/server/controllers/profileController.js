@@ -223,57 +223,39 @@ router.put("/education", hasUser(), async (req, res) => {
   }
 })
 
-router.delete("/experience/:exp_id", hasUser(), async (req, res) => {
-  try {
 
-    const profile = await getUserById(req.user._id);
+const createDeleteHandler = (arrayName) => {
+  return async (req, res) => {
+    try {
+      const profile = await getUserById(req.user._id);
 
-    if (!profile) {
-      return res.status(404).json({ message: "Profile not found." });
+      if (!profile) {
+        return res.status(404).json({ message: "Profile not found" });
+      }
+
+      const itemExists = profile[arrayName].some(item =>
+        item._id.toString() === req.params.id.toString()
+      );
+
+      if (!itemExists) {
+        return res.status(404).json({ message: `No ${arrayName} was found`});
+      }
+
+      await deleteProfileExpOrEduc(req.user._id, arrayName, req.params.id,);
+
+      res.status(200).json({ message: `The ${arrayName} has been deleted.`});
+
+    } catch (error) {
+      console.log(error);
+      const message = errorParser(error);
+      res.status(400).json({ message });
     }
+  };
 
-    const expExists = profile.experience.some(exp => exp._id.toString() === req.params.exp_id);
+}
 
-    if (!expExists) {
-      return res.status(404).json({ message: "Experience not found." });
-    }
-
-    const deleteExp = await deleteProfileExpOrEduc(req.user._id, "experience", req.params.exp_id);
-
-    res.status(200).json({ message: "The experience has been deleted." })
-
-  } catch (error) {
-    console.log(error)
-    const message = errorParser(error);
-    res.status(400).json({ message })
-  }
-})
-
-router.delete("/education/:educ_id", hasUser(), async (req, res) => {
-  try {
-
-    const profile = await getUserById(req.user._id);
-
-    if (!profile) {
-      return res.status(404).json({ message: "Profile not found." });
-    }
-
-    const educExists = profile.education.some(educ => educ._id.toString() === req.params.educ_id);
-
-    if (!educExists) {
-      return res.status(404).json({ message: "Education not found." });
-    }
-
-    const deleteEduc = await deleteProfileExpOrEduc(req.user._id, "education", req.params.educ_id);
-
-    res.status(200).json({ message: "The education has been deleted." })
-
-  } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message })
-  }
-})
-
+router.delete("/experience/:id", hasUser(), createDeleteHandler("experience"));
+router.delete("/education/:id", hasUser(), createDeleteHandler("education"));
 
 
 module.exports = router;
