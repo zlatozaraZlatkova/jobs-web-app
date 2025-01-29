@@ -27,28 +27,19 @@ async function updateItem(id, item) {
   );
 }
 
-async function updateExperience(id, item) {
-  return Profile.findOneAndUpdate(
-    { ownerId: id },
-    { $push: { experience: item } },
-    { new: true }
-  );
-}
-
-async function updateEducation(id, item) {
-  return Profile.findOneAndUpdate(
-    { ownerId: id },
-    { $push: { education: item } },
-    { new: true }
-  );
-}
-
-
-
 async function deleteById(id) {
   return Profile.findOneAndDelete({ ownerId: id});
 
 }
+
+async function updatedProfileExpOrEduc(userId, arrayName, newItem){
+  return Profile.findOneAndUpdate(
+    { ownerId: userId },
+    { $push: { [arrayName]: newItem } },
+    { new: true }
+  );
+}
+
 
 module.exports = {
   getAllProfiles,
@@ -57,6 +48,5 @@ module.exports = {
   createItem,
   updateItem,
   deleteById, 
-  updateExperience,
-  updateEducation
+  updatedProfileExpOrEduc
 };

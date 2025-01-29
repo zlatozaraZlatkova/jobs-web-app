@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const { getUserById, createItem, updateItem, getAllProfiles, getProfileById, deleteById, updateExperience, updateEducation } = require("../services/profileService");
+const { getUserById, createItem, updateItem, getAllProfiles, getProfileById, deleteById, updatedProfileExpOrEduc } = require("../services/profileService");
 const { hasUser } = require("../middlewares/guards");
 const { errorParser } = require("../util/errorParser");
 
@@ -153,22 +153,16 @@ router.delete("/delete", hasUser(), async (req, res) => {
   }
 })
 
-router.put("/experience", hasUser(), async(req, res) => {
+router.put("/experience", hasUser(), async (req, res) => {
 
   const userId = req.user._id;
 
-  const { title, company, location, from, to, current, description } = req.body;
-
-  const newExperience = {
-    title, 
-    company, 
-    location, 
-    from,
-    to, 
-    current: Boolean(current), 
-    description
+  const experienceData = {
+    ...req.body,
+    current: Boolean(req.body.current)
   };
 
+
   try {
     const profile = await getUserById(req.user._id);
 
@@ -176,33 +170,27 @@ router.put("/experience", hasUser(), async(req, res) => {
       return res.status(404).json({ message: "There is no profile for this user" });
     }
 
+    const updatedProfile = await updatedProfileExpOrEduc(userId, "experience", experienceData);
 
-    const updatedProfile = await updateExperience(userId, newExperience);
     return res.status(200).json(updatedProfile);
 
-    
+
   } catch (error) {
-    console.log(error);
     const message = errorParser(error);
     res.status(400).json({ message })
-    
+
   }
 })
 
-router.put("/education", hasUser(), async(req, res) => {
+router.put("/education", hasUser(), async (req, res) => {
 
   const userId = req.user._id;
-  const { school, degree, fieldOfStudy, from, to, current, description } = req.body;
+  
+  const educationData = {
+    ...req.body,
+    current: Boolean(req.body.current)
+  };
 
-  const newEducation = {
-    school,
-    degree,
-    fieldOfStudy,
-    from,
-    to,
-    current: Boolean(current), 
-    description
-};
 
   try {
     const profile = await getUserById(req.user._id);
@@ -212,18 +200,19 @@ router.put("/education", hasUser(), async(req, res) => {
     }
 
 
-    const updatedProfile = await updateEducation(userId, newEducation);
+    const updatedProfile = await updatedProfileExpOrEduc(userId, "education", educationData);
 
     return res.status(200).json(updatedProfile);
 
-    
+
   } catch (error) {
-    console.log(error);
     const message = errorParser(error);
     res.status(400).json({ message })
-    
+
   }
 })
+
+
 
 
 module.exports = router;
