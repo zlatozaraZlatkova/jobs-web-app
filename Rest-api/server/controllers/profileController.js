@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const { getUserById, createItem, updateItem, getAllProfiles, getProfileById, deleteById } = require("../services/profileService");
+const { getUserById, createItem, updateItem, getAllProfiles, getProfileById, deleteById, updateExperience, updateEducation } = require("../services/profileService");
 const { hasUser } = require("../middlewares/guards");
 const { errorParser } = require("../util/errorParser");
 
@@ -153,7 +153,77 @@ router.delete("/delete", hasUser(), async (req, res) => {
   }
 })
 
+router.put("/experience", hasUser(), async(req, res) => {
 
+  const userId = req.user._id;
+
+  const { title, company, location, from, to, current, description } = req.body;
+
+  const newExperience = {
+    title, 
+    company, 
+    location, 
+    from,
+    to, 
+    current: Boolean(current), 
+    description
+  };
+
+  try {
+    const profile = await getUserById(req.user._id);
+
+    if (!profile) {
+      return res.status(404).json({ message: "There is no profile for this user" });
+    }
+
+
+    const updatedProfile = await updateExperience(userId, newExperience);
+    return res.status(200).json(updatedProfile);
+
+    
+  } catch (error) {
+    console.log(error);
+    const message = errorParser(error);
+    res.status(400).json({ message })
+    
+  }
+})
+
+router.put("/education", hasUser(), async(req, res) => {
+
+  const userId = req.user._id;
+  const { school, degree, fieldOfStudy, from, to, current, description } = req.body;
+
+  const newEducation = {
+    school,
+    degree,
+    fieldOfStudy,
+    from,
+    to,
+    current: Boolean(current), 
+    description
+};
+
+  try {
+    const profile = await getUserById(req.user._id);
+
+    if (!profile) {
+      return res.status(404).json({ message: "There is no profile for this user" });
+    }
+
+
+    const updatedProfile = await updateEducation(userId, newEducation);
+
+    return res.status(200).json(updatedProfile);
+
+    
+  } catch (error) {
+    console.log(error);
+    const message = errorParser(error);
+    res.status(400).json({ message })
+    
+  }
+})
 
 
 module.exports = router;

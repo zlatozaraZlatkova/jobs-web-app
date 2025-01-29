@@ -27,6 +27,24 @@ async function updateItem(id, item) {
   );
 }
 
+async function updateExperience(id, item) {
+  return Profile.findOneAndUpdate(
+    { ownerId: id },
+    { $push: { experience: item } },
+    { new: true }
+  );
+}
+
+async function updateEducation(id, item) {
+  return Profile.findOneAndUpdate(
+    { ownerId: id },
+    { $push: { education: item } },
+    { new: true }
+  );
+}
+
+
+
 async function deleteById(id) {
   return Profile.findOneAndDelete({ ownerId: id});
 
@@ -38,5 +56,7 @@ module.exports = {
   getUserById,
   createItem,
   updateItem,
-  deleteById
+  deleteById, 
+  updateExperience,
+  updateEducation
 };
