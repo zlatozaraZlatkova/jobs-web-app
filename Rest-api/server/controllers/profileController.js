@@ -1,8 +1,19 @@
 const router = require("express").Router();
 
-const { getUserById, createItem, updateItem, getAllProfiles, getProfileById, deleteById, updatedProfileExpOrEduc } = require("../services/profileService");
 const { hasUser } = require("../middlewares/guards");
 const { errorParser } = require("../util/errorParser");
+
+const {
+  getUserById,
+  createItem,
+  updateItem,
+  getAllProfiles,
+  getProfileById,
+  deleteById,
+  updatedProfileExpOrEduc,
+  deleteProfileExpOrEduc
+} = require("../services/profileService");
+
 
 router.get("/", hasUser(), async (req, res) => {
   try {
@@ -185,7 +196,7 @@ router.put("/experience", hasUser(), async (req, res) => {
 router.put("/education", hasUser(), async (req, res) => {
 
   const userId = req.user._id;
-  
+
   const educationData = {
     ...req.body,
     current: Boolean(req.body.current)
@@ -212,6 +223,56 @@ router.put("/education", hasUser(), async (req, res) => {
   }
 })
 
+router.delete("/experience/:exp_id", hasUser(), async (req, res) => {
+  try {
+
+    const profile = await getUserById(req.user._id);
+
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found." });
+    }
+
+    const expExists = profile.experience.some(exp => exp._id.toString() === req.params.exp_id);
+
+    if (!expExists) {
+      return res.status(404).json({ message: "Experience not found." });
+    }
+
+    const deleteExp = await deleteProfileExpOrEduc(req.user._id, "experience", req.params.exp_id);
+
+    res.status(200).json({ message: "The experience has been deleted." })
+
+  } catch (error) {
+    console.log(error)
+    const message = errorParser(error);
+    res.status(400).json({ message })
+  }
+})
+
+router.delete("/education/:educ_id", hasUser(), async (req, res) => {
+  try {
+
+    const profile = await getUserById(req.user._id);
+
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found." });
+    }
+
+    const educExists = profile.education.some(educ => educ._id.toString() === req.params.educ_id);
+
+    if (!educExists) {
+      return res.status(404).json({ message: "Education not found." });
+    }
+
+    const deleteEduc = await deleteProfileExpOrEduc(req.user._id, "education", req.params.educ_id);
+
+    res.status(200).json({ message: "The education has been deleted." })
+
+  } catch (error) {
+    const message = errorParser(error);
+    res.status(400).json({ message })
+  }
+})
 
 
 

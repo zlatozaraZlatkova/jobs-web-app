@@ -41,6 +41,16 @@ async function updatedProfileExpOrEduc(userId, arrayName, newItem){
 }
 
 
+async function deleteProfileExpOrEduc(userId, arrayName, paramsId) {
+  return Profile.findOneAndUpdate(
+    { ownerId: userId },
+    { $pull: { [arrayName]: { _id: paramsId } } },
+    { new: true }
+);
+
+  
+}
+
 module.exports = {
   getAllProfiles,
   getProfileById,
@@ -48,5 +58,6 @@ module.exports = {
   createItem,
   updateItem,
   deleteById, 
-  updatedProfileExpOrEduc
+  updatedProfileExpOrEduc,
+  deleteProfileExpOrEduc
 };
