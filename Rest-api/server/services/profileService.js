@@ -27,6 +27,10 @@ async function updateItem(id, item) {
   );
 }
 
+async function deleteById(id) {
+  return Profile.findOneAndDelete({ ownerId: id});
+
+}
 
 module.exports = {
   getAllProfiles,
@@ -34,5 +38,5 @@ module.exports = {
   getUserById,
   createItem,
   updateItem,
-  
+  deleteById
 };

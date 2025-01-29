@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const { getUserById, createItem, updateItem, getAllProfiles, getProfileById } = require("../services/profileService");
+const { getUserById, createItem, updateItem, getAllProfiles, getProfileById, deleteById } = require("../services/profileService");
 const { hasUser } = require("../middlewares/guards");
 const { errorParser } = require("../util/errorParser");
 
@@ -96,7 +96,7 @@ router.post("/update", hasUser(), async (req, res) => {
   }
 });
 
-router.get("/catalog", async(req, res) => {
+router.get("/catalog", async (req, res) => {
   try {
     const listOfProfiles = await getAllProfiles();
 
@@ -106,31 +106,53 @@ router.get("/catalog", async(req, res) => {
 
     return res.status(200).json(listOfProfiles);
 
-    
+
   } catch (error) {
     const message = errorParser(error);
     res.status(400).json({ message });
-    
+
   }
 })
 
-router.get("/catalog/:id", hasUser(), async(req, res) => {
-  
+router.get("/catalog/:id", hasUser(), async (req, res) => {
+
   try {
     const userProfile = await getProfileById(req.params.id);
 
-    if(!userProfile) {
+    if (!userProfile) {
       return res.status(404).json({ message: "Profile not found" });
     }
 
     res.status(200).json(userProfile);
-    
+
   } catch (error) {
     const message = errorParser(error);
     res.status(400).json({ message })
-    
+
   }
 })
+
+
+router.delete("/delete", hasUser(), async (req, res) => {
+
+  try {
+    const existingProfile = await getUserById(req.user._id);
+
+    if (!existingProfile) {
+      return res.status(404).json({ message: "Profile not found." });
+    }
+
+    const deleteProfile = await deleteById(req.user._id);
+
+    res.status(200).json({ message: "The profile has been deleted." });
+
+  } catch (error) {
+    const message = errorParser(error);
+    res.status(400).json({ message })
+
+  }
+})
+
 
 
 
