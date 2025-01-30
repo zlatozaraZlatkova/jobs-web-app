@@ -1,7 +1,8 @@
 const router = require("express").Router();
+const { body, validationResult } = require("express-validator");
 
 const { hasUser } = require("../middlewares/guards");
-const { getAll, getById } = require("../services/postService");
+const { getAll, getById, getByUserId, createItem, updateItem } = require("../services/postService");
 const { errorParser } = require("../util/errorParser");
 
 router.get("/", hasUser(), async (req, res) => {
@@ -22,7 +23,7 @@ router.get("/", hasUser(), async (req, res) => {
 })
 
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", hasUser(), async (req, res) => {
   try {
     const post = await getById(req.params.id);
 
@@ -37,5 +38,94 @@ router.get("/:id", async (req, res) => {
   }
 
 });
+
+router.post("/create", hasUser(),
+  body("postTitle", "Title is required").not().isEmpty(),
+  body("postTitle", "Please enter a title up to 150 characters long").isLength({ max: 150 }),
+  body("postText", "Post is required").not().isEmpty(),
+  body("postText", "Please enter a post up to 3000 characters long").isLength({ max: 3000 }),
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const message = errorParser(errors.array());
+      return res.status(400).json({ message });
+    }
+
+    try {
+      const userId = req.user._id;
+      const user = await getByUserId(userId);
+
+      if (!user) {
+        res.status(404).json({ message: "Invalid access token" })
+      }
+
+      const post = {
+        name: user.name,
+        postTitle: req.body.postTitle,
+        postText: req.body.postText,
+        avatar: user.avatar,
+        ownerId: userId,
+      }
+
+
+
+      const createPost = await createItem(userId, post);
+
+      res.status(200).json(createPost);
+
+    } catch (error) {
+      console.log(error)
+      const message = errorParser(error);
+      res.status(400).json({ message });
+    }
+
+  })
+
+
+router.put("/update/:id", hasUser(),
+  body("postTitle", "Title is required").not().isEmpty(),
+  body("postTitle", "Please enter a title up to 150 characters long").isLength({ max: 150 }),
+  body("postText", "Post is required").not().isEmpty(),
+  body("postText", "Please enter a post up to 3000 characters long").isLength({ max: 3000 }),
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const message = errorParser(errors.array());
+      return res.status(400).json({ message });
+    }
+
+    try {
+      const userId = req.user._id;
+      const postId = req.params.id;
+
+      const post = await getById(postId);
+
+      const postOwnerId = post.ownerId;
+
+
+      if (!post) {
+        return res.status(404).json({ message: "No post found" });
+      }
+
+      if (userId.toString() !== postOwnerId.toString()) {
+        return res.status(403).json({ message: "You cannot modify this record" });
+      }
+
+      const postData = { postTitle, postText } = req.body
+
+      const updatedPost = await updateItem(postId, postData);
+
+      res.status(200).json(updatedPost);
+
+    } catch (error) {
+      const message = errorParser(error);
+      res.status(400).json({ message });
+    }
+
+  })
+
+
 
 module.exports = router;
