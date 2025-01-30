@@ -35,6 +35,18 @@ const userSchema = new Schema({
     },
     hashedPassword: { type: String, required: true },
     avatar: { type: String },
+    createdPosts: {
+        type: [Types.ObjectId],
+        required: true,
+        ref: "Post",
+        default: [],
+    },
+    likedPostList: {
+        type: [Types.ObjectId],
+        required: true,
+        ref: "Post",
+        default: [],
+    },
 
     
 
