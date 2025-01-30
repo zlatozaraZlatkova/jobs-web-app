@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const { hasUser } = require("../middlewares/guards");
 const { errorParser } = require("../util/errorParser");
-
+const { getGithubRepos } = require('../services/githubService');
 const {
   getUserById,
   createItem,
@@ -238,12 +238,12 @@ const createDeleteHandler = (arrayName) => {
       );
 
       if (!itemExists) {
-        return res.status(404).json({ message: `No ${arrayName} was found`});
+        return res.status(404).json({ message: `No ${arrayName} was found` });
       }
 
       await deleteProfileExpOrEduc(req.user._id, arrayName, req.params.id,);
 
-      res.status(200).json({ message: `The ${arrayName} has been deleted.`});
+      res.status(200).json({ message: `The ${arrayName} has been deleted.` });
 
     } catch (error) {
       console.log(error);
@@ -257,5 +257,23 @@ const createDeleteHandler = (arrayName) => {
 router.delete("/experience/:id", hasUser(), createDeleteHandler("experience"));
 router.delete("/education/:id", hasUser(), createDeleteHandler("education"));
 
+
+router.get("/github/:username", async (req, res) => {
+  try {
+    const repositories = await getGithubRepos(req.params.username);
+
+    res.status(200).json(repositories);
+
+  } catch (error) {
+
+    if (error.response.status === 404) {
+      return res.status(404).json({ message: "GitHub profile is not found." });
+    }
+
+    const message = errorParser(error);
+    res.status(400).json({ message });
+  }
+  
+});
 
 module.exports = router;
