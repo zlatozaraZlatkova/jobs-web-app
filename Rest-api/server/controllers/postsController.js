@@ -1,7 +1,9 @@
 const router = require("express").Router();
 const { body, validationResult } = require("express-validator");
 
-const { hasUser } = require("../middlewares/guards");
+const { loadItem } = require("../middlewares/preload");
+const { hasUser, isOwner } = require("../middlewares/guards");
+
 const { getAll, getById, getByUserId, createItem, updateItem } = require("../services/postService");
 const { errorParser } = require("../util/errorParser");
 
@@ -83,7 +85,7 @@ router.post("/create", hasUser(),
   })
 
 
-router.put("/update/:id", hasUser(),
+router.put("/update/:id", loadItem, isOwner(),
   body("postTitle", "Title is required").not().isEmpty(),
   body("postTitle", "Please enter a title up to 150 characters long").isLength({ max: 150 }),
   body("postText", "Post is required").not().isEmpty(),
@@ -97,29 +99,16 @@ router.put("/update/:id", hasUser(),
     }
 
     try {
-      const userId = req.user._id;
       const postId = req.params.id;
 
-      const post = await getById(postId);
-
-      const postOwnerId = post.ownerId;
-
-
-      if (!post) {
-        return res.status(404).json({ message: "No post found" });
-      }
-
-      if (userId.toString() !== postOwnerId.toString()) {
-        return res.status(403).json({ message: "You cannot modify this record" });
-      }
-
-      const postData = { postTitle, postText } = req.body
+      const postData = { postTitle, postText } = req.body;
 
       const updatedPost = await updateItem(postId, postData);
 
       res.status(200).json(updatedPost);
 
     } catch (error) {
+      console.log(error)
       const message = errorParser(error);
       res.status(400).json({ message });
     }
