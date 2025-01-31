@@ -37,6 +37,28 @@ async function deleteById(postId, userId) {
   await Post.findByIdAndDelete(postId);
 };
 
+async function createComment(postId, newItem) {
+ 
+  return Post.findOneAndUpdate(
+    { _id: postId },
+    { $push: { comments: newItem } },
+    { new: true }
+  )
+}
+
+async function deleteComment(postId, commentId) {
+
+  await Post.findByIdAndUpdate(
+    { _id: postId },
+    { $pull: { comments: {_id: commentId } } },
+    { new: true }
+  )
+
+  
+}
+
+
+
 
 module.exports = {
   getAll,
@@ -44,5 +66,7 @@ module.exports = {
   getByUserId,
   createItem,
   updateItem,
-  deleteById
+  deleteById,
+  createComment,
+  deleteComment
 };

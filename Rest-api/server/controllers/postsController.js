@@ -4,7 +4,7 @@ const { body, validationResult } = require("express-validator");
 const { loadItem } = require("../middlewares/preload");
 const { hasUser, isOwner } = require("../middlewares/guards");
 
-const { getAll, getById, getByUserId, createItem, updateItem, deleteById } = require("../services/postService");
+const { getAll, getById, getByUserId, createItem, updateItem, deleteById, createComment, deleteComment } = require("../services/postService");
 const { errorParser } = require("../util/errorParser");
 
 router.get("/", hasUser(), async (req, res) => {
@@ -115,19 +115,90 @@ router.put("/update/:id", loadItem, isOwner(),
 
   })
 
-  router.delete("/delete/:id", loadItem, isOwner(), async (req, res) => {
+router.delete("/delete/:id", loadItem, isOwner(), async (req, res) => {
+
+  try {
+
+    await deleteById(req.params.id, req.user._id);
+
+    res.status(200).json({ message: "Post deleted" });
+
+  } catch (error) {
+    const message = errorParser(error);
+    res.status(400).json({ message });
+  }
+})
+
+router.post("/comment/:postId/create", hasUser(),
+  body("text", "Comment is required").not().isEmpty(),
+  body("text", "Comment shouldn't contain more than 250 characters").isLength({ max: 250 }),
+  async (req, res) => {
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const message = errorParser(errors.array());
+      return res.status(400).json({ message });
+    }
+
 
     try {
-  
-      await deleteById(req.params.id, req.user._id);
+      const userId = req.user._id;
+      const user = await getByUserId(userId);
 
-      res.status(200).json({ message: "Post deleted" });
-  
+      const newComment = {
+        text: req.body.text,
+        name: user.name,
+        avatar: user.avatar,
+        user: userId,
+      }
+
+      const comment = await createComment(req.params.postId, newComment);
+
+      if (!comment) {
+        return res.status(400).json({ message: "Failed to create comment" });
+      }
+ 
+      res.status(200).json(comment);
+
+
     } catch (error) {
       const message = errorParser(error);
       res.status(400).json({ message });
     }
+
   })
+
+
+router.delete("/comment/:id/:commentId", hasUser(), loadItem, async (req, res) => {
+  const userId = req.user._id;
+  const postId = req.params.id;
+  const commentId = req.params.commentId;
+
+  try {
+
+    const post = req.item;
   
+    const userComment = post.comments.find(comment => comment.id === commentId);
+
+    if (!userComment) {
+      res.status(404).json({ message: "Comment does'n exist" });
+    }
+
+    if (userComment.user.toString() !== userId) {
+      return res.status(403).json({ message: "You cannot modify this record" });
+    }
+
+    await deleteComment(postId, commentId);
+
+    res.status(200).json({ message: "Comment deleted" });
+
+
+  } catch (error) {
+    const message = errorParser(error);
+    res.status(400).json({ message });
+  }
+
+})
 
 module.exports = router;
