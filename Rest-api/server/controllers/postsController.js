@@ -4,7 +4,7 @@ const { body, validationResult } = require("express-validator");
 const { loadItem } = require("../middlewares/preload");
 const { hasUser, isOwner } = require("../middlewares/guards");
 
-const { getAll, getById, getByUserId, createItem, updateItem } = require("../services/postService");
+const { getAll, getById, getByUserId, createItem, updateItem, deleteById } = require("../services/postService");
 const { errorParser } = require("../util/errorParser");
 
 router.get("/", hasUser(), async (req, res) => {
@@ -115,6 +115,19 @@ router.put("/update/:id", loadItem, isOwner(),
 
   })
 
+  router.delete("/delete/:id", loadItem, isOwner(), async (req, res) => {
 
+    try {
+  
+      await deleteById(req.params.id, req.user._id);
+
+      res.status(200).json({ message: "Post deleted" });
+  
+    } catch (error) {
+      const message = errorParser(error);
+      res.status(400).json({ message });
+    }
+  })
+  
 
 module.exports = router;

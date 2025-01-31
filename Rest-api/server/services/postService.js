@@ -32,10 +32,17 @@ async function updateItem(id, item) {
   );
 }
 
+async function deleteById(postId, userId) {
+  await User.findByIdAndUpdate(userId, { $pull: { createdPosts: postId } }, { new: true });
+  await Post.findByIdAndDelete(postId);
+};
+
+
 module.exports = {
   getAll,
   getById,
   getByUserId,
   createItem,
   updateItem,
+  deleteById
 };
