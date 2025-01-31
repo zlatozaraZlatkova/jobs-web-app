@@ -58,6 +58,16 @@ async function deleteComment(postId, commentId) {
 }
 
 
+async function likeItem(postId, userId) {
+  await User.findByIdAndUpdate(userId, { $push: { likedPostList: postId } }, { new: true });
+  await Post.findByIdAndUpdate(postId, { $push: { postLikes: userId } }, { new: true });
+  
+}
+
+async function dislikeItem(postId, userId) {
+  await User.findByIdAndUpdate(userId, { $pull: { likedPostList: postId } }, { new: true });
+  await Post.findByIdAndUpdate(postId, { $pull: { postLikes: userId } }, { new: true })
+}
 
 
 module.exports = {
@@ -68,5 +78,7 @@ module.exports = {
   updateItem,
   deleteById,
   createComment,
-  deleteComment
+  deleteComment,
+  likeItem,
+  dislikeItem
 };

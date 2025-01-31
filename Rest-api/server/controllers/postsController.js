@@ -3,9 +3,22 @@ const { body, validationResult } = require("express-validator");
 
 const { loadItem } = require("../middlewares/preload");
 const { hasUser, isOwner } = require("../middlewares/guards");
-
-const { getAll, getById, getByUserId, createItem, updateItem, deleteById, createComment, deleteComment } = require("../services/postService");
 const { errorParser } = require("../util/errorParser");
+
+const { 
+  getAll, 
+  getById, 
+  getByUserId, 
+  createItem, 
+  updateItem, 
+  deleteById, 
+  createComment, 
+  deleteComment, 
+  likeItem,
+  dislikeItem
+} = require("../services/postService");
+
+
 
 router.get("/", hasUser(), async (req, res) => {
   try {
@@ -200,5 +213,68 @@ router.delete("/comment/:id/:commentId", hasUser(), loadItem, async (req, res) =
   }
 
 })
+
+router.post("/like/:id", hasUser(), loadItem, async (req, res) => {
+  const userId = req.user._id;
+  const postId = req.params.id;
+
+
+  try {
+    const post = req.item;
+   
+    if (post.ownerId.toString() == userId.toString()) {
+      return res.status(400).json({ message: "Not able to like your own post" });
+    }
+
+    if (post.postLikes.map((c) => c.toString()).includes(userId.toString()) == true) {
+      return res.status(400).json({ message: "Post already liked" });
+    }
+
+    if (post.ownerId._id.toString() !== req.user._id.toString() && post.postLikes.some(user => user._id.equals(req.user._id)) == false) {
+      
+      await likeItem(postId, userId);
+      
+      return res.status(200).json({ message: "Liked!" });
+    }
+
+
+  } catch (error) {
+    const message = errorParser(error);
+    res.status(400).json({ message });
+  }
+
+})
+
+
+router.post("/unlike/:id", hasUser(), loadItem, async (req, res) => {
+  const userId = req.user._id;
+  const postId = req.params.id;
+
+  try {
+    const post = req.item;
+ 
+    if (post.ownerId.toString() == userId.toString()) {
+      return res.status(400).json({ message: "Not able to dislike your own post" });
+    }
+
+    if (post.postLikes.some(user => user._id.equals(req.user._id)) == false) {
+      return res.status(400).json({ message: "Post has not been liked yet" });
+    }
+
+    if (post.ownerId._id.toString() !== req.user._id.toString() && post.postLikes.some(user => user._id.equals(req.user._id)) == true) {
+      
+      await dislikeItem(postId, userId);
+
+      return res.status(200).json({ message: "Unlike!" });
+    }
+
+
+  } catch (error) {
+    const message = errorParser(error);
+    res.status(400).json({ message });
+  }
+
+})
+
 
 module.exports = router;
