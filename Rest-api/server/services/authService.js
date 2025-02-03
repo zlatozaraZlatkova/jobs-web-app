@@ -9,7 +9,7 @@ const User = require("../models/User");
 const tokenBlackList = new Set();
 
 
-async function register(name, email, password) {
+async function register(name, email, password, role) {
   const existingEmail = await User.findOne({ email });
 
   if (existingEmail) {
@@ -30,6 +30,7 @@ async function register(name, email, password) {
     email,
     avatar,
     hashedPassword,
+    role
   });
 
   return createToken(user);
@@ -69,6 +70,7 @@ function createToken(user) {
   const payload = {
     _id: user._id,
     email: user.email,
+    role: user.role 
   };
 
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: 3600000 });
@@ -77,6 +79,7 @@ function createToken(user) {
     _id: user._id,
     email: user.email,
     accessToken: token,
+    role: user.role
   };
 }
 

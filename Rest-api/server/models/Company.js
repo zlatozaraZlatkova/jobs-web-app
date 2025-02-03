@@ -1,6 +1,7 @@
 const { Schema, model, Types } = require("mongoose");
 
-const companySchema = new Schema({
+const companySchema = new Schema(
+  {
     name: {
       type: String,
       required: true,
@@ -9,7 +10,10 @@ const companySchema = new Schema({
       type: String,
       required: true,
       minLength: [5, "Description should be at least 5 characters long"],
-      maxLength: [3000, "Description shouldn't contain more than 3000 characters "],
+      maxLength: [
+        3000,
+        "Description shouldn't contain more than 3000 characters ",
+      ],
     },
     contactEmail: {
       type: String,
@@ -25,10 +29,17 @@ const companySchema = new Schema({
       type: String,
       required: true,
     },
-    jobsList: {
+    listOfOpenJobs: {
       type: [Types.ObjectId],
       require: true,
       ref: "Job",
+      default: [],
+    },
+    listOfApplicants: {
+      type: [Types.ObjectId],
+      require: true,
+      ref: "EmployeeProfile",
+      default: [],
     },
     ownerId: {
       type: Types.ObjectId,

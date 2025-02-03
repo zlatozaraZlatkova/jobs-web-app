@@ -10,6 +10,7 @@ router.post("/register",
   body("name", "Please enter a name with 2 or more character").isLength({ min: 2 }),
   body("email", "Email is required").not().isEmpty(),
   body("email", "Please provide a valid email address").isEmail(),
+  body("role", "Role is required").not().isEmpty(),
   body("password", "Please enter a password with 8 or more characters").isLength({ min: 8 }),
   async (req, res) => {
     const errors = validationResult(req);
@@ -20,10 +21,11 @@ router.post("/register",
     }  
 
     try {
-      const { _id, email, accessToken } = await register(
+      const { _id, email, accessToken, role } = await register(
         req.body.name,
         req.body.email,
-        req.body.password
+        req.body.password,
+        req.body.role,
       );
 
       res.cookie('jwt', accessToken, {
@@ -33,9 +35,10 @@ router.post("/register",
         sameSite: 'lax'
       });
 
-      res.status(200).json({ _id, email });
+      res.status(200).json({ _id, email, role });
 
     } catch (error) {
+      console.log(error)
       const message = errorParser(error);
       res.status(400).json({ message });
     }

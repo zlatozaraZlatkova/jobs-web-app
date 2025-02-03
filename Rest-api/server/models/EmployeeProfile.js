@@ -2,7 +2,7 @@ const { Schema, model, Types } = require("mongoose");
 
 const URL_REGEX = /^((https|http):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/igm;
 
-const profileSchema = new Schema(
+const employeeProfileSchema = new Schema(
   {
     company: {
       type: String,
@@ -97,6 +97,12 @@ const profileSchema = new Schema(
         },
       },
     },
+    appliedJobs: {
+      type: [Types.ObjectId],
+      required: true,
+      ref: "Job",
+      default: []
+    },
     ownerId: {
       type: Types.ObjectId,
       required: true,
@@ -107,6 +113,6 @@ const profileSchema = new Schema(
 );
 
 
-const Profile = model("Profile", profileSchema);
+const EmployeeProfile = model("EmployeeProfile", employeeProfileSchema);
 
-module.exports = Profile;
+module.exports = EmployeeProfile;

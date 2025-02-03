@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const { hasUser } = require("../middlewares/guards");
+const { hasUser, checkUserRole } = require("../middlewares/guards");
 const { errorParser } = require("../util/errorParser");
 const { getGithubRepos } = require('../services/githubService');
 const {
@@ -12,10 +12,10 @@ const {
   deleteById,
   updatedProfileExpOrEduc,
   deleteProfileExpOrEduc
-} = require("../services/profileService");
+} = require("../services/employeeProfileService");
 
 
-router.get("/", hasUser(), async (req, res) => {
+router.get("/", hasUser(), checkUserRole("employee"), async (req, res) => {
   try {
     const profile = await getUserById(req.user._id);
 
@@ -31,7 +31,7 @@ router.get("/", hasUser(), async (req, res) => {
   }
 });
 
-router.post("/create", hasUser(), async (req, res) => {
+router.post("/create", hasUser(), checkUserRole("employee"), async (req, res) => {
   const userId = req.user._id;
 
   const { company, website, location, bio, status, skills, githubUsername, linkedin } = req.body;
@@ -71,7 +71,7 @@ router.post("/create", hasUser(), async (req, res) => {
 
 })
 
-router.post("/update", hasUser(), async (req, res) => {
+router.post("/update", hasUser(), checkUserRole("employee"), async (req, res) => {
   const userId = req.user._id;
   const { company, website, location, bio, status, skills, githubUsername, linkedin } = req.body;
 
@@ -144,7 +144,7 @@ router.get("/catalog/:id", hasUser(), async (req, res) => {
 })
 
 
-router.delete("/delete", hasUser(), async (req, res) => {
+router.delete("/delete", hasUser(), checkUserRole("employee"), async (req, res) => {
 
   try {
     const existingProfile = await getUserById(req.user._id);
@@ -164,7 +164,7 @@ router.delete("/delete", hasUser(), async (req, res) => {
   }
 })
 
-router.put("/experience", hasUser(), async (req, res) => {
+router.put("/experience", hasUser(), checkUserRole("employee"), async (req, res) => {
 
   const userId = req.user._id;
 
@@ -193,7 +193,7 @@ router.put("/experience", hasUser(), async (req, res) => {
   }
 })
 
-router.put("/education", hasUser(), async (req, res) => {
+router.put("/education", hasUser(), checkUserRole("employee"), async (req, res) => {
 
   const userId = req.user._id;
 
@@ -254,8 +254,8 @@ const createDeleteHandler = (arrayName) => {
 
 }
 
-router.delete("/experience/:id", hasUser(), createDeleteHandler("experience"));
-router.delete("/education/:id", hasUser(), createDeleteHandler("education"));
+router.delete("/experience/:id", hasUser(), checkUserRole("employee"), createDeleteHandler("experience"));
+router.delete("/education/:id", hasUser(), checkUserRole("employee"), createDeleteHandler("education"));
 
 
 router.get("/github/:username", async (req, res) => {
