@@ -21,8 +21,28 @@ async function createItem(userId, data) {
   return { company: newCompany, profile: employerProfile };
 }
 
+
+async function updateItem(id, item) {
+  return Company.findOneAndUpdate(
+    { _id: id },
+    { $set: item, $currentDate: { updatedAt: true } },
+    { new: true }
+  );
+}
+
+async function deleteCompanyAndProfile(userId) {
+  const company = await Company.findOneAndDelete({ ownerId: userId });
+  const profile = await EmployerProfile.findOneAndDelete({ ownerId: userId });
+  return { company, profile };
+};
+
+
+
+
 module.exports = {
   getUserById,
   createItem,
-  getCompanyByUserId
+  getCompanyByUserId,
+  updateItem,
+  deleteCompanyAndProfile
 };

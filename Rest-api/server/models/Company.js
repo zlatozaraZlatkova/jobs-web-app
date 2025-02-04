@@ -2,7 +2,7 @@ const { Schema, model, Types } = require("mongoose");
 
 const companySchema = new Schema(
   {
-    name: {
+    companyName: {
       type: String,
       required: true,
     },
