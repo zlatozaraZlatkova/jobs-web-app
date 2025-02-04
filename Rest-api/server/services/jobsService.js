@@ -45,11 +45,29 @@ async function updateItem(id, item) {
 
 
 
+async function deleteById(jobId, userId) {
+  await Company.findOneAndUpdate(
+    { ownerId: userId },
+    { $pull: { listOfOpenJobs: jobId } },
+    { new: true }
+  );
+
+  await EmployerProfile.findOneAndUpdate(
+    { ownerId: userId },
+    { $pull: { postedJobs: jobId } },
+    { new: true }
+  );
+
+  await Job.findByIdAndDelete(jobId);
+}
+
+
 
 module.exports = {
   getAll,
   getCompanyByUserId,
   createItem,
   updateItem,
-  getJobById
+  getJobById,
+  deleteById
 }

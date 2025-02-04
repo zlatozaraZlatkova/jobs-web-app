@@ -2,9 +2,9 @@ const router = require("express").Router();
 const { body, validationResult } = require("express-validator");
 
 const { loadItem } = require("../middlewares/preload");
-const { hasUser, checkUserRole } = require("../middlewares/guards");
+const { hasUser, checkUserRole, isOwner } = require("../middlewares/guards");
 const { errorParser } = require("../util/errorParser");
-const { getAll, getCompanyByUserId, createItem, updateItem, getJobById } = require("../services/jobsService");
+const { getAll, getCompanyByUserId, createItem, updateItem, deleteById } = require("../services/jobsService");
 
 router.get("/", hasUser(), async (req, res) => {
   try {
@@ -21,6 +21,21 @@ router.get("/", hasUser(), async (req, res) => {
     res.status(400).json({ message });
   }
 });
+
+
+router.get("/:id", hasUser(), loadItem("Job"), async (req, res) => {
+  try {
+    const job = req.item;
+    res.status(200).json(job);
+
+  } catch (error) {
+    console.log(error)
+    const message = errorParser(error);
+    res.status(400).json({ message });
+  }
+
+});
+
 
 router.post("/create", hasUser(), checkUserRole("employer"),
   body("title", "Title is required").not().isEmpty(),
@@ -112,4 +127,19 @@ router.put("/update/:id", hasUser(), checkUserRole("employer"), loadItem('Job'),
 
   })
 
+
+router.delete("/delete/:id", loadItem("Job"), isOwner(),
+  async (req, res) => {
+    try {
+
+      await deleteById(req.params.id, req.user._id);
+
+      res.status(200).json({ message: "Job deleted" });
+
+    } catch (error) {
+      console.log(error)
+      const message = errorParser(error);
+      res.status(400).json({ message });
+    }
+  })
 module.exports = router;
