@@ -1,10 +1,13 @@
 const Post = require("../models/Post");
 const Job = require("../models/Job");
+const EmployeeProfile = require("../models/EmployeeProfile");
+
 const { errorParser } = require("../util/errorParser");
 
 const modelsMap = {
-  'Post': Post,
-  'Job': Job,
+  "Post": Post,
+  "Job": Job,
+  "EmployeeProfile": EmployeeProfile
 
 };
 
