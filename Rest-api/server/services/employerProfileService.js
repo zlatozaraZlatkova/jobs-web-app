@@ -1,4 +1,4 @@
-const EmployerProfile = require("../models/EmployerProfileSchema");
+const EmployerProfile = require("../models/EmployerProfile");
 const Company = require("../models/Company");
 
 async function getAll() {
