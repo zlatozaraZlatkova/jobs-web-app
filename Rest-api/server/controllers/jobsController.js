@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { body, validationResult } = require("express-validator");
 
-
+const { loadItem } = require("../middlewares/preload");
 const { hasUser, checkUserRole } = require("../middlewares/guards");
 const { errorParser } = require("../util/errorParser");
 const { getAll, getCompanyByUserId, createItem, updateItem, getJobById } = require("../services/jobsService");
@@ -71,7 +71,7 @@ router.post("/create", hasUser(), checkUserRole("employer"),
   })
 
 
-router.put("/update/:id", hasUser(), checkUserRole("employer"),
+router.put("/update/:id", hasUser(), checkUserRole("employer"), loadItem('Job'),
   body("title", "Title is required").not().isEmpty(),
   body("title", "Please enter a title up to 150 characters long").isLength({ max: 150 }),
   body("type", "Type is required").not().isEmpty(),
@@ -91,14 +91,11 @@ router.put("/update/:id", hasUser(), checkUserRole("employer"),
     }
 
     try {
-      const job = await getJobById(req.params.id);
-
-      if(!job) {
-        return res.status(404).json({ message: "No job found" });
-      }
+      const job = req.item;
+      console.log(job);
 
       if (job.ownerId.toString() !== req.user._id.toString()) {
-        return res.status(403).json({ message: "Access denied" });
+        return res.status(403).json({ message: "Not authorized" });
       }
 
       const jobData = { title, type, description, location, salary } = req.body;

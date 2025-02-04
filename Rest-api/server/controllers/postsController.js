@@ -98,7 +98,7 @@ router.post("/create", hasUser(),
   })
 
 
-router.put("/update/:id", loadItem, isOwner(),
+router.put("/update/:id", loadItem("Post"), isOwner(),
   body("postTitle", "Title is required").not().isEmpty(),
   body("postTitle", "Please enter a title up to 150 characters long").isLength({ max: 150 }),
   body("postText", "Post is required").not().isEmpty(),
@@ -128,7 +128,7 @@ router.put("/update/:id", loadItem, isOwner(),
 
   })
 
-router.delete("/delete/:id", loadItem, isOwner(), async (req, res) => {
+router.delete("/delete/:id", loadItem("Post"), isOwner(), async (req, res) => {
 
   try {
 
@@ -183,7 +183,7 @@ router.post("/comment/:postId/create", hasUser(),
   })
 
 
-router.delete("/comment/:id/:commentId", hasUser(), loadItem, async (req, res) => {
+router.delete("/comment/:id/:commentId", hasUser(), loadItem("Post"), async (req, res) => {
   const userId = req.user._id;
   const postId = req.params.id;
   const commentId = req.params.commentId;
@@ -214,7 +214,7 @@ router.delete("/comment/:id/:commentId", hasUser(), loadItem, async (req, res) =
 
 })
 
-router.post("/like/:id", hasUser(), loadItem, async (req, res) => {
+router.post("/like/:id", hasUser(), loadItem("Post"), async (req, res) => {
   const userId = req.user._id;
   const postId = req.params.id;
 
@@ -246,7 +246,7 @@ router.post("/like/:id", hasUser(), loadItem, async (req, res) => {
 })
 
 
-router.post("/unlike/:id", hasUser(), loadItem, async (req, res) => {
+router.post("/unlike/:id", hasUser(), loadItem("Post"), async (req, res) => {
   const userId = req.user._id;
   const postId = req.params.id;
 

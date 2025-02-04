@@ -1,8 +1,18 @@
 const Post = require("../models/Post");
+const Job = require("../models/Job");
 
-const loadItem = async (req, res, next) => {
+const modelsMap = {
+  'Post': Post,
+  'Job': Job,
+
+};
+
+const loadItem  = (modelName) => async (req, res, next) => {
   try {
-    const item = await Post.findById(req.params.id);
+    const Model = modelsMap[modelName];
+    
+    const item = await Model.findById(req.params.id);
+    console.log(item)
 
     if (!item) {
       return res.status(404).json({ message: "Item not found" });
