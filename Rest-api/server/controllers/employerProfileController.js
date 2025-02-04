@@ -3,7 +3,64 @@ const { body, validationResult } = require("express-validator");
 
 const { hasUser, checkUserRole } = require("../middlewares/guards");
 const { errorParser } = require("../util/errorParser");
-const { createItem, getCompanyByUserId, updateItem, deleteCompanyAndProfile } = require("../services/employerProfileService");
+const { getAll, createItem, getCompanyByUserId, updateItem, deleteCompanyAndProfile, getUserById, getCompanyById } = require("../services/employerProfileService");
+
+router.get("/", async(req, res) => {
+    try {
+
+        const companies = await getAll();
+
+        if (companies.length == 0) {
+            return res.status(404).json({ message: "At this time, there are no companies listed." });
+        }
+
+        res.status(200).json(companies);
+        
+    } catch (error) {
+        const message = errorParser(error);
+        res.status(400).json({ message });
+    }
+})
+
+router.get("/profile/:id",
+    async (req, res) => {
+        try {
+            const companyProfile = await getCompanyById(req.params.id);
+
+            if (!companyProfile) {
+                return res.status(404).json({ message: "Company not found" });
+            }
+
+            res.status(200).json(companyProfile);
+
+        } catch (error) {
+            const message = errorParser(error);
+            res.status(400).json({ message });
+        }
+    });
+
+router.get("/profile/employer", hasUser(), checkUserRole("employer"),
+    async (req, res) => {
+        try {
+            const employerProfile = await getUserById(req.user._id);
+
+            if (!employerProfile) {
+                return res.status(404).json({ message: "Profile not found" });
+            }
+
+            if (employerProfile.ownerId.toString() !== req.user._id.toString()) {
+                return res.status(403).json({ message: "Access denied" });
+            }
+
+
+            res.status(200).json(employerProfile);
+
+        } catch (error) {
+            const message = errorParser(error);
+            res.status(400).json({ message });
+        }
+    });
+
 
 router.post("/profile/create", hasUser(), checkUserRole("employer"),
     body("companyName", "Company name is required").not().isEmpty(),
@@ -83,13 +140,13 @@ router.delete("/profile/delete/:id", hasUser(), checkUserRole("employer"), async
 
     try {
 
-       const existingCompany = await getCompanyByUserId(req.user._id);
-       if (!existingCompany) {
-           return res.status(404).json({ message: "Company not found" });
-       }
+        const existingCompany = await getCompanyByUserId(req.user._id);
+        if (!existingCompany) {
+            return res.status(404).json({ message: "Company not found" });
+        }
 
-       await deleteCompanyAndProfile(req.user._id);
-       res.status(200).json({ message: "Company deleted successfully" });
+        await deleteCompanyAndProfile(req.user._id);
+        res.status(200).json({ message: "Company deleted successfully" });
 
 
     } catch (error) {

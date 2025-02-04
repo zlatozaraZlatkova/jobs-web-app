@@ -1,14 +1,24 @@
 const EmployerProfile = require("../models/EmployerProfileSchema");
 const Company = require("../models/Company");
 
-async function getUserById(id) {
-  return EmployerProfile.findById(id);
+async function getAll() {
+  return Company.find({}).sort({ date: -1 });
 }
+
+
+async function getUserById(userId) {
+  return EmployerProfile.findOne({ ownerId: userId });
+}
+
+async function getCompanyById(companyId) {
+  return Company.findOne({ _id: companyId });
+}
+
 
 async function getCompanyByUserId(userId) {
   return Company.findOne({ ownerId: userId });
- }
- 
+}
+
 
 async function createItem(userId, data) {
   const newCompany = await Company.create(data);
@@ -40,6 +50,8 @@ async function deleteCompanyAndProfile(userId) {
 
 
 module.exports = {
+  getAll,
+  getCompanyById,
   getUserById,
   createItem,
   getCompanyByUserId,
