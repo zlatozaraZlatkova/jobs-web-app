@@ -6,6 +6,11 @@ async function getAll() {
   return Job.find({}).sort({ date: -1 });
 }
 
+async function getJobById(jobId) {
+  return Job.findOne({ _id: jobId });
+}
+
+
 async function getCompanyByUserId(userId) {
   return Company.findOne({ ownerId: userId });
 }
@@ -30,8 +35,21 @@ async function createItem(userId, jobData) {
   return job;
 }
 
+async function updateItem(id, item) {
+  return Job.findOneAndUpdate(
+    { _id: id },
+    { $set: item, $currentDate: { updatedAt: true } },
+    { new: true }
+  );
+}
+
+
+
+
 module.exports = {
   getAll,
   getCompanyByUserId,
-  createItem
+  createItem,
+  updateItem,
+  getJobById
 }
