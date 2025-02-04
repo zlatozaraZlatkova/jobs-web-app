@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const Job = require("../models/Job");
+const { errorParser } = require("../util/errorParser");
 
 const modelsMap = {
   'Post': Post,
@@ -7,10 +8,10 @@ const modelsMap = {
 
 };
 
-const loadItem  = (modelName) => async (req, res, next) => {
+const loadItem = (modelName) => async (req, res, next) => {
   try {
     const Model = modelsMap[modelName];
-    
+
     const item = await Model.findById(req.params.id);
     console.log(item)
 
@@ -21,8 +22,11 @@ const loadItem  = (modelName) => async (req, res, next) => {
     req.item = item;
 
     next();
+    
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    console.log(error)
+    const message = errorParser(error);
+    res.status(400).json({ message });
   }
 };
 
