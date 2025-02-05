@@ -142,19 +142,20 @@ Application uses MongoDB with Mongoose and consists of the following main models
 
 - **1**: exactly one
 - **0..1**: zero or one (optional)
-- ** * **: many (zero or more)
+- *: many (zero or more)
 
 *Relationship Legend*:
 
-- User-EmployeeProfile (1:0..1): One User can have zero or one EmployeeProfile
-- User-EmployerProfile (1:0..1): One User can have zero or one EmployerProfile
-- User-Post (1:\*): One User can create many Posts
-- Company-Job (1:\*): One Company can have many Jobs
-- Company-EmployerProfile (1:1): One Company belongs to one EmployerProfile
-- Job-EmployeeProfile (_:_): Many Jobs can have many applicants
-- Post-User (_:_): Many Posts can be liked/commented by many Users
-- EmployerProfile-Job (1:\*): One EmployerProfile can post many Jobs
-- EmployeeProfile-Job (_:_): Many EmployeeProfiles can apply to many Jobs
+   - User-EmployeeProfile (1 : 0..1): One User can have zero or one EmployeeProfile
+   - User-EmployerProfile (1 : 0..1): One User can have zero or one EmployerProfile
+   - User-Post (1 : *): One User can create many Posts
+   - Company-Job (1 : *): One Company can have many Jobs
+   - Company-EmployerProfile (1 : 1): One Company belongs to one EmployerProfile
+   - Job-EmployeeProfile (* : *): Many Jobs can have many applicants
+   - Post-User (* : *): Many Posts can be liked/commented by many Users
+   - EmployerProfile-Job (1 : *): One EmployerProfile can post many Jobs
+   - EmployeeProfile-Job (* : *): Many EmployeeProfiles can apply to many Jobs
+
 
 # 4. API Documentation
 
@@ -200,7 +201,7 @@ Required: `id=[string]`
 
 ## Links
 
-![API Postman documentation](....)
+[API Postman documentation](https://documenter.postman.com/preview/28859516-1a8f94a3-e470-42fd-af26-47f0bd7815b3?environment=&versionTag=latest&apiName=CURRENT&version=latest&documentationLayout=classic-double-column&documentationTheme=light&logo=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&logoDark=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&right-sidebar=303030&top-bar=FFFFFF&highlight=FF6C37&right-sidebar-dark=303030&top-bar-dark=212121&highlight-dark=FF6C37)
 
 # 5. Environment Setup
 
