@@ -2,9 +2,17 @@
 
 # 1. Project Overview
 
-## Brief description
+## Brief Description
 
-The application is job board platform with features for both employees and employers, including authentication, job postings, user profiles, and GitHub integration that fetches public GitHub profile information. 
+This application is a job board platform built to connect employers and job seekers efficiently. It offers a range of features, including:
+
+- **User Authentication** – Secure sign-up and login for both employers and job seekers.
+- **Job Postings** – Employers can create, manage, and update job listings.
+- **User Profiles** – Job seekers can build and maintain professional profiles.
+- **GitHub Integration** – Automatically fetches and displays public GitHub profile information to highlight candidates' coding contributions and activity.
+  
+Designed with scalability and ease of use in mind, this platform streamlines the hiring process while providing valuable insights into candidates' technical expertise.
+
 
 ## Main Features/Functionalities
 
@@ -56,47 +64,47 @@ This Node.js backend application follows a modular architecture with clear separ
 
 ```
 Devjobs web app/
+├── README
 ├── assets/
-│   └── images/
+│    images/
 │       └── relationship-models-dev-jobs.png
-├── README.md
 ├── Rest-api/
-├── server/
-│   ├── config/
-│   │   ├── database.js
-│   │   └── routes.js
-│   │
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── defaultController.js
-│   │   ├── employeeProfileController.js
-│   │   ├── employerProfileController.js
-│   │   ├── jobsController.js
-│   │   ├── postsController.js
-│   │   └── usersController.js
-│   │
-│   ├── middlewares/
-│   │   ├── guards.js
-│   │   ├── preload.js
-│   │   └── session.js
-│   │
-│   ├── models/
-│   │   ├── Company.js
-│   │   ├── EmployeeProfile.js
-│   │   ├── EmployerProfile.js
-│   │   ├── Job.js
-│   │   ├── Post.js
-│   │   └── User.js
-│   │
-│   ├── services/
-│   │   ├── authService.js
-│   │   ├── employeeProfileService.js
-│   │   ├── employerProfileService.js
-│   │   ├── githubService.js
-│   │   ├── jobsService.js
-│   │   └── postService.js
-│   │
-│   └── util/
+|   └── server/
+│    ├── config/
+│    │   ├── database.js
+│    │   └── routes.js
+│    │
+│    ├── controllers/
+│    │   ├── authController.js
+│    │   ├── defaultController.js
+│    │   ├── employeeProfileController.js
+│    │   ├── employerProfileController.js
+│    │   ├── jobsController.js
+│    │   ├── postsController.js
+│    │   └── usersController.js
+│    │
+│    ├── middlewares/
+│    │   ├── guards.js
+│    │   ├── preload.js
+│    │   └── session.js
+│    │
+│    ├── models/
+│    │   ├── Company.js
+│    │   ├── EmployeeProfile.js
+│    │   ├── EmployerProfile.js
+│    │   ├── Job.js
+│    │   ├── Post.js
+│    │   └── User.js
+│    │
+│    ├── services/
+│    │   ├── authService.js
+│    │   ├── employeeProfileService.js
+│    │   ├── employerProfileService.js
+│    │   ├── githubService.js
+│    │   ├── jobsService.js
+│    │   └── postService.js
+│    │
+│    └── util/
 │       └── errorParser.js
 │
 ├── .gitignore
@@ -121,33 +129,76 @@ Devjobs web app/
 2. Install dependencies   
    `npm install`
 
-3. Create Environment Variables
+
+# 3. Database Schema
+
+## Models Overview
+Application uses MongoDB with Mongoose and consists of the following main models:
+
+### User Model
+  Handles user authentication and basic user information
+
+### Company Model
+  Stores company information for employers
+
+### Job Model
+  Represents job listings
+
+### Profile Models
+
+  - **EmployeeProfile**
+   Stores information for employee
+
+  - **EmployerProfile**
+   Stores information for employer
+
+### Model Relationships
+
+![Relationship Models](./assets/images/relationship-models-dev-job-app.png)
+
+**Notation**:
+- **1**: exactly one
+- **0..1**: zero or one (optional)
+- **\***: many (zero or more)"
+
+*Relationship Legend*:
+- User-EmployeeProfile (1:0..1): One User can have zero or one EmployeeProfile
+- User-EmployerProfile (1:0..1): One User can have zero or one EmployerProfile
+- User-Post (1:*): One User can create many Posts
+- Company-Job (1:*): One Company can have many Jobs
+- Company-EmployerProfile (1:1): One Company belongs to one EmployerProfile
+- Job-EmployeeProfile (*:*): Many Jobs can have many applicants
+- Post-User (*:*): Many Posts can be liked/commented by many Users
+- EmployerProfile-Job (1:*): One EmployerProfile can post many Jobs
+- EmployeeProfile-Job (*:*): Many EmployeeProfiles can apply to many Jobs
+  
+
+4. Create Environment Variables
 
 Create a `.env` file in the root directory and add the following variables:
 
-* Server Configuration
-PORT=5001
-NODE_ENV=development
+#### Server Configuration
+- PORT=5001
+- NODE_ENV=development
 
-* MongoDB Connection
-MONGODB_URI=mongodb://localhost:27017/devjobs
-* or
-MONGODB_URI=mongodb+srv://@cluster.mongodb.net/devjobs
+#### MongoDB Connection
+- MONGODB_URI=mongodb://localhost:27017/devjobs
+#### or
+- MONGODB_URI=mongodb+srv://@cluster.mongodb.net/devjobs
 
-* JWT Configuration
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRE=30d
+#### JWT Configuration
+- JWT_SECRET=your_jwt_secret_key
 
-* Optional: GitHub Integration
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
+#### Optional: GitHub Integration
+- GITHUB_CLIENT_ID=your_github_client_id
+- GITHUB_CLIENT_SECRET=your_github_client_secret
 
 ## Available Scripts
 
 Start the server in production mode:
    `npm start`
 
-**or**
+#### or
 
 Start the server in development mode with nodemon:
    `npm run server`   
@@ -177,45 +228,34 @@ Start the server in development mode with nodemon:
 3. Start the development server with `npm run server`
 4. The API will be available at `http://localhost:5001` (or your configured PORT)
 
-# 4. Database Schema
+# 5. Security Measures
 
-## Models Overview
-Application uses MongoDB with Mongoose and consists of the following main models:
+## Authentication
 
-### User Model
-  Handles user authentication and basic user information
-
-### Company Model
-  Stores company information for employers
-
-### Job Model
-  Represents job listings
-
-### Profile Models
-
-  - **EmployeeProfile**
-   Stores information for employee
-
-  - **EmployerProfile**
-   Stores information for employer
-
-### Model Relationships
-
-![Relationship Models](./assets/images/relationship-models-dev-job-app.png)
-
-  **Notation:**
-    **1**: exactly one
-    **0..1**: zero or one (optional)
-    **\***: many (zero or more)"
-
-    *Relationship Legend*:
-    - User-EmployeeProfile (1:0..1): One User can have zero or one EmployeeProfile
-    - User-EmployerProfile (1:0..1): One User can have zero or one EmployerProfile
-    - User-Post (1:*): One User can create many Posts
-    - Company-Job (1:*): One Company can have many Jobs
-    - Company-EmployerProfile (1:1): One Company belongs to one EmployerProfile
-    - Job-EmployeeProfile (*:*): Many Jobs can have many applicants
-    - Post-User (*:*): Many Posts can be liked/commented by many Users
-    - EmployerProfile-Job (1:*): One EmployerProfile can post many Jobs
-    - EmployeeProfile-Job (*:*): Many EmployeeProfiles can apply to many Jobs
+- JWT-based authentication with secure cookie session storage
+- Session duration: 1 hour
+- Protected routes using middleware guards:
+ - `hasUser()`: Verifies authenticated user
+ - `isOwner`: Validates resource ownership
+ - `checkUserRole`: Role-based access control
+ - Protected auth routes for logged-in users
   
+```
+router.get('/profile', hasUser(), async (req, res) => {
+   // Only authenticated users can access
+});
+
+router.put('/jobs/:id', hasUser(), isOwner(), async (req, res) => {
+   // Only job owner can modify
+});
+
+```
+# 6. Error Handling
+
+## Validation and Error Types
+
+- Pre-request validation with express-validator middleware
+- Model-level Mongoose schema validation
+- Consistent error response format
+- Detailed validation feedback for developers
+- Production-safe error messages for users
