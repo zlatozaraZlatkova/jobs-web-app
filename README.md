@@ -119,21 +119,23 @@ Devjobs web app/
    `npm install`
 
 3. Create Environment Variables
-   
-Create a .env file in the root directory and add the following variables:   
-**Server Configuration**
+
+Create a `.env` file in the root directory and add the following variables:
+
+* Server Configuration
 PORT=5001
 NODE_ENV=development
 
-**MongoDB Connection**
+* MongoDB Connection
 MONGODB_URI=mongodb://localhost:27017/devjobs
-**or**
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/devjobs
+* or
+MONGODB_URI=mongodb+srv://@cluster.mongodb.net/devjobs
 
-**JWT Configuration**
+* JWT Configuration
 JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRE=30d
 
-**Optional: GitHub Integration**
+* Optional: GitHub Integration
 GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
 
@@ -151,15 +153,15 @@ Start the server in development mode with nodemon:
 
 ### Main Dependencies
 
-`express`: Web framework for Node.js
-`mongoose`: MongoDB object modeling tool
-`jsonwebtoken`: JWT implementation for authentication
-`bcryptjs`: Password hashing
-`dotenv`: Environment variables management
-`express-validator`: Input validation middleware
-`axios`: HTTP client for API requests
-`gravatar`: Profile picture integration
-`cookie-parser`: Cookie parsing middleware
+- `express`: Web framework for Node.js
+- `mongoose`: MongoDB object modeling tool
+- `jsonwebtoken`: JWT implementation for authentication
+- `bcryptjs`: Password hashing
+- `dotenv`: Environment variables management
+- `express-validator`: Input validation middleware
+- `axios`: HTTP client for API requests
+- `gravatar`: Profile picture integration
+- `cookie-parser`: Cookie parsing middleware
 
 ### Development Dependencies
 
@@ -167,8 +169,49 @@ Start the server in development mode with nodemon:
 
 ## Next Steps
 
-1. Ensure MongoDB is running
+1. Start MongoDB service (must be running before server start)
 2. Configure your `.env` file with appropriate values
 3. Start the development server with `npm run server`
 4. The API will be available at `http://localhost:5001` (or your configured PORT)
 
+# 4. Database Schema
+
+## Models Overview
+Application uses MongoDB with Mongoose and consists of the following main models:
+
+### User Model
+  Handles user authentication and basic user information
+
+### Company Model
+  Stores company information for employers
+
+### Job Model
+  Represents job listings
+
+### Profile Models
+
+  - **EmployeeProfile**
+   Stores information for employee
+
+  - **EmployerProfile**
+   Stores information for employer
+
+### Model Relationships
+
+![Relationship Models](assets/images/relationship-models-dev-jobs.png)
+  **Notation:**
+    **1**: exactly one
+    **0..1**: zero or one (optional)
+    **\***: many (zero or more)"
+
+    **Relationship Legend**:
+    - User-EmployeeProfile (1:0..1): One User can have zero or one EmployeeProfile
+    - User-EmployerProfile (1:0..1): One User can have zero or one EmployerProfile
+    - User-Post (1:*): One User can create many Posts
+    - Company-Job (1:*): One Company can have many Jobs
+    - Company-EmployerProfile (1:1): One Company belongs to one EmployerProfile
+    - Job-EmployeeProfile (*:*): Many Jobs can have many applicants
+    - Post-User (*:*): Many Posts can be liked/commented by many Users
+    - EmployerProfile-Job (1:*): One EmployerProfile can post many Jobs
+    - EmployeeProfile-Job (*:*): Many EmployeeProfiles can apply to many Jobs
+  
