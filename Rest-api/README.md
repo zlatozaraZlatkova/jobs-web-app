@@ -1,6 +1,46 @@
 # Dev Job full-stack MERN application
 
+# Project Overview
+
+## Brief description
+
 The application is job board platform with features for both employees and employers, including authentication, job postings, user profiles, and GitHub integration that fetches public GitHub profile information. 
+
+## Main Features/Functionalities
+
+### User Management
+
+- User registration and authentication (Employee/Employer roles)
+- Profile creation and management
+- GitHub profile integration for developers
+- Avatar/profile picture support using Gravatar
+
+### Employees Features
+
+- Create, Read, Update, and Delete professional profiles
+- Browse job listings
+- GitHub portfolio integration
+  
+### Employer Features
+
+-  Create, Read, Update, and Delete company profile
+-  Create, Read, Update, and Delete job listings
+-  Browse employee profiles
+
+### Core Platform Features
+
+- Secure authentication using JWT
+- Role-based access control
+- RESTful API architecture
+
+### Technical Stack (MERN)
+
+- MongoDB: NoSQL database for flexible data storage
+- Express.js: Backend web application framework
+- React: Frontend user interface library
+- Node.js: Runtime environment for server-side code
+
+### Project Architecture
 
 This Node.js backend application follows a modular architecture with clear separation of concerns:
 
