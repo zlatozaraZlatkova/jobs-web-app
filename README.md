@@ -57,6 +57,7 @@ This Node.js backend application follows a modular architecture with clear separ
 ```
 Devjobs web app/
 └── Rest-api/
+├── README.md
 ├── server/
 │   ├── config/
 │   │   ├── database.js
