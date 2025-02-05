@@ -56,8 +56,11 @@ This Node.js backend application follows a modular architecture with clear separ
 
 ```
 Devjobs web app/
-└── Rest-api/
+├── assets/
+│   └── images/
+│       └── relationship-models-dev-jobs.png
 ├── README.md
+├── Rest-api/
 ├── server/
 │   ├── config/
 │   │   ├── database.js
@@ -198,13 +201,14 @@ Application uses MongoDB with Mongoose and consists of the following main models
 
 ### Model Relationships
 
-![Relationship Models](assets/images/relationship-models-dev-jobs.png)
+![Relationship Models](./assets/images/relationship-models-dev-job-app.png)
+
   **Notation:**
     **1**: exactly one
     **0..1**: zero or one (optional)
     **\***: many (zero or more)"
 
-    **Relationship Legend**:
+    *Relationship Legend*:
     - User-EmployeeProfile (1:0..1): One User can have zero or one EmployeeProfile
     - User-EmployerProfile (1:0..1): One User can have zero or one EmployerProfile
     - User-Post (1:*): One User can create many Posts
