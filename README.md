@@ -10,9 +10,8 @@ This application is a job board platform built to connect employers and job seek
 - **Job Postings** – Employers can create, manage, and update job listings.
 - **User Profiles** – Job seekers can build and maintain professional profiles.
 - **GitHub Integration** – Automatically fetches and displays public GitHub profile information to highlight candidates' coding contributions and activity.
-  
-Designed with scalability and ease of use in mind, this platform streamlines the hiring process while providing valuable insights into candidates' technical expertise.
 
+Designed with scalability and ease of use in mind, this platform streamlines the hiring process while providing valuable insights into candidates' technical expertise.
 
 ## Main Features/Functionalities
 
@@ -28,12 +27,12 @@ Designed with scalability and ease of use in mind, this platform streamlines the
 - Create, Read, Update, and Delete professional profiles
 - Browse job listings
 - GitHub portfolio integration
-  
+
 ### Employer Features
 
--  Create, Read, Update, and Delete company profile
--  Create, Read, Update, and Delete job listings
--  Browse employee profiles
+- Create, Read, Update, and Delete company profile
+- Create, Read, Update, and Delete job listings
+- Browse employee profiles
 
 ### Core Platform Features
 
@@ -54,7 +53,7 @@ This Node.js backend application follows a modular architecture with clear separ
 
 - config/ - Contains configuration files for database and routes
 - controllers/ - Handles HTTP requests and response logic
-- middlewares/ - Contains middleware functions for authentication, session 
+- middlewares/ - Contains middleware functions for authentication, session
 - management, and request preprocessing
 - models/ - Defines data models and schema
 - services/ - Contains business logic and external service integrations
@@ -113,7 +112,97 @@ Devjobs web app/
 └── server.js
 
 ```
-# 3. Environment Setup
+
+# 3. Database Schema
+
+## Models Overview
+
+Application uses MongoDB with Mongoose and consists of the following main models:
+
+- **User Model**
+  Handles user authentication and basic user information
+
+- **Company Model**
+  Stores company information for employers
+
+- **Job Model**
+  Represents job listings
+
+- **Profile Models**
+  - **EmployeeProfile**
+    Stores information for employee
+  - **EmployerProfile**
+    Stores information for employer
+
+### Model Relationships
+
+![Relationship Models](./assets/images/relationship-models-dev-job-app.png)
+
+**Notation**:
+
+- **1**: exactly one
+- **0..1**: zero or one (optional)
+- ** * **: many (zero or more)
+
+*Relationship Legend*:
+
+- User-EmployeeProfile (1:0..1): One User can have zero or one EmployeeProfile
+- User-EmployerProfile (1:0..1): One User can have zero or one EmployerProfile
+- User-Post (1:\*): One User can create many Posts
+- Company-Job (1:\*): One Company can have many Jobs
+- Company-EmployerProfile (1:1): One Company belongs to one EmployerProfile
+- Job-EmployeeProfile (_:_): Many Jobs can have many applicants
+- Post-User (_:_): Many Posts can be liked/commented by many Users
+- EmployerProfile-Job (1:\*): One EmployerProfile can post many Jobs
+- EmployeeProfile-Job (_:_): Many EmployeeProfiles can apply to many Jobs
+
+# 4. API Documentation
+
+## Introduction
+
+The Dev-Job API is organized around REST. This API has predictable resource-oriented URLs, accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes and authentication.
+The Dev-Job API doesn’t support bulk updates. You can work on only one object per request.
+
+## URL
+
+All endpoints are prefixed with "/api". Consequently, during the development phase, the endpoints will be accessible via the following URL: "http://localhost:5001/api".
+
+## Methods
+
+`GET` | `POST` | `PUT` | `DELETE`
+
+## URL query parameters
+
+Required: `id=[string]`
+
+## Response
+
+**Code:** `200 OK`\
+ Returns the requested data, at the specified page of the results.
+
+**Code:** `204 No Content`\
+ Returned if the data property was removed successfully.
+
+**Code:** `400 Bad Request`\
+ Returned if the request is invalid.
+
+**Code:** `401 Unauthorized`\
+ Returned if the user is not logged in.
+
+**Code:** `403 No Content`\
+ Returned if no credentials available.
+
+**Code:** `404 No Found`\
+ Returned if the data property does not exist.
+
+**Code:** `500 Internal Server Error`\
+ The server encountered an unexpected condition that prevented it from fulfilling the request.
+
+## Links
+
+![API Postman documentation](....)
+
+# 5. Environment Setup
 
 ## Prerequisites
 
@@ -122,86 +211,47 @@ Devjobs web app/
 
 ## Installation Steps
 
-1. Clone the repository 
+1. Clone the repository
    `git clone <repository-url>`
    `cd devjobs-web-app`
 
-2. Install dependencies   
+2. Install dependencies  
    `npm install`
 
-
-# 3. Database Schema
-
-## Models Overview
-Application uses MongoDB with Mongoose and consists of the following main models:
-
-### User Model
-  Handles user authentication and basic user information
-
-### Company Model
-  Stores company information for employers
-
-### Job Model
-  Represents job listings
-
-### Profile Models
-
-  - **EmployeeProfile**
-   Stores information for employee
-
-  - **EmployerProfile**
-   Stores information for employer
-
-### Model Relationships
-
-![Relationship Models](./assets/images/relationship-models-dev-job-app.png)
-
-**Notation**:
-- **1**: exactly one
-- **0..1**: zero or one (optional)
-- **\***: many (zero or more)"
-
-*Relationship Legend*:
-- User-EmployeeProfile (1:0..1): One User can have zero or one EmployeeProfile
-- User-EmployerProfile (1:0..1): One User can have zero or one EmployerProfile
-- User-Post (1:*): One User can create many Posts
-- Company-Job (1:*): One Company can have many Jobs
-- Company-EmployerProfile (1:1): One Company belongs to one EmployerProfile
-- Job-EmployeeProfile (*:*): Many Jobs can have many applicants
-- Post-User (*:*): Many Posts can be liked/commented by many Users
-- EmployerProfile-Job (1:*): One EmployerProfile can post many Jobs
-- EmployeeProfile-Job (*:*): Many EmployeeProfiles can apply to many Jobs
-  
-
-4. Create Environment Variables
-
-Create a `.env` file in the root directory and add the following variables:
+3. Create Environment Variables
+   Create a `.env` file in the root directory and add the following variables:
 
 #### Server Configuration
+
 - PORT=5001
 - NODE_ENV=development
 
 #### MongoDB Connection
+
 - MONGODB_URI=mongodb://localhost:27017/devjobs
+
 #### or
+
 - MONGODB_URI=mongodb+srv://@cluster.mongodb.net/devjobs
 
 #### JWT Configuration
+
 - JWT_SECRET=your_jwt_secret_key
 
 #### Optional: GitHub Integration
+
 - GITHUB_CLIENT_ID=your_github_client_id
 - GITHUB_CLIENT_SECRET=your_github_client_secret
 
 ## Available Scripts
 
 Start the server in production mode:
-   `npm start`
+`npm start`
 
 #### or
 
 Start the server in development mode with nodemon:
-   `npm run server`   
+`npm run server`
 
 ## Dependencies Overview
 
@@ -228,18 +278,18 @@ Start the server in development mode with nodemon:
 3. Start the development server with `npm run server`
 4. The API will be available at `http://localhost:5001` (or your configured PORT)
 
-# 5. Security Measures
+# 6. Security Measures
 
 ## Authentication
 
 - JWT-based authentication with secure cookie session storage
 - Session duration: 1 hour
 - Protected routes using middleware guards:
- - `hasUser()`: Verifies authenticated user
- - `isOwner`: Validates resource ownership
- - `checkUserRole`: Role-based access control
- - Protected auth routes for logged-in users
-  
+- `hasUser()`: Verifies authenticated user
+- `isOwner`: Validates resource ownership
+- `checkUserRole`: Role-based access control
+- Protected auth routes for logged-in users
+
 ```
 router.get('/profile', hasUser(), async (req, res) => {
    // Only authenticated users can access
@@ -250,7 +300,8 @@ router.put('/jobs/:id', hasUser(), isOwner(), async (req, res) => {
 });
 
 ```
-# 6. Error Handling
+
+# 7. Error Handling
 
 ## Validation and Error Types
 
