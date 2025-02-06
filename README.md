@@ -26,6 +26,7 @@ Designed with scalability and ease of use in mind, this platform streamlines the
 
 - Create, Read, Update, and Delete professional profiles
 - Browse job listings
+- Search and filter jobs by various criteria
 - GitHub portfolio integration
 
 ### Employer Features

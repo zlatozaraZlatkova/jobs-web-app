@@ -4,7 +4,28 @@ const { body, validationResult } = require("express-validator");
 const { loadItem } = require("../middlewares/preload");
 const { hasUser, checkUserRole, isOwner } = require("../middlewares/guards");
 const { errorParser } = require("../util/errorParser");
-const { getAll, getCompanyByUserId, createItem, updateItem, deleteById } = require("../services/jobsService");
+const { getAll, getCompanyByUserId, createItem, updateItem, deleteById, getSearchItem } = require("../services/jobsService");
+
+// @route GET /api/jobs/search?title=Java
+// @route GET /api/jobs/search?title=React&type=Full-time&location=Brooklyn&salary=70
+
+router.get("/search", async (req, res) => {
+  try {
+      const { title, type, location, salary } = req.query; 
+      const jobs = await getSearchItem(title, type, location, salary);
+      
+      if (!jobs?.length) {
+          return res.status(404).json({ message: "No jobs matched your search" });
+      }
+      
+      res.status(200).json(jobs);
+  } catch (error) {
+    console.log(error)
+    const message = errorParser(error);
+    res.status(400).json({ message });
+      
+  }
+});
 
 router.get("/", hasUser(), async (req, res) => {
   try {

@@ -62,6 +62,25 @@ async function deleteById(jobId, userId) {
 }
 
 
+async function getSearchItem(title, type, location, salary) {
+  const query = {};
+
+  if (title) {
+    query.title = { $regex: title, $options: 'i' };
+  }
+  if (type) {
+    query.type = { $regex: type, $options: 'i' };
+  }
+  if (location) {
+    query.location = { $regex: location, $options: 'i' };
+  }
+  if (salary) {
+    query.salary = { $regex: salary, $options: 'i' };
+  }
+
+  return Job.find(query);
+}
+
 
 module.exports = {
   getAll,
@@ -69,5 +88,6 @@ module.exports = {
   createItem,
   updateItem,
   getJobById,
-  deleteById
+  deleteById,
+  getSearchItem
 }
