@@ -10,11 +10,33 @@ const {
   createItem,
   updateItem,
   getAllProfiles,
-  getProfileById,
   deleteById,
   updatedProfileExpOrEduc,
-  deleteProfileExpOrEduc
+  deleteProfileExpOrEduc,
+  getSearchEmployee
 } = require("../services/employeeProfileService");
+
+// @route GET /api/profile/search?skills=Angular,JavaScript&experience=Senior&degree=professional
+
+router.get("/search", async (req, res) => {
+  try {
+      const { skills, experience, education } = req.query;
+
+      const profile = await getSearchEmployee(skills, experience, education);
+
+      if (!profile?.length) {
+          return res.status(404).json({ message: "No profile matched your search" });
+      }
+
+      res.status(200).json(profile);
+
+  } catch (error) {
+    console.log(error)
+      const message = errorParser(error);
+      res.status(400).json({ message });
+
+  }
+});
 
 
 router.get("/", hasUser(), checkUserRole("employee"), async (req, res) => {

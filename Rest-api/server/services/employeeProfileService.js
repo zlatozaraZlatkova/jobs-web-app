@@ -28,11 +28,11 @@ async function updateItem(id, item) {
 }
 
 async function deleteById(id) {
-  return EmployeeProfile.findOneAndDelete({ ownerId: id});
+  return EmployeeProfile.findOneAndDelete({ ownerId: id });
 
 }
 
-async function updatedProfileExpOrEduc(userId, arrayName, newItem){
+async function updatedProfileExpOrEduc(userId, arrayName, newItem) {
   return EmployeeProfile.findOneAndUpdate(
     { ownerId: userId },
     { $push: { [arrayName]: newItem } },
@@ -46,10 +46,30 @@ async function deleteProfileExpOrEduc(userId, arrayName, paramsId) {
     { ownerId: userId },
     { $pull: { [arrayName]: { _id: paramsId } } },
     { new: true }
-);
+  );
 
-  
+
 }
+
+
+async function getSearchEmployee(skills, experience, education) {
+  const query = {};
+
+  if (skills) {
+    const data = skills.split(',').map(skill => skill.trim());
+    query.skills = { $in: data.map(skill => new RegExp(skill, 'i')) };
+  }
+
+  if (experience) {
+    query['experience.title'] = { $regex: experience, $options: 'i' };
+  }
+  if (education) {
+    query['education.degree'] = { $regex: experience, $options: 'i' };
+  }
+
+  return EmployeeProfile.find(query);
+}
+
 
 module.exports = {
   getAllProfiles,
@@ -57,7 +77,8 @@ module.exports = {
   getUserById,
   createItem,
   updateItem,
-  deleteById, 
+  deleteById,
   updatedProfileExpOrEduc,
-  deleteProfileExpOrEduc
-};
+  deleteProfileExpOrEduc,
+  getSearchEmployee
+}

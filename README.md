@@ -34,6 +34,7 @@ Designed with scalability and ease of use in mind, this platform streamlines the
 - Create, Read, Update, and Delete company profile
 - Create, Read, Update, and Delete job listings
 - Browse employee profiles
+- Search candidate profiles
 
 ### Core Platform Features
 
@@ -54,8 +55,7 @@ This Node.js backend application follows a modular architecture with clear separ
 
 - config/ - Contains configuration files for database and routes
 - controllers/ - Handles HTTP requests and response logic
-- middlewares/ - Contains middleware functions for authentication, session
-- management, and request preprocessing
+- middlewares/ - Contains middleware functions for authentication, session management, and request preprocessing
 - models/ - Defines data models and schema
 - services/ - Contains business logic and external service integrations
 - util/ - Utility functions and helpers
