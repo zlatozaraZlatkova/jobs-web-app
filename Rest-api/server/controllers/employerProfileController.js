@@ -5,7 +5,7 @@ const { hasUser, checkUserRole } = require("../middlewares/guards");
 const { errorParser } = require("../util/errorParser");
 const { getAll, createItem, getCompanyByUserId, updateItem, deleteCompanyAndProfile, getUserById, getCompanyById } = require("../services/employerProfileService");
 
-router.get("/", async(req, res) => {
+router.get("/list", async(req, res) => {
     try {
 
         const companies = await getAll();
@@ -22,7 +22,7 @@ router.get("/", async(req, res) => {
     }
 })
 
-router.get("/profile/:id",
+router.get("/list/:id",
     async (req, res) => {
         try {
             const companyProfile = await getCompanyById(req.params.id);
@@ -61,7 +61,7 @@ router.get("/profile/employer", hasUser(), checkUserRole("employer"),
         }
     });
 
-
+    
 router.post("/profile/create", hasUser(), checkUserRole("employer"),
     body("companyName", "Company name is required").not().isEmpty(),
     body("description", "Please enter a description up to 3000 characters long").isLength({ max: 3000 }),

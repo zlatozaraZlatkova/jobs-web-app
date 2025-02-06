@@ -51,7 +51,7 @@ const companySchema = new Schema(
 );
 
 companySchema.index(
-  { name: 1 },
+  { companyName: 1 },
   {
     unique: true,
     collation: {
