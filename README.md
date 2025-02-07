@@ -87,7 +87,8 @@ Devjobs web app/
 │    │   ├── errorHandler.js
 │    │   ├── guards.js
 │    │   ├── preload.js
-│    │   └── session.js
+│    │   ├── session.js
+│    │   └── validateBodyRequest.js
 │    │
 │    ├── models/
 │    │   ├── Company.js

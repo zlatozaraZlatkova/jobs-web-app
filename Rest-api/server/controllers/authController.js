@@ -1,8 +1,9 @@
 const router = require("express").Router();
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
 
 const { register, login, logout } = require("../services/authService");
 const { hasUser } = require("../middlewares/guards");
+const validateRequest = require("../middlewares/validateBodyRequest");
 
 router.post("/register",
   body("name", "Name is required").not().isEmpty(),
@@ -11,13 +12,8 @@ router.post("/register",
   body("email", "Please provide a valid email address").isEmail(),
   body("role", "Role is required").not().isEmpty(),
   body("password", "Please enter a password with 8 or more characters").isLength({ min: 8 }),
+  validateRequest,
   async (req, res, next) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json(errors.array());
-    }
-
     try {
       const { _id, email, accessToken, role } = await register(
         req.body.name,
@@ -44,15 +40,10 @@ router.post("/login",
   body("email", "Email is required").not().isEmpty(),
   body("email", "Please provide a valid email address").isEmail(),
   body("password", "Password is required").not().isEmpty(),
-
+  validateRequest,
   async (req, res, next) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json(errors.array());
-    }
-
     try {
+
       const { _id, email, accessToken } = await login(
         req.body.email,
         req.body.password
