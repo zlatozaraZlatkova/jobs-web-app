@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 5001;
 const databaseConfig = require("./server/config/database");
 const routesConfig = require("./server/config/routes");
 const session = require("./server/middlewares/session");
+const errorHandler = require("./server/middlewares/errorHandler");
 
 start();
 
@@ -30,7 +31,8 @@ async function start() {
     });
 
     routesConfig(app);
-
+    
+    app.use(errorHandler);
 
     app.listen(PORT, () => console.log(`Server started on port: ${PORT}...`));
 

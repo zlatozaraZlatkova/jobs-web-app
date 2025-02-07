@@ -1,39 +1,53 @@
 function errorParser(err) {
-  
-  if (Array.isArray(err)) {
-    return err.map((e) => e.msg).join(", ");
+  console.log('Error received in parser:', err);
+  console.log('Error type in parser:', err.name);
+
+  const errorResponse = {
+    message: "",
+    statusCode: 500,
+  };
+
+  if (err.name === "Error") {
+    errorResponse.message = err.message;
+    errorResponse.statusCode = 400;  
+    return errorResponse;
   }
-  
+
+  if (Array.isArray(err)) {
+    errorResponse.message = err.map((e) => e.msg).join(", ");
+    errorResponse.statusCode = 400;
+    return errorResponse;
+  }
+
   if (err.name === "ValidationError") {
-    return Object.values(err.errors)
+    errorResponse.message = Object.values(err.errors)
       .map((value) => value.message)
       .join(", ");
+    errorResponse.statusCode = 400;
+    return errorResponse;
   }
-  
 
   if (err.kind === "ObjectId") {
-    return "Resource not found";
+    errorResponse.message = "Resource not found";
+    errorResponse.statusCode = 404;
+    return errorResponse;
   }
-  
- 
+
   if (err.code === 11000) {
-    return "Duplicate field value entered";
+    errorResponse.message = "Duplicate field value entered";
+    errorResponse.statusCode = 409;
+    return errorResponse;
   }
-  
 
   if (err.name === "ReferenceError") {
-    return "You have no permission to access this resource";
+    errorResponse.message = "You have no permission to access this resource";
+    errorResponse.statusCode = 403;
+    return errorResponse;
   }
-  
- 
-  if (err.name === "Error") {
-    return err.message;
-  }
-  
 
-  return "Internal Server Error";
 
-  
+  errorResponse.message = "Internal Server Error";
+  return errorResponse;
 }
 
 module.exports = {

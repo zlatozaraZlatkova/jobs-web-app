@@ -84,6 +84,7 @@ Devjobs web app/
 │    │   └── usersController.js
 │    │
 │    ├── middlewares/
+│    │   ├── errorHandler.js
 │    │   ├── guards.js
 │    │   ├── preload.js
 │    │   └── session.js
@@ -307,8 +308,8 @@ router.put('/jobs/:id', hasUser(), isOwner(), async (req, res) => {
 
 ## Validation and Error Types
 
+- Global Error Handling
 - Pre-request validation with express-validator middleware
 - Model-level Mongoose schema validation
 - Consistent error response format
-- Detailed validation feedback for developers
 - Production-safe error messages for users

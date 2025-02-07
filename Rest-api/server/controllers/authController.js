@@ -3,7 +3,6 @@ const { body, validationResult } = require("express-validator");
 
 const { register, login, logout } = require("../services/authService");
 const { hasUser } = require("../middlewares/guards");
-const { errorParser } = require("../util/errorParser");
 
 router.post("/register",
   body("name", "Name is required").not().isEmpty(),
@@ -12,48 +11,45 @@ router.post("/register",
   body("email", "Please provide a valid email address").isEmail(),
   body("role", "Role is required").not().isEmpty(),
   body("password", "Please enter a password with 8 or more characters").isLength({ min: 8 }),
-  async (req, res) => {
+  async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      const message = errorParser(errors.array());
-      return res.status(400).json({ message });
-    }  
+      return res.status(400).json(errors.array());
+    }
 
     try {
       const { _id, email, accessToken, role } = await register(
         req.body.name,
         req.body.email,
         req.body.password,
-        req.body.role,
+        req.body.role
       );
 
-      res.cookie('jwt', accessToken, {
+      res.cookie("jwt", accessToken, {
         httpOnly: true,
         maxAge: 3600000, // 1 hour in ms
         secure: false, // true in production
-        sameSite: 'lax'
+        sameSite: "lax",
       });
 
       res.status(200).json({ _id, email, role });
-
     } catch (error) {
-      console.log(error)
-      const message = errorParser(error);
-      res.status(400).json({ message });
+      next(error);
     }
-  });
+  }
+);
 
 router.post("/login",
   body("email", "Email is required").not().isEmpty(),
   body("email", "Please provide a valid email address").isEmail(),
   body("password", "Password is required").not().isEmpty(),
-  async (req, res) => {
+
+  async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      const message = errorParser(errors.array());
-      return res.status(400).json({ message });
+      return res.status(400).json(errors.array());
     }
 
     try {
@@ -62,27 +58,23 @@ router.post("/login",
         req.body.password
       );
 
-      res.cookie('jwt', accessToken, {
+      res.cookie("jwt", accessToken, {
         httpOnly: true,
         maxAge: 3600000, // 1 hour in ms
         secure: false, // true in production
-        sameSite: 'lax'
+        sameSite: "lax",
       });
 
       res.status(200).json({ _id, email });
-
     } catch (error) {
-      const message = errorParser(error);
-      res.status(400).json({ message });
-
+      next(error);
     }
+  }
+);
 
-  })
-
-
-router.get("/logout", hasUser(), async (req, res) => {
+router.get("/logout", hasUser(), async (req, res, next) => {
+  const token = req.cookies.jwt;
   try {
-    const token = req.cookies.jwt;
 
     if (!token) {
       return res.status(401).json({ message: "No token found" });
@@ -93,18 +85,13 @@ router.get("/logout", hasUser(), async (req, res) => {
     res.clearCookie("jwt", {
       httpOnly: true,
       secure: false, // true in production
-      sameSite: 'lax'
+      sameSite: "lax",
     });
 
     res.status(204).end();
-
   } catch (error) {
-    const message = errorParser(error);
-    res.status(500).json({ message });
+    next(error);
   }
-})
-
-
+});
 
 module.exports = router;
-
