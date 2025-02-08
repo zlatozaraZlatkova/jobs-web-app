@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
 
+const validateRequest = require("../middlewares/validateBodyRequest");
 const { loadItem } = require("../middlewares/preload");
 const { hasUser, checkUserRole } = require("../middlewares/guards");
-const { errorParser } = require("../util/errorParser");
 const { getGithubRepos } = require('../services/githubService');
 const {
   getUserById,
@@ -18,40 +18,40 @@ const {
 
 // @route GET /api/profile/search?skills=Angular,JavaScript&experience=Senior&degree=professional
 
-router.get("/search", async (req, res) => {
+router.get("/search", async (req, res, next) => {
   try {
-      const { skills, experience, education } = req.query;
+    const { skills, experience, education } = req.query;
 
-      const profile = await getSearchEmployee(skills, experience, education);
+    const profile = await getSearchEmployee(skills, experience, education);
 
-      if (!profile?.length) {
-          return res.status(404).json({ message: "No profile matched your search" });
-      }
-
-      res.status(200).json(profile);
-
-  } catch (error) {
-    console.log(error)
-      const message = errorParser(error);
-      res.status(400).json({ message });
-
-  }
-});
-
-
-router.get("/", hasUser(), checkUserRole("employee"), async (req, res) => {
-  try {
-    const profile = await getUserById(req.user._id);
-
-    if (!profile) {
-      return res.status(404).json({ message: "There is no profile for this user" });
+    if (!profile?.length) {
+      //return res.status(404).json({ message: "No profile matched your search" });
+      throw new Error("No profile matched your search.");
     }
 
     res.status(200).json(profile);
 
   } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message });
+    next(error);
+
+  }
+});
+
+
+router.get("/", hasUser(), checkUserRole("employee"), 
+async (req, res, next) => {
+  try {
+    const profile = await getUserById(req.user._id);
+
+    if (!profile) {
+      //return res.status(404).json({ message: "There is no profile for this user" });
+      throw new Error("There is no profile for this user.");
+    }
+
+    res.status(200).json(profile);
+
+  } catch (error) {
+    next(error);
   }
 });
 
@@ -65,36 +65,32 @@ router.post("/create", hasUser(), checkUserRole("employee"),
   body("bio", "Short description up to 3000 characters long").isLength({ max: 3000 }),
   body("status", "Status is required").notEmpty(),
   body("skills", "Skills is required").notEmpty(),
-  async (req, res) => {
-    const userId = req.user._id;
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const message = errorParser(errors.array());
-      return res.status(400).json({ message });
-    }
-
-    const { company, website, location, bio, status, skills, githubUsername, linkedin } = req.body;
-
-    const profileInputFields = {
-      company,
-      website,
-      location,
-      bio,
-      status,
-      skills: skills?.split(",").map(skill => skill.trim()),
-      githubUsername,
-      socialMedia: {
-        linkedin
-      },
-      ownerId: userId,
-    };
+  validateRequest,
+  async (req, res, next) => {
 
     try {
+      const userId = req.user._id;
+      const { company, website, location, bio, status, skills, githubUsername, linkedin } = req.body;
+
+      const profileInputFields = {
+        company,
+        website,
+        location,
+        bio,
+        status,
+        skills: skills?.split(",").map(skill => skill.trim()),
+        githubUsername,
+        socialMedia: {
+          linkedin
+        },
+        ownerId: userId,
+      };
+
       let userProfile = await getUserById(userId);
 
       if (userProfile) {
-        return res.status(400).json({ message: "Profile already exists." });
+        //return res.status(400).json({ message: "Profile already exists." });
+        throw new Error("Profile already exists.");
       }
 
       userProfile = Object.assign({ ownerId: req.user._id }, profileInputFields);
@@ -104,8 +100,7 @@ router.post("/create", hasUser(), checkUserRole("employee"),
       res.status(201).json(profile);
 
     } catch (error) {
-      const message = errorParser(error);
-      res.status(400).json({ message });
+      next(error);
 
     }
 
@@ -121,36 +116,32 @@ router.post("/update", hasUser(), checkUserRole("employee"),
   body("bio", "Short description up to 3000 characters long").isLength({ max: 3000 }),
   body("status", "Status is required").notEmpty(),
   body("skills", "Skills is required").notEmpty(),
-  async (req, res) => {
-    const userId = req.user._id;
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const message = errorParser(errors.array());
-      return res.status(400).json({ message });
-    }
-
-    const { company, website, location, bio, status, skills, githubUsername, linkedin } = req.body;
-
-    const profileInputFields = {
-      company,
-      website,
-      location,
-      bio,
-      status,
-      skills: skills?.split(",").map(skill => skill.trim()),
-      githubUsername,
-      socialMedia: {
-        linkedin
-      },
-      ownerId: userId,
-    };
+  validateRequest,
+  async (req, res, next) => {
 
     try {
+      const userId = req.user._id;
+      const { company, website, location, bio, status, skills, githubUsername, linkedin } = req.body;
+
+      const profileInputFields = {
+        company,
+        website,
+        location,
+        bio,
+        status,
+        skills: skills?.split(",").map(skill => skill.trim()),
+        githubUsername,
+        socialMedia: {
+          linkedin
+        },
+        ownerId: userId,
+      };
+
       const existingProfile = await getUserById(userId);
 
       if (!existingProfile) {
-        return res.status(404).json({ message: "Profile not found. Create one first." });
+        //return res.status(404).json({ message: "Profile not found. Create one first." });
+        throw new Error("Profile not found. Create one first.");
       }
 
 
@@ -159,12 +150,11 @@ router.post("/update", hasUser(), checkUserRole("employee"),
       return res.status(200).json(updatedProfile);
 
     } catch (error) {
-      const message = errorParser(error);
-      return res.status(400).json({ message });
+      next(error);
     }
   });
 
-router.get("/catalog", async (req, res) => {
+router.get("/catalog", async (req, res, next) => {
   try {
     const listOfProfiles = await getAllProfiles();
 
@@ -176,35 +166,34 @@ router.get("/catalog", async (req, res) => {
 
 
   } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message });
+    next(error);
 
   }
 })
 
 router.get("/catalog/:id", hasUser(), loadItem("EmployeeProfile"),
- async (req, res) => {
+  async (req, res, next) => {
 
-  try {
-    const userProfile = req.item;
+    try {
+      const userProfile = req.item;
 
-    res.status(200).json(userProfile);
+      res.status(200).json(userProfile);
 
-  } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message })
+    } catch (error) {
+      next(error);
 
-  }
-})
+    }
+  })
 
 
-router.delete("/delete", hasUser(), checkUserRole("employee"), async (req, res) => {
-
+router.delete("/delete", hasUser(), checkUserRole("employee"),
+ async (req, res, next) => {
   try {
     const existingProfile = await getUserById(req.user._id);
 
     if (!existingProfile) {
-      return res.status(404).json({ message: "Profile not found." });
+      //return res.status(404).json({ message: "Profile not found." });
+      throw new Error("Profile not found.");
     }
 
     const deleteProfile = await deleteById(req.user._id);
@@ -212,8 +201,7 @@ router.delete("/delete", hasUser(), checkUserRole("employee"), async (req, res) 
     res.status(200).json({ message: "The profile has been deleted." });
 
   } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message })
+    next(error);
 
   }
 })
@@ -229,28 +217,21 @@ router.put("/experience", hasUser(), checkUserRole("employee"),
   body("to", "To date is required and needs to be up to now").notEmpty(),
   body("current", "Current employment is required and needs to be selected"),
   body("description", "Please enter a description up to 3000 characters long").isLength({ max: 3000 }),
-
-  async (req, res) => {
-
-    const userId = req.user._id;
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const message = errorParser(errors.array());
-      return res.status(400).json({ message });
-    }
-
-    const experienceData = {
-      ...req.body,
-      current: Boolean(req.body.current)
-    };
-
+  validateRequest,
+  async (req, res, next) => {
 
     try {
+      const userId = req.user._id;
+
+      const experienceData = {
+        ...req.body,
+        current: Boolean(req.body.current)
+      };
       const profile = await getUserById(req.user._id);
 
       if (!profile) {
-        return res.status(404).json({ message: "There is no profile for this user" });
+        //return res.status(404).json({ message: "There is no profile for this user" });
+        throw new Error("There is no profile for this user.");
       }
 
       const updatedProfile = await updatedProfileExpOrEduc(userId, "experience", experienceData);
@@ -259,8 +240,7 @@ router.put("/experience", hasUser(), checkUserRole("employee"),
 
 
     } catch (error) {
-      const message = errorParser(error);
-      res.status(400).json({ message })
+      next(error);
 
     }
   })
@@ -274,22 +254,22 @@ router.put("/education", hasUser(), checkUserRole("employee"),
   body("to", "To date is required and needs to be up to now").notEmpty(),
   body("current", "Current education is required and must be selected"),
   body("description", "Please enter a description up to 3000 characters long").isLength({ max: 3000 }),
-
-  async (req, res) => {
-
-    const userId = req.user._id;
-
-    const educationData = {
-      ...req.body,
-      current: Boolean(req.body.current)
-    };
-
+  validateRequest,
+  async (req, res, next) => {
 
     try {
+      const userId = req.user._id;
+
+      const educationData = {
+        ...req.body,
+        current: Boolean(req.body.current)
+      };
+
       const profile = await getUserById(req.user._id);
 
       if (!profile) {
-        return res.status(404).json({ message: "There is no profile for this user" });
+        //return res.status(404).json({ message: "There is no profile for this user" });
+        throw new Error("There is no profile for this user.")
       }
 
 
@@ -299,28 +279,27 @@ router.put("/education", hasUser(), checkUserRole("employee"),
 
 
     } catch (error) {
-      const message = errorParser(error);
-      res.status(400).json({ message })
+      next(error);
 
     }
   })
 
 
 const createDeleteHandler = (arrayName) => {
-  return async (req, res) => {
+  return async (req, res, next) => {
     try {
       const profile = await getUserById(req.user._id);
 
       if (!profile) {
-        return res.status(404).json({ message: "Profile not found" });
+        //return res.status(404).json({ message: "Profile not found." });
+        throw new Error("Profile not found.");
       }
 
-      const itemExists = profile[arrayName].some(item =>
-        item._id.toString() === req.params.id.toString()
-      );
+      const itemExists = profile[arrayName].some(item => item._id.toString() === req.params.id.toString());
 
       if (!itemExists) {
-        return res.status(404).json({ message: `No ${arrayName} was found` });
+        //return res.status(404).json({ message: `No ${arrayName} was found` });
+        throw new Error(`No ${arrayName} was found.`);
       }
 
       await deleteProfileExpOrEduc(req.user._id, arrayName, req.params.id,);
@@ -328,9 +307,7 @@ const createDeleteHandler = (arrayName) => {
       res.status(200).json({ message: `The ${arrayName} has been deleted.` });
 
     } catch (error) {
-      console.log(error);
-      const message = errorParser(error);
-      res.status(400).json({ message });
+      next(error)
     }
   };
 
@@ -340,7 +317,7 @@ router.delete("/experience/:id", hasUser(), checkUserRole("employee"), createDel
 router.delete("/education/:id", hasUser(), checkUserRole("employee"), createDeleteHandler("education"));
 
 
-router.get("/github/:username", async (req, res) => {
+router.get("/github/:username", async (req, res, next) => {
   try {
     const repositories = await getGithubRepos(req.params.username);
 
@@ -348,12 +325,12 @@ router.get("/github/:username", async (req, res) => {
 
   } catch (error) {
 
-    if (error.response.status === 404) {
-      return res.status(404).json({ message: "GitHub profile is not found." });
-    }
+    // if (error.response.status === 404) {
+    //   //return res.status(404).json({ message: "GitHub profile is not found." });
+    //   throw new Error("GitHub profile is not found.")
+    // }
 
-    const message = errorParser(error);
-    res.status(400).json({ message });
+    next(error)
   }
 
 });

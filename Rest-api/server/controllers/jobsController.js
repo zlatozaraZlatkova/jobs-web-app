@@ -1,58 +1,56 @@
 const router = require("express").Router();
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
+const validateRequest = require("../middlewares/validateBodyRequest");
 
 const { loadItem } = require("../middlewares/preload");
 const { hasUser, checkUserRole, isOwner } = require("../middlewares/guards");
-const { errorParser } = require("../util/errorParser");
 const { getAll, getCompanyByUserId, createItem, updateItem, deleteById, getSearchItem } = require("../services/jobsService");
 
 // @route GET /api/jobs/search?title=Java
 // @route GET /api/jobs/search?title=React&type=Full-time&location=Brooklyn&salary=70
 
-router.get("/search", async (req, res) => {
+router.get("/search", async (req, res, next) => {
   try {
-      const { title, type, location, salary } = req.query; 
-      const jobs = await getSearchItem(title, type, location, salary);
-      
-      if (!jobs?.length) {
-          return res.status(404).json({ message: "No jobs matched your search" });
-      }
-      
-      res.status(200).json(jobs);
+    const { title, type, location, salary } = req.query;
+
+    const jobs = await getSearchItem(title, type, location, salary);
+
+    if (!jobs?.length) {
+      throw new Error("No jobs matched your search.");
+    }
+
+    res.status(200).json(jobs);
+
   } catch (error) {
-    console.log(error)
-    const message = errorParser(error);
-    res.status(400).json({ message });
-      
+    next(error);
+
   }
 });
 
-router.get("/", hasUser(), async (req, res) => {
+router.get("/", hasUser(), async (req, res, next) => {
   try {
     const jobsCatalog = await getAll();
 
     if (jobsCatalog.length == 0) {
-      return res.status(404).json({ message: "No jobs available yet" });
+      throw new Error("No jobs available yet.");
     }
 
     res.status(200).json(jobsCatalog);
 
   } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message });
+    next(error);
   }
 });
 
 
-router.get("/:id", hasUser(), loadItem("Job"), async (req, res) => {
+router.get("/:id", hasUser(), loadItem("Job"), async (req, res, next) => {
   try {
     const job = req.item;
+
     res.status(200).json(job);
 
   } catch (error) {
-    console.log(error)
-    const message = errorParser(error);
-    res.status(400).json({ message });
+    next(error);
   }
 
 });
@@ -69,19 +67,14 @@ router.post("/create", hasUser(), checkUserRole("employer"),
   body("location", "Please enter a location up to 50 characters long").isLength({ max: 50 }),
   body("salary", "Salary is required").not().isEmpty(),
   body("salary", "Please enter a salary up to 50 characters long").isLength({ max: 50 }),
-  async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const message = errorParser(errors.array());
-      return res.status(400).json({ message });
-    }
+  validateRequest,
+  async (req, res, next) => {
 
     try {
       const company = await getCompanyByUserId(req.user._id);
 
       if (!company) {
-        res.status(400).json({ message: "Company not found" })
+        throw new Error("Company not found.")
       }
 
       const newJob = {
@@ -99,9 +92,7 @@ router.post("/create", hasUser(), checkUserRole("employer"),
       res.status(200).json(createJob);
 
     } catch (error) {
-      console.log(error)
-      const message = errorParser(error);
-      res.status(400).json({ message });
+      next(error);
     }
 
   })
@@ -118,20 +109,15 @@ router.put("/update/:id", hasUser(), checkUserRole("employer"), loadItem('Job'),
   body("location", "Please enter a location up to 50 characters long").isLength({ max: 50 }),
   body("salary", "Salary is required").not().isEmpty(),
   body("salary", "Please enter a salary up to 50 characters long").isLength({ max: 50 }),
-  async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const message = errorParser(errors.array());
-      return res.status(400).json({ message });
-    }
+  validateRequest,
+  async (req, res, next) => {
 
     try {
       const job = req.item;
-      console.log(job);
+
 
       if (job.ownerId.toString() !== req.user._id.toString()) {
-        return res.status(403).json({ message: "Not authorized" });
+        throw new Error("Not authorized.");
       }
 
       const jobData = { title, type, description, location, salary } = req.body;
@@ -141,26 +127,23 @@ router.put("/update/:id", hasUser(), checkUserRole("employer"), loadItem('Job'),
       res.status(200).json(updatedJob);
 
     } catch (error) {
-      console.log(error)
-      const message = errorParser(error);
-      res.status(400).json({ message });
+      next(error);
     }
 
   })
 
 
 router.delete("/delete/:id", loadItem("Job"), isOwner(),
-  async (req, res) => {
+  async (req, res, next) => {
     try {
 
       await deleteById(req.params.id, req.user._id);
 
-      res.status(200).json({ message: "Job deleted" });
+      res.status(200).json({ message: "Job deleted." });
 
     } catch (error) {
-      console.log(error)
-      const message = errorParser(error);
-      res.status(400).json({ message });
+      next(error);
     }
   })
+
 module.exports = router;

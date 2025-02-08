@@ -1,55 +1,53 @@
 const router = require("express").Router();
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
+const validateRequest = require("../middlewares/validateBodyRequest");
 
 const { loadItem } = require("../middlewares/preload");
 const { hasUser, isOwner } = require("../middlewares/guards");
-const { errorParser } = require("../util/errorParser");
 
-const { 
-  getAll, 
-  getById, 
-  getByUserId, 
-  createItem, 
-  updateItem, 
-  deleteById, 
-  createComment, 
-  deleteComment, 
+const {
+  getAll,
+  getById,
+  getByUserId,
+  createItem,
+  updateItem,
+  deleteById,
+  createComment,
+  deleteComment,
   likeItem,
   dislikeItem
 } = require("../services/postService");
 
 
 
-router.get("/", hasUser(), async (req, res) => {
+router.get("/", hasUser(), async (req, res, next) => {
   try {
     const allPosts = await getAll();
 
     if (allPosts.length === 0) {
-      return res.status(404).json({ message: "No posts found" });
+      throw new Error("No posts found.");
     }
 
     res.status(200).json(allPosts);
 
   } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message });
+    next(error);
   }
 
 })
 
 
-router.get("/:id", hasUser(), async (req, res) => {
+router.get("/:id", hasUser(), async (req, res, next) => {
   try {
     const post = await getById(req.params.id);
 
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      throw new Error("Post not found.");
     }
     res.status(200).json(post);
 
   } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message });
+    next(error);
   }
 
 });
@@ -59,20 +57,15 @@ router.post("/create", hasUser(),
   body("postTitle", "Please enter a title up to 150 characters long").isLength({ max: 150 }),
   body("postText", "Post is required").not().isEmpty(),
   body("postText", "Please enter a post up to 3000 characters long").isLength({ max: 3000 }),
-  async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const message = errorParser(errors.array());
-      return res.status(400).json({ message });
-    }
+  validateRequest,
+  async (req, res, next) => {
 
     try {
       const userId = req.user._id;
       const user = await getByUserId(userId);
 
       if (!user) {
-        res.status(404).json({ message: "Invalid access token" })
+        throw new Error("Invalid access token.");
       }
 
       const post = {
@@ -83,16 +76,12 @@ router.post("/create", hasUser(),
         ownerId: userId,
       }
 
-
-
       const createPost = await createItem(userId, post);
 
       res.status(200).json(createPost);
 
     } catch (error) {
-      console.log(error)
-      const message = errorParser(error);
-      res.status(400).json({ message });
+      next(error);
     }
 
   })
@@ -103,14 +92,8 @@ router.put("/update/:id", loadItem("Post"), isOwner(),
   body("postTitle", "Please enter a title up to 150 characters long").isLength({ max: 150 }),
   body("postText", "Post is required").not().isEmpty(),
   body("postText", "Please enter a post up to 3000 characters long").isLength({ max: 3000 }),
-  async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const message = errorParser(errors.array());
-      return res.status(400).json({ message });
-    }
-
+  validateRequest,
+  async (req, res, next) => {
     try {
       const postId = req.params.id;
 
@@ -121,39 +104,29 @@ router.put("/update/:id", loadItem("Post"), isOwner(),
       res.status(200).json(updatedPost);
 
     } catch (error) {
-      console.log(error)
-      const message = errorParser(error);
-      res.status(400).json({ message });
+      next(error);
     }
 
   })
 
-router.delete("/delete/:id", loadItem("Post"), isOwner(), async (req, res) => {
+router.delete("/delete/:id", loadItem("Post"), isOwner(),
+  async (req, res, next) => {
+    try {
 
-  try {
+      await deleteById(req.params.id, req.user._id);
 
-    await deleteById(req.params.id, req.user._id);
+      res.status(200).json({ message: "Post deleted." });
 
-    res.status(200).json({ message: "Post deleted" });
-
-  } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message });
-  }
-})
+    } catch (error) {
+      next(error);
+    }
+  })
 
 router.post("/comment/:postId/create", hasUser(),
   body("text", "Comment is required").not().isEmpty(),
   body("text", "Comment shouldn't contain more than 250 characters").isLength({ max: 250 }),
-  async (req, res) => {
-
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const message = errorParser(errors.array());
-      return res.status(400).json({ message });
-    }
-
+  validateRequest,
+  async (req, res, next) => {
 
     try {
       const userId = req.user._id;
@@ -169,112 +142,109 @@ router.post("/comment/:postId/create", hasUser(),
       const comment = await createComment(req.params.postId, newComment);
 
       if (!comment) {
-        return res.status(400).json({ message: "Failed to create comment" });
+        throw new Error("Failed to create comment.");
       }
- 
+
       res.status(200).json(comment);
 
 
     } catch (error) {
-      const message = errorParser(error);
-      res.status(400).json({ message });
+      next(error);
     }
 
   })
 
 
-router.delete("/comment/:id/:commentId", hasUser(), loadItem("Post"), async (req, res) => {
-  const userId = req.user._id;
-  const postId = req.params.id;
-  const commentId = req.params.commentId;
+router.delete("/comment/:id/:commentId", hasUser(), loadItem("Post"),
+  async (req, res, next) => {
 
-  try {
+    try {
+      const userId = req.user._id;
+      const postId = req.params.id;
+      const commentId = req.params.commentId;
 
-    const post = req.item;
-  
-    const userComment = post.comments.find(comment => comment.id === commentId);
+      const post = req.item;
 
-    if (!userComment) {
-      res.status(404).json({ message: "Comment does'n exist" });
+      const userComment = post.comments.find(comment => comment.id === commentId);
+
+      if (!userComment) {
+        throw new Error("Comment does'n exist.");
+      }
+
+      if (userComment.user.toString() !== userId) {
+        throw new Error("You cannot modify this record.");
+      }
+
+      await deleteComment(postId, commentId);
+
+      res.status(200).json({ message: "Comment deleted" });
+
+
+    } catch (error) {
+      next(error);
     }
 
-    if (userComment.user.toString() !== userId) {
-      return res.status(403).json({ message: "You cannot modify this record" });
+  })
+
+router.post("/like/:id", hasUser(), loadItem("Post"),
+  async (req, res, next) => {
+    try {
+      const userId = req.user._id;
+      const postId = req.params.id;
+      const post = req.item;
+
+      if (post.ownerId.toString() == userId.toString()) {
+        throw new Error("Not able to like your own post.");
+      }
+
+      if (post.postLikes.map((c) => c.toString()).includes(userId.toString()) == true) {
+        throw new Error("Post already liked.");
+      }
+
+      if (post.ownerId._id.toString() !== req.user._id.toString() && post.postLikes.some(user => user._id.equals(req.user._id)) == false) {
+
+        await likeItem(postId, userId);
+
+        return res.status(200).json({ message: "Liked!" });
+      }
+
+
+    } catch (error) {
+      next(error);
     }
 
-    await deleteComment(postId, commentId);
-
-    res.status(200).json({ message: "Comment deleted" });
+  })
 
 
-  } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message });
-  }
+router.post("/unlike/:id", hasUser(), loadItem("Post"),
+  async (req, res, next) => {
 
-})
+    try {
+      const userId = req.user._id;
+      const postId = req.params.id;
+      const post = req.item;
 
-router.post("/like/:id", hasUser(), loadItem("Post"), async (req, res) => {
-  const userId = req.user._id;
-  const postId = req.params.id;
+      if (post.ownerId.toString() == userId.toString()) {
+        throw new Error("Not able to dislike your own post.");
+      }
+
+      if (post.postLikes.some(user => user._id.equals(req.user._id)) == false) {
+        throw new Error("Post has not been liked yet.");
+      }
+
+      if (post.ownerId._id.toString() !== req.user._id.toString() && post.postLikes.some(user => user._id.equals(req.user._id)) == true) {
+
+        await dislikeItem(postId, userId);
+
+        return res.status(200).json({ message: "Unlike!" });
+      }
 
 
-  try {
-    const post = req.item;
-   
-    if (post.ownerId.toString() == userId.toString()) {
-      return res.status(400).json({ message: "Not able to like your own post" });
+    } catch (error) {
+      next(error);
     }
 
-    if (post.postLikes.map((c) => c.toString()).includes(userId.toString()) == true) {
-      return res.status(400).json({ message: "Post already liked" });
-    }
-
-    if (post.ownerId._id.toString() !== req.user._id.toString() && post.postLikes.some(user => user._id.equals(req.user._id)) == false) {
-      
-      await likeItem(postId, userId);
-      
-      return res.status(200).json({ message: "Liked!" });
-    }
-
-
-  } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message });
-  }
-
-})
-
-
-router.post("/unlike/:id", hasUser(), loadItem("Post"), async (req, res) => {
-  const userId = req.user._id;
-  const postId = req.params.id;
-
-  try {
-    const post = req.item;
- 
-    if (post.ownerId.toString() == userId.toString()) {
-      return res.status(400).json({ message: "Not able to dislike your own post" });
-    }
-
-    if (post.postLikes.some(user => user._id.equals(req.user._id)) == false) {
-      return res.status(400).json({ message: "Post has not been liked yet" });
-    }
-
-    if (post.ownerId._id.toString() !== req.user._id.toString() && post.postLikes.some(user => user._id.equals(req.user._id)) == true) {
-      
-      await dislikeItem(postId, userId);
-
-      return res.status(200).json({ message: "Unlike!" });
-    }
-
-
-  } catch (error) {
-    const message = errorParser(error);
-    res.status(400).json({ message });
-  }
-
-})
+  })
 
 
 module.exports = router;
