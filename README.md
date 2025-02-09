@@ -42,16 +42,15 @@ Designed with scalability and ease of use in mind, this platform streamlines the
 - Role-based access control
 - RESTful API architecture
 - Pagination
-  
-**Request Parameters:**
-- `page` (optional): Page number, defaults to 1
-- `limit` (optional): Items per page, defaults to 10
+  - **Request Parameters:**
+  `page` (optional): Page number, defaults to 1
+  `limit` (optional): Items per page, defaults to 10
 
-**Example Request:**
+   - **Example Request:**
    ```http
    GET /api/jobs?page=2&limit=10
    ```
-**Response Format:**
+   - **Response Format:**
    ```json
    {
       "success": true,
@@ -343,3 +342,18 @@ router.put('/jobs/:id', hasUser(), isOwner(), async (req, res) => {
 - Model-level Mongoose schema validation
 - Consistent error response format
 - Production-safe error messages for users
+
+# 8. References & Resources Used
+
+- How to Build Secure and Scalable Authentication System with Node.js and MongoDB
+  - Source: [Link](https://sandydev.medium.com/how-to-build-secure-and-scalable-authentication-system-with-node-js-and-mongodb-c50bf51c06b0)
+- Build a Login and Logout API using Express.js (Node.js)
+   - Source: [Link](https://dev.to/m_josh/build-a-jwt-login-and-logout-system-using-expressjs-nodejs-hd2)
+- Simplified Guide to Setting Up a Global Error Handler in Express.js
+  - Source: [Link](https://medium.com/@mohsinansari.dev/simplified-guide-to-setting-up-a-global-error-handler-in-express-js-daf8dd640b69)
+- Implementing Pagination in an Express.js Application
+  - Source: [Link](https://medium.com/@atacanymc/implementing-pagination-in-an-express-js-application-551244b62d48)
+- Software documentation guide
+   - Source: [Link](https://www.writethedocs.org/guide/index.html)  
+- How To Build an ER Diagram with Mermaid Chart
+   - Source: [Link](https://docs.mermaidchart.com/blog/posts/how-to-build-an-er-diagram-with-mermaid-chart)
