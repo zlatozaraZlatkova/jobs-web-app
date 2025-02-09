@@ -1,8 +1,16 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 
-async function getAll() {
-  return Post.find({}).sort({ date: -1 });
+async function getAll(startIndex = 0, limit = 10) {
+
+  const paginatedPosts = await Post.find({})
+    .sort({ date: -1 })
+    .skip(startIndex)
+    .limit(limit)
+
+  const totalPosts = await Post.countDocuments();
+
+  return { paginatedPosts, totalPosts };
 }
 
 async function getById(id) {

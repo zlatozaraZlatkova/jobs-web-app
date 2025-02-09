@@ -4,6 +4,8 @@ const validateRequest = require("../middlewares/validateBodyRequest");
 
 const { loadItem } = require("../middlewares/preload");
 const { hasUser, isOwner } = require("../middlewares/guards");
+const { paginationMiddleware } = require("../middlewares/paginationMiddleware");
+const { formatPaginatedResponse } = require("../util/formatPaginatedResponse");
 
 const {
   getAll,
@@ -20,15 +22,17 @@ const {
 
 
 
-router.get("/", hasUser(), async (req, res, next) => {
+router.get("/", hasUser(), paginationMiddleware(),async (req, res, next) => {
   try {
-    const allPosts = await getAll();
+    const { page, limit, skip } = req.pagination;
 
-    if (allPosts.length === 0) {
+    const { paginatedPosts, totalPosts } = await getAll(skip, limit);
+
+    if (paginatedPosts.length === 0) {
       throw new Error("No posts found.");
     }
 
-    res.status(200).json(allPosts);
+    res.status(200).json(formatPaginatedResponse(paginatedPosts, page, limit, totalPosts));
 
   } catch (error) {
     next(error);

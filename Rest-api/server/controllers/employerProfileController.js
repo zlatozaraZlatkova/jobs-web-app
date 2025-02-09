@@ -3,18 +3,24 @@ const { body } = require("express-validator");
 const validateRequest = require("../middlewares/validateBodyRequest");
 
 const { hasUser, checkUserRole } = require("../middlewares/guards");
+const { paginationMiddleware } = require("../middlewares/paginationMiddleware");
+const { formatPaginatedResponse } = require("../util/formatPaginatedResponse");
+
 const { getAll, createItem, getCompanyByUserId, updateItem, deleteCompanyAndProfile, getUserById, getCompanyById } = require("../services/employerProfileService");
 
-router.get("/list", async (req, res, next) => {
+router.get("/list", paginationMiddleware(), async (req, res, next) => {
     try {
 
-        const companies = await getAll();
+        const { page, limit, skip } = req.pagination;
 
-        if (companies.length == 0) {
+        const { paginatedCompanies, totalCompanies } = await getAll(skip, limit);
+
+
+        if (paginatedCompanies.length == 0) {
             throw new Error("At this time, there are no companies listed.");
         }
 
-        res.status(200).json(companies);
+        res.status(200).json(formatPaginatedResponse(paginatedCompanies, page, limit, totalCompanies));
 
     } catch (error) {
         next(error);

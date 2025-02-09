@@ -1,9 +1,18 @@
 const EmployerProfile = require("../models/EmployerProfile");
 const Company = require("../models/Company");
 
-async function getAll() {
-  return Company.find({}).sort({ date: -1 });
+async function getAll(startIndex = 0, limit = 10) {
+
+  const paginatedCompanies = await Company.find({})
+    .sort({ date: -1 })
+    .skip(startIndex)
+    .limit(limit)
+
+  const totalCompanies = await Company.countDocuments();
+
+  return { paginatedCompanies, totalCompanies };
 }
+
 
 
 async function getUserById(userId) {

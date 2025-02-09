@@ -4,6 +4,8 @@ const { body } = require("express-validator");
 const validateRequest = require("../middlewares/validateBodyRequest");
 const { loadItem } = require("../middlewares/preload");
 const { hasUser, checkUserRole } = require("../middlewares/guards");
+const { paginationMiddleware } = require("../middlewares/paginationMiddleware");
+const { formatPaginatedResponse } = require("../util/formatPaginatedResponse");
 const { getGithubRepos } = require('../services/githubService');
 const {
   getUserById,
@@ -25,7 +27,6 @@ router.get("/search", async (req, res, next) => {
     const profile = await getSearchEmployee(skills, experience, education);
 
     if (!profile?.length) {
-      //return res.status(404).json({ message: "No profile matched your search" });
       throw new Error("No profile matched your search.");
     }
 
@@ -44,7 +45,6 @@ async (req, res, next) => {
     const profile = await getUserById(req.user._id);
 
     if (!profile) {
-      //return res.status(404).json({ message: "There is no profile for this user" });
       throw new Error("There is no profile for this user.");
     }
 
@@ -89,7 +89,6 @@ router.post("/create", hasUser(), checkUserRole("employee"),
       let userProfile = await getUserById(userId);
 
       if (userProfile) {
-        //return res.status(400).json({ message: "Profile already exists." });
         throw new Error("Profile already exists.");
       }
 
@@ -140,7 +139,6 @@ router.post("/update", hasUser(), checkUserRole("employee"),
       const existingProfile = await getUserById(userId);
 
       if (!existingProfile) {
-        //return res.status(404).json({ message: "Profile not found. Create one first." });
         throw new Error("Profile not found. Create one first.");
       }
 
@@ -154,15 +152,18 @@ router.post("/update", hasUser(), checkUserRole("employee"),
     }
   });
 
-router.get("/catalog", async (req, res, next) => {
+router.get("/catalog", paginationMiddleware(), async (req, res, next) => {
   try {
-    const listOfProfiles = await getAllProfiles();
+    const { page, limit, skip } = req.pagination;
 
-    if (listOfProfiles.length == 0) {
-      return res.status(404).json({ message: "There is no profiles yet." });
+    const { paginatedProfiles, totalProfiles } = await getAllProfiles(skip, limit);
+
+
+    if (paginatedProfiles.length == 0) {
+      throw new Error("There is no profiles yet.")
     }
 
-    return res.status(200).json(listOfProfiles);
+    return res.status(200).json(formatPaginatedResponse(paginatedProfiles, page, limit, totalProfiles));
 
 
   } catch (error) {
@@ -192,7 +193,6 @@ router.delete("/delete", hasUser(), checkUserRole("employee"),
     const existingProfile = await getUserById(req.user._id);
 
     if (!existingProfile) {
-      //return res.status(404).json({ message: "Profile not found." });
       throw new Error("Profile not found.");
     }
 
@@ -230,7 +230,6 @@ router.put("/experience", hasUser(), checkUserRole("employee"),
       const profile = await getUserById(req.user._id);
 
       if (!profile) {
-        //return res.status(404).json({ message: "There is no profile for this user" });
         throw new Error("There is no profile for this user.");
       }
 
@@ -268,7 +267,6 @@ router.put("/education", hasUser(), checkUserRole("employee"),
       const profile = await getUserById(req.user._id);
 
       if (!profile) {
-        //return res.status(404).json({ message: "There is no profile for this user" });
         throw new Error("There is no profile for this user.")
       }
 
@@ -291,14 +289,12 @@ const createDeleteHandler = (arrayName) => {
       const profile = await getUserById(req.user._id);
 
       if (!profile) {
-        //return res.status(404).json({ message: "Profile not found." });
         throw new Error("Profile not found.");
       }
 
       const itemExists = profile[arrayName].some(item => item._id.toString() === req.params.id.toString());
 
       if (!itemExists) {
-        //return res.status(404).json({ message: `No ${arrayName} was found` });
         throw new Error(`No ${arrayName} was found.`);
       }
 
@@ -324,12 +320,6 @@ router.get("/github/:username", async (req, res, next) => {
     res.status(200).json(repositories);
 
   } catch (error) {
-
-    // if (error.response.status === 404) {
-    //   //return res.status(404).json({ message: "GitHub profile is not found." });
-    //   throw new Error("GitHub profile is not found.")
-    // }
-
     next(error)
   }
 

@@ -1,7 +1,15 @@
 const EmployeeProfile = require("../models/EmployeeProfile");
 
-async function getAllProfiles() {
-  return EmployeeProfile.find({}).sort({ date: -1 });
+async function getAllProfiles(startIndex = 0, limit = 10) {
+
+  const paginatedProfiles = await EmployeeProfile.find({})
+    .sort({ date: -1 })
+    .skip(startIndex)
+    .limit(limit)
+
+  const totalProfiles = await EmployeeProfile.countDocuments();
+
+  return { paginatedProfiles, totalProfiles };
 }
 
 async function getProfileById(id) {
