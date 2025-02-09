@@ -45,6 +45,13 @@ function errorParser(err) {
     return errorResponse;
   }
 
+  if(err.name = "BSON field") {
+    errorResponse.message = "Page number must be positive";
+    errorResponse.statusCode = 400;
+    return errorResponse;
+
+  }
+
 
   errorResponse.message = "Internal Server Error";
   return errorResponse;
