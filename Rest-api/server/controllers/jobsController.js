@@ -4,6 +4,8 @@ const validateRequest = require("../middlewares/validateBodyRequest");
 
 const { loadItem } = require("../middlewares/preload");
 const { hasUser, checkUserRole, isOwner } = require("../middlewares/guards");
+const { paginationMiddleware } = require("../middlewares/paginationMiddleware");
+const { formatPaginatedResponse } = require("../util/formatPaginatedResponse");
 const { getAll, getCompanyByUserId, createItem, updateItem, deleteById, getSearchItem } = require("../services/jobsService");
 
 // @route GET /api/jobs/search?title=Java
@@ -27,36 +29,17 @@ router.get("/search", async (req, res, next) => {
   }
 });
 
-router.get("/", hasUser(), async (req, res, next) => {
+router.get("/", hasUser(), paginationMiddleware(), async (req, res, next) => {
   try {
-    
-    const page = parseInt(req.query.page) || 1;
-    if(page < 1) {
-      page = 1;
-    }
-    const limit = parseInt(req.query.limit) || 10;
-    const startIndex = (page - 1) * limit;
+    const { page, limit, skip } = req.pagination;
 
-
-    const { paginatedJobs, totalJobs } = await getAll(startIndex, limit);
-
-    const totalPages = Math.ceil(totalJobs / limit);
+    const { paginatedJobs, totalJobs } = await getAll(skip, limit);
 
     if (paginatedJobs.length === 0) {
       throw new Error("No jobs available yet.");
     }
 
-    res.status(200).json({
-      success: true,
-      paginatedJobs,
-      pagination: {
-        currentPage: page,
-        totalPages,
-        totalJobs,
-        hasNextPage: page < totalPages,
-        hasPrevPage: page > 1
-      }
-    });
+    res.status(200).json(formatPaginatedResponse(paginatedJobs, page, limit, totalJobs));
 
   } catch (error) {
     next(error);

@@ -41,6 +41,32 @@ Designed with scalability and ease of use in mind, this platform streamlines the
 - Secure authentication using JWT
 - Role-based access control
 - RESTful API architecture
+- Pagination
+  
+**Request Parameters:**
+- `page` (optional): Page number, defaults to 1
+- `limit` (optional): Items per page, defaults to 10
+
+**Example Request:**
+   ```http
+   GET /api/jobs?page=2&limit=10
+   ```
+**Response Format:**
+   ```json
+   {
+      "success": true,
+      "data": {
+         "items": [...],
+         "pagination": {
+               "currentPage": 2,
+               "totalPages": 5,
+               "totalItems": 48,
+               "hasNextPage": true,
+               "hasPrevPage": true
+         }
+      }
+   }
+   ```
 
 ## Technical Stack (MERN)
 
@@ -86,6 +112,7 @@ Devjobs web app/
 │    ├── middlewares/
 │    │   ├── errorHandler.js
 │    │   ├── guards.js
+│    │   ├── paginationMiddleware.js
 │    │   ├── preload.js
 │    │   ├── session.js
 │    │   └── validateBodyRequest.js
@@ -107,7 +134,9 @@ Devjobs web app/
 │    │   └── postService.js
 │    │
 │    └── util/
-│       └── errorParser.js
+│    │   ├── errorParser.js
+│    │   └── formatPaginatedResponse.js
+│       
 │
 ├── .gitignore
 ├── package-lock.json
