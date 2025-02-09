@@ -29,13 +29,31 @@ router.get("/search", async (req, res, next) => {
 
 router.get("/", hasUser(), async (req, res, next) => {
   try {
-    const jobsCatalog = await getAll();
+    
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const startIndex = (page - 1) * limit;
 
-    if (jobsCatalog.length == 0) {
+
+    const { paginatedJobs, totalJobs } = await getAll(startIndex, limit);
+
+    const totalPages = Math.ceil(totalJobs / limit);
+
+    if (paginatedJobs.length === 0) {
       throw new Error("No jobs available yet.");
     }
 
-    res.status(200).json(jobsCatalog);
+    res.status(200).json({
+      success: true,
+      paginatedJobs,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalJobs,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1
+      }
+    });
 
   } catch (error) {
     next(error);

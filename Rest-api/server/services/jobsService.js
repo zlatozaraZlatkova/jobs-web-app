@@ -2,8 +2,16 @@ const Job = require("../models/Job");
 const Company = require("../models/Company");
 const EmployerProfile = require("../models/EmployerProfile");
 
-async function getAll() {
-  return Job.find({}).sort({ date: -1 });
+async function getAll(startIndex = 0, limit = 10) {
+
+  const paginatedJobs = await Job.find({})
+    .sort({ date: -1 })
+    .skip(startIndex)
+    .limit(limit)
+
+  const totalJobs = await Job.countDocuments();
+
+  return { paginatedJobs, totalJobs };
 }
 
 async function getJobById(jobId) {
