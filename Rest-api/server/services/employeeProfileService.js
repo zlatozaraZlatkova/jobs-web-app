@@ -1,11 +1,10 @@
 const EmployeeProfile = require("../models/EmployeeProfile");
 
 async function getAllProfiles(startIndex = 0, limit = 10) {
-
   const paginatedProfiles = await EmployeeProfile.find({})
     .sort({ date: -1 })
     .skip(startIndex)
-    .limit(limit)
+    .limit(limit);
 
   const totalProfiles = await EmployeeProfile.countDocuments();
 
@@ -37,7 +36,6 @@ async function updateItem(id, item) {
 
 async function deleteById(id) {
   return EmployeeProfile.findOneAndDelete({ ownerId: id });
-
 }
 
 async function updatedProfileExpOrEduc(userId, arrayName, newItem) {
@@ -48,36 +46,39 @@ async function updatedProfileExpOrEduc(userId, arrayName, newItem) {
   );
 }
 
-
 async function deleteProfileExpOrEduc(userId, arrayName, paramsId) {
   return EmployeeProfile.findOneAndUpdate(
     { ownerId: userId },
     { $pull: { [arrayName]: { _id: paramsId } } },
     { new: true }
   );
-
-
 }
 
-
-async function getSearchEmployee(skills, experience, education) {
+async function getSearchEmployee(skills, experience, education, skip = 0,limit = 10) {
   const query = {};
 
   if (skills) {
-    const data = skills.split(',').map(skill => skill.trim());
-    query.skills = { $in: data.map(skill => new RegExp(skill, 'i')) };
+    const data = skills.split(",").map((skill) => skill.trim());
+    query.skills = { $in: data.map((skill) => new RegExp(skill, "i")) };
   }
 
   if (experience) {
-    query['experience.title'] = { $regex: experience, $options: 'i' };
+    query["experience.title"] = { $regex: experience, $options: "i" };
   }
   if (education) {
-    query['education.degree'] = { $regex: experience, $options: 'i' };
+    query["education.degree"] = { $regex: experience, $options: "i" };
   }
 
-  return EmployeeProfile.find(query);
-}
+  const paginatedProfiles = await EmployeeProfile.find(query)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
 
+
+    const totalProfiles = await EmployeeProfile.countDocuments(query);
+
+    return { paginatedProfiles, totalProfiles };
+}
 
 module.exports = {
   getAllProfiles,
@@ -88,5 +89,5 @@ module.exports = {
   deleteById,
   updatedProfileExpOrEduc,
   deleteProfileExpOrEduc,
-  getSearchEmployee
-}
+  getSearchEmployee,
+};

@@ -20,17 +20,20 @@ const {
 
 // @route GET /api/profile/search?skills=Angular,JavaScript&experience=Senior&degree=professional
 
-router.get("/search", async (req, res, next) => {
+router.get("/search", paginationMiddleware(),
+   async (req, res, next) => {
   try {
     const { skills, experience, education } = req.query;
+    const { page, limit, skip } = req.pagination;
 
-    const profile = await getSearchEmployee(skills, experience, education);
+    const { paginatedProfiles, totalProfiles } = await getSearchEmployee(skills, experience, education,
+       skip, limit);
 
-    if (!profile?.length) {
+    if (paginatedProfiles.length == 0) {
       throw new Error("No profile matched your search.");
     }
 
-    res.status(200).json(profile);
+    res.status(200).json(formatPaginatedResponse(paginatedProfiles, page, limit, totalProfiles));
 
   } catch (error) {
     next(error);

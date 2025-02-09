@@ -11,17 +11,21 @@ const { getAll, getCompanyByUserId, createItem, updateItem, deleteById, getSearc
 // @route GET /api/jobs/search?title=Java
 // @route GET /api/jobs/search?title=React&type=Full-time&location=Brooklyn&salary=70
 
-router.get("/search", async (req, res, next) => {
+router.get("/search", paginationMiddleware(), 
+  async (req, res, next) => {
   try {
+   
     const { title, type, location, salary } = req.query;
+    const { page, limit, skip } = req.pagination;
 
-    const jobs = await getSearchItem(title, type, location, salary);
+    const { paginatedJobs, totalJobs } = await getSearchItem(title, type, location, salary,
+      skip, limit);
 
-    if (!jobs?.length) {
+    if (paginatedJobs.length == 0) {
       throw new Error("No jobs matched your search.");
     }
 
-    res.status(200).json(jobs);
+    res.status(200).json(formatPaginatedResponse(paginatedJobs, page, limit, totalJobs));
 
   } catch (error) {
     next(error);

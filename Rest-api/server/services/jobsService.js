@@ -70,7 +70,7 @@ async function deleteById(jobId, userId) {
 }
 
 
-async function getSearchItem(title, type, location, salary) {
+async function getSearchItem(title, type, location, salary, skip = 0, limit = 10) {
   const query = {};
 
   if (title) {
@@ -85,9 +85,18 @@ async function getSearchItem(title, type, location, salary) {
   if (salary) {
     query.salary = { $regex: salary, $options: 'i' };
   }
+  const paginatedJobs = await Job.find(query)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+  
+  const totalJobs = await Job.countDocuments();  
 
-  return Job.find(query);
+  return { paginatedJobs, totalJobs }
+    
 }
+
+
 
 
 module.exports = {
