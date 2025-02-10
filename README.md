@@ -43,14 +43,15 @@ Designed with scalability and ease of use in mind, this platform streamlines the
 - RESTful API architecture
 - Pagination
   - **Request Parameters:**
-  `page` (optional): Page number, defaults to 1
-  `limit` (optional): Items per page, defaults to 10
+    - `page` (optional): Page number, defaults to 1
+    - `limit` (optional): Items per page, defaults to 10
 
-   - **Example Request:**
+<details>
+   -<summary> **Example Request:**</summary>
    ```http
    GET /api/jobs?page=2&limit=10
    ```
-   - **Response Format:**
+   - <summary>**Response Format:**</summary>
    ```json
    {
       "success": true,
@@ -66,6 +67,7 @@ Designed with scalability and ease of use in mind, this platform streamlines the
       }
    }
    ```
+<details>
 
 ## Technical Stack (MERN)
 
@@ -96,6 +98,7 @@ Devjobs web app/
 ├── Rest-api/
 |   └── server/
 │    ├── config/
+│    │   ├── cors.js
 │    │   ├── database.js
 │    │   └── routes.js
 │    │
@@ -317,21 +320,11 @@ Start the server in development mode with nodemon:
 - JWT-based authentication with secure cookie session storage
 - Session duration: 1 hour
 - Protected routes using middleware guards:
-- `hasUser()`: Verifies authenticated user
+- `hasUser`: Verifies authenticated user
 - `isOwner`: Validates resource ownership
 - `checkUserRole`: Role-based access control
 - Protected auth routes for logged-in users
-
-```
-router.get('/profile', hasUser(), async (req, res) => {
-   // Only authenticated users can access
-});
-
-router.put('/jobs/:id', hasUser(), isOwner(), async (req, res) => {
-   // Only job owner can modify
-});
-
-```
+- CORS configuration for secure client-server communication
 
 # 7. Error Handling
 
@@ -344,7 +337,8 @@ router.put('/jobs/:id', hasUser(), isOwner(), async (req, res) => {
 - Production-safe error messages for users
 
 # 8. References & Resources Used
-
+- Express cors middleware
+  - Source: [Link](https://expressjs.com/en/resources/middleware/cors.html)
 - How to Build Secure and Scalable Authentication System with Node.js and MongoDB
   - Source: [Link](https://sandydev.medium.com/how-to-build-secure-and-scalable-authentication-system-with-node-js-and-mongodb-c50bf51c06b0)
 - Build a Login and Logout API using Express.js (Node.js)
