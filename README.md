@@ -1,40 +1,39 @@
-# SoftUni Final Project – Full-Stack MERN Job Board Platform
+# SoftUni Final Project - Full-Stack MERN Job Board Platform
 
-&nbsp;
 
 <details open>
 
-<summary><b>Note: Click to expand / collapse Documentation section</b></summary>
+<summary><b><p>Note:</b> Click to expand / collapse Documentation section</p></summary>
 
 </details>
 
-&nbsp;
 
 <details open>
-<summary><b>1. Project Overview</b></summary>
+<summary><b><h1>1. Project Overview</b></h2></summary>
 
-<details open>
-<summary>1.1. Brief Description</summary>
-
+  <details open>
+  <summary><h2>1.1. Brief Description</h2></summary>
 
 This application is a modern job board platform designed to seamlessly connect employers with job seekers. Built with scalability and ease of use in mind, it streamlines the hiring process while providing valuable insights into candidates' technical expertise.
 
 **Key Features:**
 
-- **User Authentication** – Secure sign-up and login for both employers and job seekers.
-- **Job Postings** – Employers can create, manage, and update job listings.
-- **User Profiles** – Job seekers can build and maintain professional profiles.
+- **User Authentication** - Secure sign-up and login for both employers and job seekers.
+- **Job Postings** - Employers can create, manage, and update job listings.
+- **User Profiles** - Job seekers can build and maintain professional profiles.
+- **Career Connect Feed** - Users can create, edit, and delete posts to share career updates, industry insights, and professional achievements. The interactive social features include post liking/unliking and commenting functionality, enabling community engagement, discussions, and professional networking.
 - **Search** - Easily find job listings or candidates using various search criteria.
-- **GitHub Integration** – Automatically fetches and displays public GitHub profile information to highlight candidates' coding contributions and activity.
+- **GitHub Integration** - Automatically fetches and displays public GitHub profile information to highlight candidates' coding contributions and activity.
 
 Developed as part of a university final project, this platform enhances the recruitment experience by offering a user-friendly interface and powerful tools that make job searching and hiring more efficient.
-</details>
+
+  </details>
 
 <details>
-<summary>1.2. Main Features/Functionalities</summary>
+<summary><h2>1.2. Main Features/Functionalities</h2></summary>
 
 <details>
-<summary>1.2.1. User Management</summary>
+<summary><h3>1.2.1. User Management</h3></summary>
 
 - User registration and authentication (Employee/Employer roles)
 - Profile creation and management (Employee/Employer)
@@ -43,25 +42,31 @@ Developed as part of a university final project, this platform enhances the recr
 </details>
 
 <details>
-<summary>1.2.2. Employees Features</summary>
+<summary><h3>1.2.2. Employees Features</h3></summary>
 
 - Create, Read, Update, and Delete professional profiles
+- Create, Read, Update, and Delete posts
+- Like and Unlike posts
+- Comment on posts
 - Browse job listings
 - Search and filter jobs by various criteria
 - GitHub portfolio integration
 </details>
 
 <details>
-<summary>1.2.3. Employer Features</summary>
+<summary><h3>1.2.3. Employer Features<h3></summary>
 
 - Create, Read, Update, and Delete company profile
 - Create, Read, Update, and Delete job listings
+- Create, Read, Update, and Delete posts
+- Like and Unlike posts
+- Comment on posts
 - Browse employee profiles
 - Search candidate profiles
 </details>
 
 <details open>
-<summary> 1.2.4. Core Platform Features</summary>
+<summary><h3>1.2.4. Core Platform Features</h3></summary>
 
 - Secure authentication using JWT
 - Role-based access control
@@ -74,28 +79,29 @@ Developed as part of a university final project, this platform enhances the recr
       ```http
       GET /api/jobs?page=2&limit=10
       ```
-     - **Response Format:**
-      ```json
-        {
-            "success": true,
-            "data": {
-              "items": [...],
-              "pagination": {
-                    "currentPage": 2,
-                    "totalPages": 5,
-                    "totalItems": 48,
-                    "hasNextPage": true,
-                    "hasPrevPage": true
-              }
+    - **Response Format:**
+    ````json
+      {
+          "success": true,
+          "data": {
+            "items": [...],
+            "pagination": {
+                  "currentPage": 2,
+                  "totalPages": 5,
+                  "totalItems": 48,
+                  "hasNextPage": true,
+                  "hasPrevPage": true
             }
-        }
-        ```
+          }
+      }
+      ```
+    ````
 
 </details>
 </details>
 
 <details>
-<summary>1.3. Technical Stack (MERN)</summary>
+<summary><h2>1.3. Technical Stack (MERN)</h2></summary>
 
 - MongoDB: NoSQL database for flexible data storage
 - Express.js: Backend web application framework
@@ -105,10 +111,10 @@ Developed as part of a university final project, this platform enhances the recr
 </details>
 
 <details>
-<summary><b>2. Project Architecture</b></summary>
+<summary><b><h1>2. Project Architecture</b></h1></summary>
 
 <details>
-<summary>2.1. Structure Overview</summary>
+<summary><h2>2.1. Structure Overview</h2></summary>
 This Node.js backend application follows a modular architecture with clear separation of concerns:
 
 - config/ - Contains configuration files for database and routes
@@ -117,11 +123,11 @@ This Node.js backend application follows a modular architecture with clear separ
 - models/ - Defines data models and schema
 - services/ - Contains business logic and external service integrations
 - util/ - Utility functions and helpers
-  
+
 </details>
 
 <details open>
-<summary>2.2. Directory Structure</summary>
+<summary><h2>2.2. Directory Structure</h2></summary>
   
 ```
 Devjobs web app/
@@ -185,10 +191,10 @@ Devjobs web app/
 </details>
 
 <details>
-<summary><b>3. Database Schema</b></summary>
+<summary><b><h1>3. Database Schema</h1></b></summary>
 
 <details>
-<summary>3.1. Models Overview</summary>
+<summary><h2>3.1. Models Overview</h2></summary>
 
 Application uses MongoDB with Mongoose and consists of the following main models:
 
@@ -235,35 +241,35 @@ Application uses MongoDB with Mongoose and consists of the following main models
 </details>
 
 <details>
-<summary><b>4. API Documentation</b></summary>
+<summary><b><h1>4. API Documentation</h1></b></summary>
 
 <details>
-<summary>4.1. Introduction</summary>
+<summary><h2>4.1. Introduction</h2></summary>
 
 The Dev-Job API is organized around REST. This API has predictable resource-oriented URLs, accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes and authentication.
 The Dev-Job API doesn’t support bulk updates. You can work on only one object per request.
 </details>
 
 <details>
-<summary>4.2. URL</summary>
+<summary><h2>4.2. URL</h2></summary>
 
 All endpoints are prefixed with "/api". Consequently, during the development phase, the endpoints will be accessible via the following URL: "http://localhost:5001/api".
 </details>
 
 <details>
-<summary>4.3. Methods</summary>
+<summary><h2>4.3. Methods</h2></summary>
 
 `GET` | `POST` | `PUT` | `DELETE`
 </details>
 
 <details>
-<summary>4.4. URL query parameters</summary>
+<summary><h2>4.4. URL query parameters</h2></summary>
 
 Required: `id=[string]`
 </details>
 
 <details>
-<summary>4.5. Response</summary>
+<summary><h2>4.5. Response</h2></summary>
 
 
 **Code:** `200 OK`\
@@ -289,44 +295,44 @@ Required: `id=[string]`
 </details>
 
 <details open>
-<summary>4.6. API Postman documentation</summary>
+<summary><h2>4.6. API Postman documentation</h2></summary>
 
 - Source: [LINK POSTMAN API](https://documenter.postman.com/preview/28859516-1a8f94a3-e470-42fd-af26-47f0bd7815b3?environment=&versionTag=latest&apiName=CURRENT&version=latest&documentationLayout=classic-double-column&documentationTheme=light&logo=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&logoDark=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&right-sidebar=303030&top-bar=FFFFFF&highlight=FF6C37&right-sidebar-dark=303030&top-bar-dark=212121&highlight-dark=FF6C37)
 </details>
 </details>
 
 <details>
-<summary><b>5. Environment Setup</b></summary>
+<summary><b><h1>5. Environment Setup</h1></b></summary>
 
 <details>
-<summary>5.1. Prerequisites</summary>
+<summary><h2>5.1. Prerequisites</h2></summary>
 
 - Node.js (v18 or higher)
 - MongoDB installed and running locally, or a MongoDB Atlas account
 </details>
 
 <details>
-<summary>5.2. Installation Steps</summary>
+<summary><h2>5.2. Installation Steps</h2></summary>
 
 1. Clone the repository
    - `git clone <repository-url>`
    - `cd devjobs-web-app`
 
-2. Install dependencies  
+2. Install dependencies
    - `npm install`
 
 3. Create Environment Variables
    - Create a `.env` file in the root directory and add the following variables:
 
 <details>
-<summary>5.2.1. Server Configuration</summary>
+<summary><h3>5.2.1. Server Configuration</h3></summary>
 
 - PORT=5001
 - NODE_ENV=development
 </details>
 
 <details>
-<summary>5.2.2. MongoDB Connection</summary>
+<summary><h3>5.2.2. MongoDB Connection</h3></summary>
 
 - MONGODB_URI=mongodb://localhost:27017/devjobs
 
@@ -336,13 +342,13 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary>5.2.3. JWT Configuration</summary>
+<summary><h3>5.2.3. JWT Configuration</h3></summary>
 
 - JWT_SECRET=your_jwt_secret_key
 </details>
 
 <details>
-<summary>5.2.4. Optional: GitHub Integration</summary>
+<summary><h3>5.2.4. Optional: GitHub Integration</h3></summary>
 
 - GITHUB_CLIENT_ID=your_github_client_id
 - GITHUB_CLIENT_SECRET=your_github_client_secret
@@ -351,7 +357,7 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary>5.3. Available Scripts</summary>
+<summary><h2>5.3. Available Scripts</h2></summary>
 
 - Start the server in production mode:
 `npm start`
@@ -363,10 +369,10 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary>5.4. Dependencies Overview</summary>
+<summary><h2>5.4. Dependencies Overview</h2></summary>
 
 <details>
-<summary>5.4.1. Main Dependencies</summary>
+<summary><h3>5.4.1. Main Dependencies</h3></summary>
 
 - `express`: Web framework for Node.js
 - `mongoose`: MongoDB object modeling tool
@@ -382,14 +388,14 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary>5.4.2. Development Dependencies</summary>
+<summary><h3>5.4.2. Development Dependencies</h3></summary>
 
 `nodemon`: Development server with auto-reload
 </details>
 </details>
 
 <details open>
-<summary>5.5. Build Setup</summary>
+<summary><h2>5.5. Build Setup</h2></summary>
 
 1. Start MongoDB service (must be running before server start)
 2. Configure your `.env` file with appropriate values
@@ -399,10 +405,10 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary><b>6. Security Measures</b></summary>
+<summary><b><h1>6. Security Measures</h1></b></summary>
 
 <details>
-<summary>6.1. Authentication</summary>
+<summary><h2>6.1. Authentication</h2></summary>
 
 - JWT-based authentication with secure cookie session storage
 - Session duration: 1 hour
@@ -415,18 +421,18 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary>6.2. Securing API</summary>
+<summary><h2>6.2. Securing API</h2></summary>
 
 - CORS configuration for secure client-server communication
-- Express rate-limiting middleware. Limits requests per IP to prevent abuse of sensitive endpoints like password reset.
+- Express rate-limiting middleware to prevent DoS attacks. Limits requests per IP to prevent abuse of sensitive endpoints like password reset.
 </details>
 </details>
 
 <details>
-<summary><b>7. Error Handling</b></summary>
+<summary><b><h1>7. Error Handling</h1></b></summary>
 
 <details>
-<summary>7.1. Validation and Error Types</summary>
+<summary><h2>7.1. Validation and Error Types</h2></summary>
 
 - Global Error Handling
 - Pre-request validation with express-validator middleware
@@ -437,7 +443,7 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary><b>8. References & Resources Used</b></summary>
+<summary><b><h1>8. References & Resources Used</h1></b></summary>
 
 - Securing APIs: Express rate limit and slow down
   - Source: [Link](https://developer.mozilla.org/en-US/blog/securing-apis-express-rate-limit-and-slow-down/)
@@ -452,7 +458,8 @@ Required: `id=[string]`
 - Implementing Pagination in an Express.js Application
   - Source: [Link](https://medium.com/@atacanymc/implementing-pagination-in-an-express-js-application-551244b62d48)
 - Software documentation guide
-   - Source: [Link](https://www.writethedocs.org/guide/index.html)  
+   - Source: [Link](https://www.writethedocs.org/guide/index.html)
 - How To Build an ER Diagram with Mermaid Chart
-   - Source: [Link](https://docs.mermaidchart.com/blog/posts/how-to-build-an-er-diagram-with-mermaid-chart) 
+   - Source: [Link](https://docs.mermaidchart.com/blog/posts/how-to-build-an-er-diagram-with-mermaid-chart)
 </details>
+
