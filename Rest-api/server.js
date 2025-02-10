@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const rateLimit = require("express-rate-limit");
 
 require("dotenv").config();
 
@@ -19,6 +20,15 @@ async function start() {
   const app = express();
 
   await databaseConfig(app);
+
+  app.use(rateLimit({
+    windowMs: 15 * 60 * 1000, 
+    max: 100,
+    legacyHeaders: false, 
+    standardHeaders: true,  
+    message: 'Too many requests from this IP, please try again later', 
+  }));
+  
 
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());

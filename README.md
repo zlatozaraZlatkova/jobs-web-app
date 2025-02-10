@@ -4,18 +4,17 @@
 
 <details open>
 
-<summary> Note: Click to expand / collapse Documentation section </summary>
+<summary><b>Note: Click to expand / collapse Documentation section</b></summary>
+
 </details>
 
 &nbsp;
 
 <details open>
-<summary>1. Project Overview</summary>
-
+<summary><b>1. Project Overview</b></summary>
 
 <details open>
 <summary>1.1. Brief Description</summary>
-
 
 
 This application is a modern job board platform designed to seamlessly connect employers with job seekers. Built with scalability and ease of use in mind, it streamlines the hiring process while providing valuable insights into candidates' technical expertise.
@@ -61,7 +60,7 @@ Developed as part of a university final project, this platform enhances the recr
 - Search candidate profiles
 </details>
 
-<details>
+<details open>
 <summary> 1.2.4. Core Platform Features</summary>
 
 - Secure authentication using JWT
@@ -106,7 +105,7 @@ Developed as part of a university final project, this platform enhances the recr
 </details>
 
 <details>
-<summary>2. Project Architecture</summary>
+<summary><b>2. Project Architecture</b></summary>
 
 <details>
 <summary>2.1. Structure Overview</summary>
@@ -186,7 +185,7 @@ Devjobs web app/
 </details>
 
 <details>
-<summary>3. Database Schema</summary>
+<summary><b>3. Database Schema</b></summary>
 
 <details>
 <summary>3.1. Models Overview</summary>
@@ -236,7 +235,7 @@ Application uses MongoDB with Mongoose and consists of the following main models
 </details>
 
 <details>
-<summary>4. API Documentation</summary>
+<summary><b>4. API Documentation</b></summary>
 
 <details>
 <summary>4.1. Introduction</summary>
@@ -292,12 +291,12 @@ Required: `id=[string]`
 <details open>
 <summary>4.6. API Postman documentation</summary>
 
-[POSTMAN API LINK](https://documenter.postman.com/preview/28859516-1a8f94a3-e470-42fd-af26-47f0bd7815b3?environment=&versionTag=latest&apiName=CURRENT&version=latest&documentationLayout=classic-double-column&documentationTheme=light&logo=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&logoDark=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&right-sidebar=303030&top-bar=FFFFFF&highlight=FF6C37&right-sidebar-dark=303030&top-bar-dark=212121&highlight-dark=FF6C37)
+- Source: [LINK POSTMAN API](https://documenter.postman.com/preview/28859516-1a8f94a3-e470-42fd-af26-47f0bd7815b3?environment=&versionTag=latest&apiName=CURRENT&version=latest&documentationLayout=classic-double-column&documentationTheme=light&logo=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&logoDark=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&right-sidebar=303030&top-bar=FFFFFF&highlight=FF6C37&right-sidebar-dark=303030&top-bar-dark=212121&highlight-dark=FF6C37)
 </details>
 </details>
 
 <details>
-<summary>5. Environment Setup</summary>
+<summary><b>5. Environment Setup</b></summary>
 
 <details>
 <summary>5.1. Prerequisites</summary>
@@ -379,6 +378,7 @@ Required: `id=[string]`
 - `gravatar`: Profile picture integration
 - `cookie-parser`: Cookie parsing middleware
 - `cors`: Connect/Express middleware
+- `express-rate-limit`: limit repeated requests to public APIs
 </details>
 
 <details>
@@ -399,7 +399,7 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary>6. Security Measures</summary>
+<summary><b>6. Security Measures</b></summary>
 
 <details>
 <summary>6.1. Authentication</summary>
@@ -411,12 +411,19 @@ Required: `id=[string]`
 - `isOwner`: Validates resource ownership
 - `checkUserRole`: Role-based access control
 - Protected auth routes for logged-in users
+
+</details>
+
+<details>
+<summary>6.2. Securing API</summary>
+
 - CORS configuration for secure client-server communication
+- Express rate-limiting middleware. Limits requests per IP to prevent abuse of sensitive endpoints like password reset.
 </details>
 </details>
 
 <details>
-<summary>7. Error Handling</summary>
+<summary><b>7. Error Handling</b></summary>
 
 <details>
 <summary>7.1. Validation and Error Types</summary>
@@ -430,8 +437,10 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary>8. References & Resources Used</summary>
+<summary><b>8. References & Resources Used</b></summary>
 
+- Securing APIs: Express rate limit and slow down
+  - Source: [Link](https://developer.mozilla.org/en-US/blog/securing-apis-express-rate-limit-and-slow-down/)
 - Express cors middleware
   - Source: [Link](https://expressjs.com/en/resources/middleware/cors.html)
 - How to Build Secure and Scalable Authentication System with Node.js and MongoDB
