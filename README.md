@@ -1,82 +1,101 @@
-# Dev Job full-stack MERN application
+# SoftUni Final Project – Full-Stack MERN Job Board Platform
 
-# 1. Project Overview
+<details open>
+<summary>1. Project Overview</summary>
 
-## Brief Description
+<details open>
+<summary>Brief Description</summary>
 
-This application is a job board platform built to connect employers and job seekers efficiently. It offers a range of features, including:
+
+This application is a modern job board platform designed to seamlessly connect employers with job seekers. Built with scalability and ease of use in mind, it streamlines the hiring process while providing valuable insights into candidates' technical expertise.
+
+**Key Features:**
 
 - **User Authentication** – Secure sign-up and login for both employers and job seekers.
 - **Job Postings** – Employers can create, manage, and update job listings.
 - **User Profiles** – Job seekers can build and maintain professional profiles.
+- **Search** - Easily find job listings or candidates using various search criteria.
 - **GitHub Integration** – Automatically fetches and displays public GitHub profile information to highlight candidates' coding contributions and activity.
 
-Designed with scalability and ease of use in mind, this platform streamlines the hiring process while providing valuable insights into candidates' technical expertise.
+Developed as part of a university final project, this platform enhances the recruitment experience by offering a user-friendly interface and powerful tools that make job searching and hiring more efficient.
+</details>
 
-## Main Features/Functionalities
+<details>
+<summary>Main Features/Functionalities</summary>
 
-### User Management
+<details>
+<summary>User Management</summary>
 
 - User registration and authentication (Employee/Employer roles)
 - Profile creation and management (Employee/Employer)
 - GitHub profile integration for developers
 - Avatar/profile picture support using Gravatar (Employee/Employer)
+</details>
 
-### Employees Features
+<details>
+<summary>Employees Features</summary>
 
 - Create, Read, Update, and Delete professional profiles
 - Browse job listings
 - Search and filter jobs by various criteria
 - GitHub portfolio integration
+</details>
 
-### Employer Features
+<details>
+<summary>Employer Features</summary>
 
 - Create, Read, Update, and Delete company profile
 - Create, Read, Update, and Delete job listings
 - Browse employee profiles
 - Search candidate profiles
+</details>
 
-### Core Platform Features
+<details>
+<summary>Core Platform Features</summary>
 
 - Secure authentication using JWT
 - Role-based access control
 - RESTful API architecture
-- Pagination
+- Pagination:
   - **Request Parameters:**
     - `page` (optional): Page number, defaults to 1
     - `limit` (optional): Items per page, defaults to 10
+    - **Example Request:**
+      ```http
+      GET /api/jobs?page=2&limit=10
+      ```
+     - **Response Format:**
+      ```json
+        {
+            "success": true,
+            "data": {
+              "items": [...],
+              "pagination": {
+                    "currentPage": 2,
+                    "totalPages": 5,
+                    "totalItems": 48,
+                    "hasNextPage": true,
+                    "hasPrevPage": true
+              }
+            }
+        }
+        ```
+
+</details>
+</details>
 
 <details>
-   -<summary> **Example Request:**</summary>
-   ```http
-   GET /api/jobs?page=2&limit=10
-   ```
-   - <summary>**Response Format:**</summary>
-   ```json
-   {
-      "success": true,
-      "data": {
-         "items": [...],
-         "pagination": {
-               "currentPage": 2,
-               "totalPages": 5,
-               "totalItems": 48,
-               "hasNextPage": true,
-               "hasPrevPage": true
-         }
-      }
-   }
-   ```
-<details>
-
-## Technical Stack (MERN)
+<summary>Technical Stack (MERN)</summary>
 
 - MongoDB: NoSQL database for flexible data storage
 - Express.js: Backend web application framework
 - React: Frontend user interface library
 - Node.js: Runtime environment for server-side code
+</details>
+</details>
 
-# 2. Project Architecture
+<details>
+<summary>2. Project Architecture</summary>
 
 This Node.js backend application follows a modular architecture with clear separation of concerns:
 
@@ -86,9 +105,10 @@ This Node.js backend application follows a modular architecture with clear separ
 - models/ - Defines data models and schema
 - services/ - Contains business logic and external service integrations
 - util/ - Utility functions and helpers
-
-### Directory Structure
-
+  
+<details open>
+<summary> Directory Structure</summary>
+  
 ```
 Devjobs web app/
 ├── README
@@ -146,10 +166,15 @@ Devjobs web app/
 └── server.js
 
 ```
+</details>
 
-# 3. Database Schema
+</details>
 
-## Models Overview
+<details>
+<summary>3. Database Schema</summary>
+
+<details>
+<summary>Models Overview</summary>
 
 Application uses MongoDB with Mongoose and consists of the following main models:
 
@@ -168,7 +193,8 @@ Application uses MongoDB with Mongoose and consists of the following main models
   - **EmployerProfile**
     Stores information for employer
 
-### Model Relationships
+<details open>
+<summary>Model Relationships</summary>
 
 ![Relationship Models](./assets/images/relationship-models-dev-job-app.png)
 
@@ -189,28 +215,42 @@ Application uses MongoDB with Mongoose and consists of the following main models
    - Post-User (* : *): Many Posts can be liked/commented by many Users
    - EmployerProfile-Job (1 : *): One EmployerProfile can post many Jobs
    - EmployeeProfile-Job (* : *): Many EmployeeProfiles can apply to many Jobs
+</details>
 
+</details>
+</details>
 
-# 4. API Documentation
+<details>
+<summary>4. API Documentation</summary>
 
-## Introduction
+<details>
+<summary>Introduction</summary>
 
 The Dev-Job API is organized around REST. This API has predictable resource-oriented URLs, accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes and authentication.
 The Dev-Job API doesn’t support bulk updates. You can work on only one object per request.
+</details>
 
-## URL
+<details>
+<summary>URL</summary>
 
 All endpoints are prefixed with "/api". Consequently, during the development phase, the endpoints will be accessible via the following URL: "http://localhost:5001/api".
+</details>
 
-## Methods
+<details>
+<summary>Methods</summary>
 
 `GET` | `POST` | `PUT` | `DELETE`
+</details>
 
-## URL query parameters
+<details>
+<summary>URL query parameters</summary>
 
 Required: `id=[string]`
+</details>
 
-## Response
+<details>
+<summary>Response</summary>
+
 
 **Code:** `200 OK`\
  Returns the requested data, at the specified page of the results.
@@ -232,65 +272,87 @@ Required: `id=[string]`
 
 **Code:** `500 Internal Server Error`\
  The server encountered an unexpected condition that prevented it from fulfilling the request.
+</details>
 
-## Links
+<details open>
+<summary>Links</summary>
 
 [API Postman documentation](https://documenter.postman.com/preview/28859516-1a8f94a3-e470-42fd-af26-47f0bd7815b3?environment=&versionTag=latest&apiName=CURRENT&version=latest&documentationLayout=classic-double-column&documentationTheme=light&logo=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&logoDark=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&right-sidebar=303030&top-bar=FFFFFF&highlight=FF6C37&right-sidebar-dark=303030&top-bar-dark=212121&highlight-dark=FF6C37)
+</details>
+</details>
 
-# 5. Environment Setup
+<details>
+<summary>5. Environment Setup</summary>
 
-## Prerequisites
+<details>
+<summary>Prerequisites</summary>
 
 - Node.js (v18 or higher)
 - MongoDB installed and running locally, or a MongoDB Atlas account
+</details>
 
-## Installation Steps
+<details>
+<summary>Installation Steps</summary>
 
 1. Clone the repository
-   `git clone <repository-url>`
-   `cd devjobs-web-app`
+   - `git clone <repository-url>`
+   - `cd devjobs-web-app`
 
 2. Install dependencies  
-   `npm install`
+   - `npm install`
 
 3. Create Environment Variables
-   Create a `.env` file in the root directory and add the following variables:
+   - Create a `.env` file in the root directory and add the following variables:
 
-#### Server Configuration
+<details>
+<summary>Server Configuration</summary>
 
 - PORT=5001
 - NODE_ENV=development
+</details>
 
-#### MongoDB Connection
+<details>
+<summary>MongoDB Connection</summary>
 
 - MONGODB_URI=mongodb://localhost:27017/devjobs
 
-#### or
+**or**
 
 - MONGODB_URI=mongodb+srv://@cluster.mongodb.net/devjobs
+</details>
 
-#### JWT Configuration
+<details>
+<summary>JWT Configuration</summary>
 
 - JWT_SECRET=your_jwt_secret_key
+</details>
 
-#### Optional: GitHub Integration
+<details>
+<summary>Optional: GitHub Integration</summary>
 
 - GITHUB_CLIENT_ID=your_github_client_id
 - GITHUB_CLIENT_SECRET=your_github_client_secret
+</details>
 
-## Available Scripts
+</details>
 
-Start the server in production mode:
+<details>
+<summary>Available Scripts</summary>
+
+- Start the server in production mode:
 `npm start`
 
-#### or
+**or**
 
-Start the server in development mode with nodemon:
+- Start the server in development mode with nodemon:
 `npm run server`
+</details>
 
-## Dependencies Overview
+<details>
+<summary>Dependencies Overview</summary>
 
-### Main Dependencies
+<details>
+<summary>Main Dependencies</summary>
 
 - `express`: Web framework for Node.js
 - `mongoose`: MongoDB object modeling tool
@@ -301,21 +363,31 @@ Start the server in development mode with nodemon:
 - `axios`: HTTP client for API requests
 - `gravatar`: Profile picture integration
 - `cookie-parser`: Cookie parsing middleware
+- `cors`: Connect/Express middleware
+</details>
 
-### Development Dependencies
+<details>
+<summary>Development Dependencies</summary>
 
 `nodemon`: Development server with auto-reload
+</details>
+</details>
 
-## Next Steps
+<details>
+<summary>Next Steps</summary>
 
 1. Start MongoDB service (must be running before server start)
 2. Configure your `.env` file with appropriate values
 3. Start the development server with `npm run server`
 4. The API will be available at `http://localhost:5001` (or your configured PORT)
+</details>
+</details>
 
-# 6. Security Measures
+<details>
+<summary>6. Security Measures</summary>
 
-## Authentication
+<details>
+<summary>Authentication</summary>
 
 - JWT-based authentication with secure cookie session storage
 - Session duration: 1 hour
@@ -325,18 +397,26 @@ Start the server in development mode with nodemon:
 - `checkUserRole`: Role-based access control
 - Protected auth routes for logged-in users
 - CORS configuration for secure client-server communication
+</details>
+</details>
 
-# 7. Error Handling
+<details>
+<summary>7. Error Handling</summary>
 
-## Validation and Error Types
+<details>
+<summary>Validation and Error Types</summary>
 
 - Global Error Handling
 - Pre-request validation with express-validator middleware
 - Model-level Mongoose schema validation
 - Consistent error response format
 - Production-safe error messages for users
+</details>
+</details>
 
-# 8. References & Resources Used
+<details>
+<summary>8. References & Resources Used</summary>
+
 - Express cors middleware
   - Source: [Link](https://expressjs.com/en/resources/middleware/cors.html)
 - How to Build Secure and Scalable Authentication System with Node.js and MongoDB
@@ -350,4 +430,5 @@ Start the server in development mode with nodemon:
 - Software documentation guide
    - Source: [Link](https://www.writethedocs.org/guide/index.html)  
 - How To Build an ER Diagram with Mermaid Chart
-   - Source: [Link](https://docs.mermaidchart.com/blog/posts/how-to-build-an-er-diagram-with-mermaid-chart)
+   - Source: [Link](https://docs.mermaidchart.com/blog/posts/how-to-build-an-er-diagram-with-mermaid-chart) 
+</details>
