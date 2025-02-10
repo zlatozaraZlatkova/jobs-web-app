@@ -3,13 +3,13 @@
 
 <details open>
 
-<summary><b><p>Note:</b> Click to expand / collapse Documentation section</p></summary>
+<summary><p>Note: Click to expand / collapse Documentation section</p></summary>
 
 </details>
 
 
 <details open>
-<summary><b><h1>1. Project Overview</b></h2></summary>
+<summary><h1>1. Project Overview</h2></summary>
 
   <details open>
   <summary><h2>1.1. Brief Description</h2></summary>
@@ -111,7 +111,7 @@ Developed as part of a university final project, this platform enhances the recr
 </details>
 
 <details>
-<summary><b><h1>2. Project Architecture</b></h1></summary>
+<summary><h1>2. Project Architecture</h1></summary>
 
 <details>
 <summary><h2>2.1. Structure Overview</h2></summary>
@@ -191,7 +191,7 @@ Devjobs web app/
 </details>
 
 <details>
-<summary><b><h1>3. Database Schema</h1></b></summary>
+<summary><h1>3. Database Schema</h1></summary>
 
 <details>
 <summary><h2>3.1. Models Overview</h2></summary>
@@ -215,7 +215,7 @@ Application uses MongoDB with Mongoose and consists of the following main models
 
 </details>
 <details open>
-<summary>3.2. Model Relationships</summary>
+<summary><h2>3.2. Model Relationships</h2></summary>
 
 ![Relationship Models](./assets/images/relationship-models-dev-job-app.png)
 
@@ -241,7 +241,7 @@ Application uses MongoDB with Mongoose and consists of the following main models
 </details>
 
 <details>
-<summary><b><h1>4. API Documentation</h1></b></summary>
+<summary><h1>4. API Documentation</h1></summary>
 
 <details>
 <summary><h2>4.1. Introduction</h2></summary>
@@ -302,7 +302,7 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary><b><h1>5. Environment Setup</h1></b></summary>
+<summary><h1>5. Environment Setup</h1></summary>
 
 <details>
 <summary><h2>5.1. Prerequisites</h2></summary>
@@ -405,7 +405,7 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary><b><h1>6. Security Measures</h1></b></summary>
+<summary><h1>6. Security Measures</h1></summary>
 
 <details>
 <summary><h2>6.1. Authentication</h2></summary>
@@ -429,7 +429,7 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary><b><h1>7. Error Handling</h1></b></summary>
+<summary><h1>7. Error Handling</h1></summary>
 
 <details>
 <summary><h2>7.1. Validation and Error Types</h2></summary>
@@ -443,7 +443,7 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary><b><h1>8. References & Resources Used</h1></b></summary>
+<summary><h1>8. References & Resources Used</h1></summary>
 
 - Securing APIs: Express rate limit and slow down
   - Source: [Link](https://developer.mozilla.org/en-US/blog/securing-apis-express-rate-limit-and-slow-down/)
