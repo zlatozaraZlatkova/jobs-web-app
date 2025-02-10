@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 require("dotenv").config();
 
@@ -22,6 +23,21 @@ async function start() {
     app.use(express.json());
 
     app.use(cookieParser());
+
+    app.use(cors({
+        origin: 'http://localhost:4200',
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: [
+            'Content-Type', 
+            'Authorization',
+            'Origin',
+            'Accept',
+            'X-Requested-With'
+        ],
+        exposedHeaders: ['Set-Cookie'],
+        maxAge: 36000 // 1 hours in seconds
+    }));
     
     app.use(session());
 
