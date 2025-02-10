@@ -1,10 +1,21 @@
 # SoftUni Final Project – Full-Stack MERN Job Board Platform
 
+&nbsp;
+
+<details open>
+
+<summary> Note: Click to expand / collapse Documentation section </summary>
+</details>
+
+&nbsp;
+
 <details open>
 <summary>1. Project Overview</summary>
 
+
 <details open>
-<summary>Brief Description</summary>
+<summary>1.1. Brief Description</summary>
+
 
 
 This application is a modern job board platform designed to seamlessly connect employers with job seekers. Built with scalability and ease of use in mind, it streamlines the hiring process while providing valuable insights into candidates' technical expertise.
@@ -21,10 +32,10 @@ Developed as part of a university final project, this platform enhances the recr
 </details>
 
 <details>
-<summary>Main Features/Functionalities</summary>
+<summary>1.2. Main Features/Functionalities</summary>
 
 <details>
-<summary>User Management</summary>
+<summary>1.2.1. User Management</summary>
 
 - User registration and authentication (Employee/Employer roles)
 - Profile creation and management (Employee/Employer)
@@ -33,7 +44,7 @@ Developed as part of a university final project, this platform enhances the recr
 </details>
 
 <details>
-<summary>Employees Features</summary>
+<summary>1.2.2. Employees Features</summary>
 
 - Create, Read, Update, and Delete professional profiles
 - Browse job listings
@@ -42,7 +53,7 @@ Developed as part of a university final project, this platform enhances the recr
 </details>
 
 <details>
-<summary>Employer Features</summary>
+<summary>1.2.3. Employer Features</summary>
 
 - Create, Read, Update, and Delete company profile
 - Create, Read, Update, and Delete job listings
@@ -51,7 +62,7 @@ Developed as part of a university final project, this platform enhances the recr
 </details>
 
 <details>
-<summary>Core Platform Features</summary>
+<summary> 1.2.4. Core Platform Features</summary>
 
 - Secure authentication using JWT
 - Role-based access control
@@ -85,7 +96,7 @@ Developed as part of a university final project, this platform enhances the recr
 </details>
 
 <details>
-<summary>Technical Stack (MERN)</summary>
+<summary>1.3. Technical Stack (MERN)</summary>
 
 - MongoDB: NoSQL database for flexible data storage
 - Express.js: Backend web application framework
@@ -97,6 +108,8 @@ Developed as part of a university final project, this platform enhances the recr
 <details>
 <summary>2. Project Architecture</summary>
 
+<details>
+<summary>2.1. Structure Overview</summary>
 This Node.js backend application follows a modular architecture with clear separation of concerns:
 
 - config/ - Contains configuration files for database and routes
@@ -106,8 +119,10 @@ This Node.js backend application follows a modular architecture with clear separ
 - services/ - Contains business logic and external service integrations
 - util/ - Utility functions and helpers
   
+</details>
+
 <details open>
-<summary> Directory Structure</summary>
+<summary>2.2. Directory Structure</summary>
   
 ```
 Devjobs web app/
@@ -174,7 +189,7 @@ Devjobs web app/
 <summary>3. Database Schema</summary>
 
 <details>
-<summary>Models Overview</summary>
+<summary>3.1. Models Overview</summary>
 
 Application uses MongoDB with Mongoose and consists of the following main models:
 
@@ -193,8 +208,9 @@ Application uses MongoDB with Mongoose and consists of the following main models
   - **EmployerProfile**
     Stores information for employer
 
+</details>
 <details open>
-<summary>Model Relationships</summary>
+<summary>3.2. Model Relationships</summary>
 
 ![Relationship Models](./assets/images/relationship-models-dev-job-app.png)
 
@@ -218,38 +234,37 @@ Application uses MongoDB with Mongoose and consists of the following main models
 </details>
 
 </details>
-</details>
 
 <details>
 <summary>4. API Documentation</summary>
 
 <details>
-<summary>Introduction</summary>
+<summary>4.1. Introduction</summary>
 
 The Dev-Job API is organized around REST. This API has predictable resource-oriented URLs, accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes and authentication.
 The Dev-Job API doesn’t support bulk updates. You can work on only one object per request.
 </details>
 
 <details>
-<summary>URL</summary>
+<summary>4.2. URL</summary>
 
 All endpoints are prefixed with "/api". Consequently, during the development phase, the endpoints will be accessible via the following URL: "http://localhost:5001/api".
 </details>
 
 <details>
-<summary>Methods</summary>
+<summary>4.3. Methods</summary>
 
 `GET` | `POST` | `PUT` | `DELETE`
 </details>
 
 <details>
-<summary>URL query parameters</summary>
+<summary>4.4. URL query parameters</summary>
 
 Required: `id=[string]`
 </details>
 
 <details>
-<summary>Response</summary>
+<summary>4.5. Response</summary>
 
 
 **Code:** `200 OK`\
@@ -275,9 +290,9 @@ Required: `id=[string]`
 </details>
 
 <details open>
-<summary>Links</summary>
+<summary>4.6. API Postman documentation</summary>
 
-[API Postman documentation](https://documenter.postman.com/preview/28859516-1a8f94a3-e470-42fd-af26-47f0bd7815b3?environment=&versionTag=latest&apiName=CURRENT&version=latest&documentationLayout=classic-double-column&documentationTheme=light&logo=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&logoDark=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&right-sidebar=303030&top-bar=FFFFFF&highlight=FF6C37&right-sidebar-dark=303030&top-bar-dark=212121&highlight-dark=FF6C37)
+[POSTMAN API LINK](https://documenter.postman.com/preview/28859516-1a8f94a3-e470-42fd-af26-47f0bd7815b3?environment=&versionTag=latest&apiName=CURRENT&version=latest&documentationLayout=classic-double-column&documentationTheme=light&logo=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&logoDark=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&right-sidebar=303030&top-bar=FFFFFF&highlight=FF6C37&right-sidebar-dark=303030&top-bar-dark=212121&highlight-dark=FF6C37)
 </details>
 </details>
 
@@ -285,14 +300,14 @@ Required: `id=[string]`
 <summary>5. Environment Setup</summary>
 
 <details>
-<summary>Prerequisites</summary>
+<summary>5.1. Prerequisites</summary>
 
 - Node.js (v18 or higher)
 - MongoDB installed and running locally, or a MongoDB Atlas account
 </details>
 
 <details>
-<summary>Installation Steps</summary>
+<summary>5.2. Installation Steps</summary>
 
 1. Clone the repository
    - `git clone <repository-url>`
@@ -305,14 +320,14 @@ Required: `id=[string]`
    - Create a `.env` file in the root directory and add the following variables:
 
 <details>
-<summary>Server Configuration</summary>
+<summary>5.2.1. Server Configuration</summary>
 
 - PORT=5001
 - NODE_ENV=development
 </details>
 
 <details>
-<summary>MongoDB Connection</summary>
+<summary>5.2.2. MongoDB Connection</summary>
 
 - MONGODB_URI=mongodb://localhost:27017/devjobs
 
@@ -322,13 +337,13 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary>JWT Configuration</summary>
+<summary>5.2.3. JWT Configuration</summary>
 
 - JWT_SECRET=your_jwt_secret_key
 </details>
 
 <details>
-<summary>Optional: GitHub Integration</summary>
+<summary>5.2.4. Optional: GitHub Integration</summary>
 
 - GITHUB_CLIENT_ID=your_github_client_id
 - GITHUB_CLIENT_SECRET=your_github_client_secret
@@ -337,7 +352,7 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary>Available Scripts</summary>
+<summary>5.3. Available Scripts</summary>
 
 - Start the server in production mode:
 `npm start`
@@ -349,10 +364,10 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary>Dependencies Overview</summary>
+<summary>5.4. Dependencies Overview</summary>
 
 <details>
-<summary>Main Dependencies</summary>
+<summary>5.4.1. Main Dependencies</summary>
 
 - `express`: Web framework for Node.js
 - `mongoose`: MongoDB object modeling tool
@@ -367,14 +382,14 @@ Required: `id=[string]`
 </details>
 
 <details>
-<summary>Development Dependencies</summary>
+<summary>5.4.2. Development Dependencies</summary>
 
 `nodemon`: Development server with auto-reload
 </details>
 </details>
 
-<details>
-<summary>Next Steps</summary>
+<details open>
+<summary>5.5. Build Setup</summary>
 
 1. Start MongoDB service (must be running before server start)
 2. Configure your `.env` file with appropriate values
@@ -387,7 +402,7 @@ Required: `id=[string]`
 <summary>6. Security Measures</summary>
 
 <details>
-<summary>Authentication</summary>
+<summary>6.1. Authentication</summary>
 
 - JWT-based authentication with secure cookie session storage
 - Session duration: 1 hour
@@ -404,7 +419,7 @@ Required: `id=[string]`
 <summary>7. Error Handling</summary>
 
 <details>
-<summary>Validation and Error Types</summary>
+<summary>7.1. Validation and Error Types</summary>
 
 - Global Error Handling
 - Pre-request validation with express-validator middleware
