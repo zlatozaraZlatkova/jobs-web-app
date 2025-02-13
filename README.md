@@ -21,7 +21,7 @@ This application is a modern job board platform designed to seamlessly connect e
 - **User Authentication** - Secure sign-up and login for both employers and job seekers.
 - **Job Postings** - Employers can create, manage, and update job listings.
 - **User Profiles** - Job seekers can build and maintain professional profiles.
-- **Career Connect Feed** - Users can create, edit, and delete posts to share career updates, industry insights, and professional achievements. The interactive social features include post liking/dislike and commenting functionality, enabling community engagement, discussions, and professional networking.
+- **Forum** - Users can create, edit, and delete posts to share career updates, industry insights, and professional achievements. The interactive social features include post liking/dislike and commenting functionality, enabling community engagement, discussions, and professional networking.
 - **Search** - Easily find job listings or candidates using various search criteria.
 - **GitHub Integration** - Automatically fetches and displays public GitHub profile information to highlight candidates' coding contributions and activity.
 
@@ -69,6 +69,10 @@ Developed as part of a university final project, this platform enhances the recr
 <summary><h5>1.2.4. Core Platform Features</h5></summary>
 
 - Secure authentication using JWT
+  -  Authentication 
+     - Secure session-based authentication using cookie-parser middleware 
+   - Authorization
+     - Role-based access control (RBAC) for Employee and Employer users   
 - Rate Limiting with maximum of 100 requests per 15 minuets per IP
 - Role-based access control
   
@@ -87,7 +91,7 @@ Developed as part of a university final project, this platform enhances the recr
   | Request Format | JSON |
   | Response Format | JSON |
   | HTTP Methods | • GET: Retrieve resources<br>• POST: Create new resources<br>• PUT: Update existing resources<br>• DELETE: Remove resources |
-  | Status Codes | • 200: Success<br>• 201: Created<br>• 400: Bad Request<br>• 401: Unauthorized<br>• 403: Forbidden<br>• 404: Not Found<br>• 500: Internal Server Error |
+  | Status Codes | • 200: Success<br>• 201: Created<br>• 400: Bad Request<br>• 401: Unauthorized<br>• 403: Forbidden<br>• 404: Not Found<br>• 409: Duplicate field<br>• 500: Internal Server Error |
   | Rate Limiting | • 100 requests per 15 minutes per IP<br>• Standard rate limit headers enabled<br>• Response with message: 'Too many requests from this IP, please try again later' |
   | Documentation | API endpoints documented and tested in Postman |
 
@@ -113,9 +117,6 @@ Developed as part of a university final project, this platform enhances the recr
         | location | string | Job location | `?location=New York` |
         | salary | number | Minimum salary | `?salary=70000` |
 
-  
-  
-
 </details>
 </details>
 
@@ -134,6 +135,7 @@ Developed as part of a university final project, this platform enhances the recr
 
 <details>
 <summary><h4>2.1. Structure Overview</h4></summary>
+
 This Node.js backend application follows a modular architecture with clear separation of concerns:
 
 - config/ - Contains configuration files for database and routes
@@ -142,7 +144,6 @@ This Node.js backend application follows a modular architecture with clear separ
 - models/ - Defines data models and schema
 - services/ - Contains business logic and external service integrations
 - util/ - Utility functions and helpers
-
 </details>
 
 <details open>
@@ -154,7 +155,7 @@ Devjobs web app/
 ├── assets/
 │    images/
 │       └── relationship-models-dev-jobs.png
-├── Rest-api/
+├── rest-api/
 |   └── server/
 │    ├── config/
 │    │   ├── cors.js
@@ -312,6 +313,9 @@ Required: `id=[string]`
 **Code:** `404 No Found`\
  Returned if the data property does not exist.
 
+**Code:** `409 Conflict`\
+ Returned if the data conflicts with resource's current state.
+
 **Code:** `500 Internal Server Error`\
  The server encountered an unexpected condition that prevented it from fulfilling the request.
 </details>
@@ -406,7 +410,7 @@ Required: `id=[string]`
 - `gravatar`: Profile picture integration
 - `cookie-parser`: Cookie parsing middleware
 - `cors`: Connect/Express middleware
-- `express-rate-limit`: limit repeated requests to public APIs
+- `express-rate-limit`: Limit repeated requests to public APIs
 </details>
 
 <details>
