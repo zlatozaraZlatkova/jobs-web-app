@@ -76,6 +76,7 @@ Developed as part of a university final project, this platform enhances the recr
 - Rate Limiting with maximum of 100 requests per 15 minuets per IP
 - Role-based access control
   
+
   | Role | Description |
   |------|-------------|
   | Common Features (All Users) | • CRUD operations on their own posts<br>• Add comments to any post<br>• Like and unlike any post |
@@ -94,6 +95,7 @@ Developed as part of a university final project, this platform enhances the recr
   | Status Codes | • 200: Success<br>• 201: Created<br>• 400: Bad Request<br>• 401: Unauthorized<br>• 403: Forbidden<br>• 404: Not Found<br>• 409: Duplicate field<br>• 500: Internal Server Error |
   | Rate Limiting | • 100 requests per 15 minutes per IP<br>• Standard rate limit headers enabled<br>• Response with message: 'Too many requests from this IP, please try again later' |
   | Documentation | API endpoints documented and tested in Postman |
+    |
 
 - Pagination:
   - **Request Parameters:**
@@ -103,19 +105,19 @@ Developed as part of a university final project, this platform enhances the recr
 - The Search provides flexible search capabilities across the platform with support for single and multiple field searches, along with pagination for result sets.  
     - **Common Search Fields**
       - **Employee Search Parameters**
-        | Parameter | Type | Description | Example |
-        |-----------|------|-------------|----------|
-        | skills | array | Required skills or competencies | `?skills=JavaScript,React` |
-        | experience | string | Work experience | `?experience=Senior` |
-        | education | string | Required education level | `?education=Bachelor%20Degree` |
+        | Parameter  | Type   | Description                     | Example                        |
+        | ---------- | ------ | ------------------------------- | ------------------------------ |
+        | skills     | array  | Required skills or competencies | `?skills=JavaScript,React`     |
+        | experience | string | Work experience                 | `?experience=Senior`           |
+        | education  | string | Required education level        | `?education=Bachelor%20Degree` |
     
       - **Job Search Parameters** 
-        | Parameter | Type | Description | Example |
-        |-----------|------|-------------|----------|
-        | title | string | Job title or position name | `?title=Software Engineer` |
-        | type | string | Employment type | `?type=Full-time` |
-        | location | string | Job location | `?location=New York` |
-        | salary | number | Minimum salary | `?salary=70000` |
+        | Parameter | Type   | Description                | Example                    |
+        | --------- | ------ | -------------------------- | -------------------------- |
+        | title     | string | Job title or position name | `?title=Software Engineer` |
+        | type      | string | Employment type            | `?type=Full-time`          |
+        | location  | string | Job location               | `?location=New York`       |
+        | salary    | number | Minimum salary             | `?salary=70000`            |
 
 </details>
 </details>
@@ -155,7 +157,17 @@ Devjobs web app/
 ├── assets/
 │    images/
 │       └── relationship-models-dev-jobs.png
-├── rest-api/
+├── client/
+│   └── public/           
+│       ├── src/
+│       ├── eslint.config.js
+│       ├── .gitignore
+│       ├── index.html
+│       ├── package.json
+│       ├── package-lock.json
+│       └── vite.config.js
+|
+├── Rest-api/
 |   └── server/
 │    ├── config/
 │    │   ├── cors.js
@@ -400,23 +412,35 @@ Required: `id=[string]`
 <details>
 <summary><h5>5.4.1. Main Dependencies</h5></summary>
 
-- `express`: Web framework for Node.js
-- `mongoose`: MongoDB object modeling tool
-- `jsonwebtoken`: JWT implementation for authentication
-- `bcryptjs`: Password hashing
-- `dotenv`: Environment variables management
-- `express-validator`: Input validation middleware
-- `axios`: HTTP client for API requests
-- `gravatar`: Profile picture integration
-- `cookie-parser`: Cookie parsing middleware
-- `cors`: Connect/Express middleware
-- `express-rate-limit`: Limit repeated requests to public APIs
+  - Client
+    - `react`: JavaScript library for creating user interfaces
+    - `react-dom`: serves as the entry point to the DOM and server renderers for React
+  
+  - Server
+    - `express`: Web framework for Node.js
+    - `mongoose`: MongoDB object modeling tool
+    - `jsonwebtoken`: JWT implementation for authentication
+    - `bcryptjs`: Password hashing
+    - `dotenv`: Environment variables management
+    - `express-validator`: Input validation middleware
+    - `axios`: HTTP client for API requests
+    - `gravatar`: Profile picture integration
+    - `cookie-parser`: Cookie parsing middleware
+    - `cors`: Connect/Express middleware
+    - `express-rate-limit`: Limit repeated requests to public APIs
+  
 </details>
 
 <details>
 <summary><h5>5.4.2. Development Dependencies</h5></summary>
 
-`nodemon`: Development server with auto-reload
+- Client 
+  - `vite`: Frontend build tool
+
+- Server
+  - `nodemon`: Development server with auto-reload
+  - `concurrently`: Run multiple commands concurrently
+  
 </details>
 </details>
 
@@ -425,8 +449,37 @@ Required: `id=[string]`
 
 1. Start MongoDB service (must be running before server start)
 2. Configure your `.env` file with appropriate values
-3. Start the development server with `npm run server`
-4. The API will be available at `http://localhost:5001` (or your configured PORT)
+3. Install dependencies for both server and client:
+   
+   - Install server dependencies
+     - `cd Rest-api`
+     - `npm install`
+  
+   - Install client dependencies
+      - `cd ../client`
+      - `npm install`
+
+4. Return to Rest-api folder to run both servers concurrently:
+    - `cd ../Rest-api`
+    - `npm run dev`
+  
+    This will start:
+     - Backend API at `http://localhost:5001`
+     - Frontend (Vite) server: `http://localhost:5173`
+
+- **To run servers independently:**
+  - For backend only: `npm run server`
+  - For frontend only: `npm run client`
+  
+- **Note about API Proxy:**
+All API requests from the frontend are automatically proxied to the backend server through the Vite configuration. Here's how it works:
+
+  - In your React components, you can make API calls using shorter paths:
+     `const response = await fetch('/api/jobs');`
+
+  - The Vite proxy automatically forwards these requests to your backend server:
+     `http://localhost:5001/api/jobs`
+
 </details>
 </details>
 
@@ -487,5 +540,7 @@ Required: `id=[string]`
    - Source: [Link](https://www.writethedocs.org/guide/index.html)
 - How To Build an ER Diagram with Mermaid Chart
    - Source: [Link](https://docs.mermaidchart.com/blog/posts/how-to-build-an-er-diagram-with-mermaid-chart)
+- Setup Proxy in Vite React
+  - Source: [Link](https://medium.com/@faazfajib7/setup-proxy-in-vite-react-2eb1454bff62)
 </details>
 
