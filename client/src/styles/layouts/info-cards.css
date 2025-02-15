@@ -1,0 +1,46 @@
+/* Info Sections */
+.info-section {
+  padding: 4rem 2rem;
+  background-color: var(--job-card-bg);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  /* min-height: 300px; */
+}
+
+@media (min-width: 768px) {
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.info-card {
+  /* background-color: var(--card-bg); */
+  background-color: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+.info-card:hover {
+  border-color: var(--gray-300);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.info-card h2 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.info-card p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  /* flex-grow: 1; */
+}

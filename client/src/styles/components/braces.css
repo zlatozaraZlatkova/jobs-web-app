@@ -1,0 +1,15 @@
+/* Braces styles */
+.braces {
+  color: var(--primary-color);
+  display: inline-block;
+  transition: transform 0.3s ease;
+  font-weight: 500;
+}
+
+.left-brace {
+  margin-right: 0.1em;
+}
+
+.right-brace {
+  margin-left: 0.1em;
+}

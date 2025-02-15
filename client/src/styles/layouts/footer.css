@@ -1,0 +1,74 @@
+/* Footer */
+.footer {
+  background-color: var(--section-bg);
+  padding: 4rem 2rem;
+  color: var(--text-primary);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.copyright {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.social-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 1.25rem;
+}
+
+.social-link:hover {
+  color: var(--primary-color);
+}
+
+/* todo update logo color */
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--white-color);
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background-color: var(--gray-500);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+
+  .copyright {
+    order: 2;
+  }
+}

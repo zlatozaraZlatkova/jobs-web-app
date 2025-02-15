@@ -1,0 +1,77 @@
+/* Typography */
+html {
+  font: 1rem/1.6 "Exo", serif;
+}
+
+body,
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.logo {
+  font-family: "Monaco", "Consolas", monospace;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: 2.4em;
+}
+h2 {
+  font-size: 2em;
+}
+h3 {
+  font-size: 1.8em;
+}
+h4 {
+  font-size: 1.4em;
+}
+h5 {
+  font-size: 1.2em;
+}
+h6 {
+  font-size: 1em;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Text Styles*/
+.x-large {
+  font-size: 4rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.large {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.lead {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-primary {
+  color: var(--primary-color);
+}
+.text-dark {
+  color: var(--text-primary);
+}

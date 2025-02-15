@@ -95,7 +95,7 @@ Developed as part of a university final project, this platform enhances the recr
   | Status Codes | • 200: Success<br>• 201: Created<br>• 400: Bad Request<br>• 401: Unauthorized<br>• 403: Forbidden<br>• 404: Not Found<br>• 409: Duplicate field<br>• 500: Internal Server Error |
   | Rate Limiting | • 100 requests per 15 minutes per IP<br>• Standard rate limit headers enabled<br>• Response with message: 'Too many requests from this IP, please try again later' |
   | Documentation | API endpoints documented and tested in Postman |
-    |
+  
 
 - Pagination:
   - **Request Parameters:**
@@ -160,6 +160,32 @@ Devjobs web app/
 ├── client/
 │   └── public/           
 │       ├── src/
+|       |   ├── 
+|       |    styles/
+|       |    ├── base/
+|       |    │   ├── globals.css        
+|       |    │   ├── typography.css     
+|       |    │   └── utilities.css      
+|       |    ├── components/
+|       |    │   ├── alerts.css 
+|       |    │   ├── badge.css
+|       |    │   ├── braces.css              
+|       |    │   ├── buttons.css        
+|       |    │   ├── forms.css                
+|       |    │   └── toggle.css         
+|       |    ├── layout/
+|       |    │   ├── featured-jobs.css
+|       |    │   ├── footer.css
+|       |    │   ├── info-cards.css         
+|       |    │   ├── navbar.css         
+|       |    │   ├── search.css        
+|       |    │   ├── states.css      
+|       |    │   └── trusted.css           
+|       |    └── index.css
+|       |
+│       ├── App.jsx
+|       ├── main.jsx              
+|       |  
 │       ├── eslint.config.js
 │       ├── .gitignore
 │       ├── index.html
@@ -411,12 +437,19 @@ Required: `id=[string]`
 
 <details>
 <summary><h5>5.4.1. Main Dependencies</h5></summary>
+<details>
+<summary><h6>5.4.1.1 Client</h6><summary>
 
-  - Client
-    - `react`: JavaScript library for creating user interfaces
-    - `react-dom`: serves as the entry point to the DOM and server renderers for React
+  - `axios`: HTTP client for API requests
+  - `dotenv`: Environment variables management
+  - `react`: JavaScript library for creating user interfaces
+  - `react-dom`: serves as the entry point to the DOM and server renderers for React
+  - `react-icons`: Provides popular icon sets as React components
+  - `react-router-dom`: Enables routing and navigation in React applications
+  </details>
+  <details>
+  <summary><h6>5.4.1.2 Server</h6><summary>
   
-  - Server
     - `express`: Web framework for Node.js
     - `mongoose`: MongoDB object modeling tool
     - `jsonwebtoken`: JWT implementation for authentication
@@ -428,7 +461,7 @@ Required: `id=[string]`
     - `cookie-parser`: Cookie parsing middleware
     - `cors`: Connect/Express middleware
     - `express-rate-limit`: Limit repeated requests to public APIs
-  
+  </details>
 </details>
 
 <details>
@@ -469,7 +502,7 @@ Required: `id=[string]`
 
 - **To run servers independently:**
   - For backend only: `npm run server`
-  - For frontend only: `npm run client`
+  - For frontend only: `npm run dev`
   
 - **Note about API Proxy:**
 All API requests from the frontend are automatically proxied to the backend server through the Vite configuration. Here's how it works:
