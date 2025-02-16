@@ -1,0 +1,215 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--section-bg);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
+
+.navbarContainer {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navLeft h1 {
+  margin: 0;
+}
+
+.navLeft a {
+  color: var(--text-primary);
+  font-size: 2rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.navLeft h1 a:hover {
+  color: var(--primary-color);
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navLinks a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navLinks a:hover {
+  color: var(--primary-color);
+}
+
+/* Burger menu btn */
+.mobileMenuBtn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.mobileMenuBtn span {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background-color: var(--text-primary);
+  margin: 5px 0;
+  transition: 0.3s;
+}
+
+/* Login btn */
+.loginBtn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+/* Second version - login btn */
+/* .loginBtn {
+  padding: 0.25rem 0.5rem;
+  background-color: var(--section-bg);
+  color: var(--text-primary);
+  border-color: var(--primary-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+} */
+
+.loginBtn:hover {
+  background-color: var(--dark-primary-color);
+  color: var(--white-color);
+  opacity: 0.8;
+}
+
+/* Theme Toggle */
+.themeToggle {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.themeToggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--text-secondary);
+  transition: 0.4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+
+@media (max-width: 1024px) {
+  .navbarContainer {
+    padding: 1rem;
+  }
+
+  .navLinks {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.7rem 1rem;
+  }
+
+  .mobileMenuBtn {
+    display: block;
+  }
+
+  .navRight {
+    gap: 1rem;
+  }
+
+  .navLinks {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--section-bg);
+    padding: 1rem;
+    flex-direction: column;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .navLinks.active {
+    display: flex;
+  }
+
+  .navLinks li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .navLinks a {
+    display: block;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbarContainer {
+    padding: 0.75rem;
+  }
+
+  .navLeft a {
+    font-size: 1.25rem;
+  }
+}

@@ -163,43 +163,35 @@ Devjobs web app/
 │   |    ├── components/
 │   |    │   ├── FeaturedJobSection/
 │   |    │   │   ├── FeaturedJobSection.jsx
+│   |    │   │   ├── FeaturedJobSection.module.css
 │   |    │   │   └── jobCard/
-│   |    │   │       └── JobCard.jsx
+│   |    │   │       ├── JobCard.jsx
+│   |    │   │       └── JobCard.module.css
 │   |    │   │
 │   |    │   ├── footer/
-│   |    │   │   └── Footer.jsx
+│   |    │   │   ├── Footer.jsx
+│   |    │   │   └── Footer.module.css
 │   |    │   │
 │   |    │   ├── navigation/
-│   |    │   │   └── Navigation.jsx
+│   |    │   │   ├── Navigation.jsx
+│   |    │   │   └── Navigation.module.css
 │   |    │   │
 │   |    │   ├── searchBar/
-│   |    │   │   └── SearchBar.jsx
+│   |    │   │   ├── SearchBar.jsx
+│   |    │   │   └── SearchBar.module.css
 │   |    │   │
 │   |    │   └── trustedCompaniesSection/
 │   |    │       ├── TrustedCompaniesSection.jsx
+│   |    │       ├── TrustedCompaniesSection.module.css
 │   |    │       └── companyLogo/
-│   |    │           └── CompanyLogo.jsx
+│   |    │           ├── CompanyLogo.jsx
+│   |    │           └── CompanyLogo.module.css
 │   |    │
 │   └── styles/
 |       |    ├── base/
 |       |    │   ├── globals.css        
 |       |    │   ├── typography.css     
-|       |    │   └── utilities.css      
-|       |    ├── components/
-|       |    │   ├── alerts.css 
-|       |    │   ├── badge.css
-|       |    │   ├── braces.css              
-|       |    │   ├── buttons.css        
-|       |    │   ├── forms.css                
-|       |    │   └── toggle.css         
-|       |    ├── layout/
-|       |    │   ├── featured-jobs.css
-|       |    │   ├── footer.css
-|       |    │   ├── info-cards.css         
-|       |    │   ├── navbar.css         
-|       |    │   ├── search.css        
-|       |    │   ├── states.css      
-|       |    │   └── trusted.css           
+|       |    │   └── utilities.css               
 |       |    └── index.css
 |       |
 │       ├── App.jsx
@@ -457,27 +449,28 @@ Required: `id=[string]`
 <details>
 <summary><h5>5.4.1. Main Dependencies</h5></summary>
   
-  **Client**
-  - `axios`: HTTP client for API requests
-  - `dotenv`: Environment variables management
-  - `react`: JavaScript library for creating user interfaces
-  - `react-dom`: serves as the entry point to the DOM and server renderers for React
-  - `react-icons`: Provides popular icon sets as React components
-  - `react-router-dom`: Enables routing and navigation in React applications
- 
-  
-   **Server**
-    - `express`: Web framework for Node.js
-    - `mongoose`: MongoDB object modeling tool
-    - `jsonwebtoken`: JWT implementation for authentication
-    - `bcryptjs`: Password hashing
-    - `dotenv`: Environment variables management
-    - `express-validator`: Input validation middleware
+  - **Client**
     - `axios`: HTTP client for API requests
-    - `gravatar`: Profile picture integration
-    - `cookie-parser`: Cookie parsing middleware
-    - `cors`: Connect/Express middleware
-    - `express-rate-limit`: Limit repeated requests to public APIs
+    - `dotenv`: Environment variables management
+    - `react`: JavaScript library for creating user interfaces
+    - `react-dom`: serves as the entry point to the DOM and server renderers for React
+    - `react-icons`: Provides popular icon sets as React components
+    - `react-router-dom`: Enables routing and navigation in React applications
+   
+  
+  - **Server**
+      - `express`: Web framework for Node.js
+      - `mongoose`: MongoDB object modeling tool
+      - `jsonwebtoken`: JWT implementation for authentication
+      - `bcryptjs`: Password hashing
+      - `dotenv`: Environment variables management
+      - `express-validator`: Input validation middleware
+      - `axios`: HTTP client for API requests
+      - `gravatar`: Profile picture integration
+      - `cookie-parser`: Cookie parsing middleware
+      - `cors`: Connect/Express middleware
+      - `express-rate-limit`: Limit repeated requests to public APIs
+  
 </details>
 
 <details>

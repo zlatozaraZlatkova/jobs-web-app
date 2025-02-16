@@ -1,19 +1,19 @@
+import styles from "./CategoriesJobSection.module.css";
+
 import CategoryCard from "./categoryCard/CategoryCard";
 
 export default function CategoriesJobSection() {
-    return(
-        <>
-             <section className="info-section">
-            <div className="container">
-              <h2 className="section-title">Explore By Category</h2>
-              <div className="info-grid">
-                {/* first job container  */}
-                <CategoryCard />
-                {/* second job container */}
-               <CategoryCard/>
-              </div>
-            </div>
-          </section>
-        </>
-    )
+  return (
+    <>
+      <section className={styles.infoSection}>
+        <div className={styles.container}>
+          <h2 className={styles.sectionTitle}>Explore By Category</h2>
+          <div className={styles.infoGrid}>
+            <CategoryCard />
+            <CategoryCard />
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }

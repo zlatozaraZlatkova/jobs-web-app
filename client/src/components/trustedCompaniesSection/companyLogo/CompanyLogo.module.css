@@ -1,0 +1,32 @@
+.companyLogo {
+  width: 60px;
+  height: 60px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+
+  background-color: var(--text-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 1;
+}
+
+.companyLogo:hover {
+  background-color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+  .companyLogo {
+    height: 32px;
+    width: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .companyLogo {
+    height: 25px;
+    width: 25px;
+  }
+}

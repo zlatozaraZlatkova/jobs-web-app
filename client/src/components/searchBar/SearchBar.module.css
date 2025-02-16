@@ -1,5 +1,4 @@
-/* Search Section */
-.search-section {
+.searchSection {
   background-color: var(--section-bg);
   padding: 8rem 2rem;
   text-align: center;
@@ -9,13 +8,13 @@
   justify-content: center;
 }
 
-.search-section h1 {
+.searchSection h1 {
   color: var(--text-primary);
   font-size: 2.5rem;
   margin-bottom: 1rem;
 }
 
-.search-section p {
+.searchSection p {
   color: var(--text-secondary);
   margin-bottom: 2rem;
   font-size: 1.1rem;
@@ -25,7 +24,7 @@
   margin-right: auto;
 }
 
-.search-container {
+.searchContainer {
   display: flex;
   gap: 1rem;
   max-width: 1200px;
@@ -34,8 +33,8 @@
   padding: 0 1rem;
 }
 
-.search-input,
-.search-select {
+.searchInput,
+.searchSelect {
   flex: 1;
   min-width: 200px;
   padding: 0.8rem 1rem;
@@ -46,13 +45,30 @@
   color: var(--text-primary);
 }
 
+/* Submit btn  */
+.submitBtn {
+  padding: 0.8rem 2rem;
+  background-color: var(--section-bg);
+  color: var(--text-primary);
+  border-color: var(--primary-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.submitBtn:hover {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+}
+
 @media (max-width: 768px) {
-  .search-container {
+  .searchContainer {
     flex-direction: column;
   }
 
-  .search-section h1 {
+  .searchSection h1 {
     font-size: 2rem;
     padding-top: 2rem;
   }
 }
+

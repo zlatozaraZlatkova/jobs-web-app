@@ -1,0 +1,64 @@
+.trustedSection {
+  padding: 4rem 2rem;
+  background-color: var(--job-card-bg);
+  text-align: center;
+}
+
+.trustedContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trustedTitle {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+.trustedLogoGrid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.trustedLogoGrid img {
+  height: 60px;
+  width: 60px;
+}
+
+@media (max-width: 1024px) {
+  .trustedLogoGrid {
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .trustedSection {
+    padding: 3rem 1rem;
+  }
+
+  .trustedLogoGrid {
+    gap: 2rem;
+  }
+
+  .trustedTitle {
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .trustedSection {
+    padding: 2rem 1rem;
+  }
+
+  .trustedLogoGrid {
+    gap: 2rem 1.5rem;
+  }
+}

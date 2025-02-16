@@ -1,5 +1,11 @@
-/* Stats */
-.stats-container {
+.braceContainer {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+.statsContainer {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
@@ -9,7 +15,7 @@
   border-radius: 8px;
 }
 
-.stats-header {
+.statsHeader {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -21,16 +27,16 @@
   color: var(--pilpul-color);
 }
 
-.object-name {
+.objectName {
   color: var(--text-primary);
   font-weight: 500;
 }
 
-.total-count {
+.totalCount {
   color: var(--gray-600);
 }
 
-.circle-count {
+.circleCount {
   background-color: var(--primary-color);
   color: white;
   width: 50px;
@@ -45,17 +51,17 @@
   top: -10px;
 }
 
-.stats-content {
+.statsContent {
   margin-left: 20px;
 }
 
-.stats-row {
+.statsRow {
   display: flex;
   gap: 20px;
   margin-bottom: 15px;
 }
 
-.stats-item {
+.statsItem {
   flex: 1;
   display: flex;
   align-items: center;
@@ -66,17 +72,17 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.stats-item.full-width {
+.statsItem.full-width {
   flex: 2;
 }
 
-.tech-icon {
+.techIcon {
   width: 24px;
   height: 24px;
   object-fit: contain;
 }
 
-.property-name {
+.propertyName {
   color: var(--gray-600);
 }
 
@@ -85,27 +91,26 @@
   margin-left: auto;
 }
 
-.stats-footer {
+.statsFooter {
   color: var(--gray-600);
   margin-top: 20px;
 }
 
-/* Media Queries */
 @media screen and (max-width: 768px) {
-  .stats-container {
+  .statsContainer {
     padding: 15px;
   }
 
-  .stats-row {
+  .statsRow {
     flex-direction: column;
     gap: 10px;
   }
 
-  .stats-item.full-width {
+  .statsItem.fullWidth {
     flex: 1;
   }
 
-  .circle-count {
+  .circleCount {
     width: 40px;
     height: 40px;
     font-size: 1rem;
@@ -113,107 +118,96 @@
 }
 
 @media screen and (max-width: 480px) {
-  .stats-container {
+  .statsContainer {
     padding: 10px;
   }
 
-  .stats-header {
+  .statsHeader {
     flex-wrap: wrap;
     gap: 4px;
   }
 
-  .circle-count {
+  .circleCount {
     position: static;
     margin-left: auto;
   }
 
-  .stats-content {
+  .statsContent {
     margin-left: 10px;
   }
 
-  .stats-item {
+  .statsItem {
     padding: 8px;
   }
 
-  .tech-icon {
+  .techIcon {
     width: 20px;
     height: 20px;
   }
 }
 
-/* Brace */
-/* .brace-container {
-  max-width: 42rem;
-  margin: 0 auto;
-  padding: 20px;
-  position: relative;
-} */
-
-/* Additional CSS for icons  */
-.tech-icon {
+.techIcon {
   font-size: 20px;
   width: 24px;
   text-align: center;
   color: #666;
 }
 
-/* Icon-specific colors */
-.fa-java {
+.faJava {
   color: #007396;
 }
-.fa-microsoft {
+.faMicrosoft {
   color: #00a4ef;
 }
-.fa-php {
+.faPhp {
   color: #777bb3;
 }
-.fa-microchip {
+.faMicrochip {
   color: #00599c;
 }
-.fa-python {
+.faPython {
   color: #3776ab;
 }
-.fa-gem {
+.faGem {
   color: #cc342d;
 }
-.fa-golang {
+.faGolang {
   color: #00add8;
 }
-.fa-node-js {
+.faNodeJs {
   color: #339933;
 }
 
 @media screen and (max-width: 480px) {
-  .tech-icon {
+  .techIcon {
     font-size: 16px;
   }
 }
 
-/* second container  */
+/* Second container  */
 
-.circle-count.green {
+.circleCount.green {
   background-color: #e8f5e9;
   color: #4caf50;
 }
 
-/* Icon-specific colors */
-.js-icon {
+.jsIcon {
   background-color: #f7df1e;
   color: black;
   padding: 2px;
 }
-.fa-react {
+.faReact {
   color: #61dafb;
 }
-.fa-angular {
+.faAngular {
   color: #dd1b16;
 }
-.fa-vuejs {
+.faVuejs {
   color: #42b883;
 }
 
 @media screen and (max-width: 480px) {
-  .stats-item .count {
+  .statsItem .count {
     font-size: 0.9rem;
   }
 }

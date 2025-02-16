@@ -1,37 +1,4 @@
-/* Featured Jobs Section */
-.featured-jobs {
-  background-color: var(--section-bg);
-  padding: 4rem 2rem;
-}
-
-.section-title {
-  color: var(--text-primary);
-  font-size: 2rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.jobs-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  margin-bottom: 3rem;
-}
-
-@media (min-width: 768px) {
-  .jobs-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .jobs-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.job-card {
+.jobCard {
   background-color: var(--job-card-bg);
   border: 1px solid var(--border-color);
   border-radius: 0.75rem;
@@ -39,27 +6,27 @@
   transition: all 0.2s ease;
 }
 
-.job-card:hover {
+.jobCard:hover {
   border-color: var(--gray-300);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: translateY(-2px);
 }
 
-.job-type {
+.jobType {
   color: var(--white-color);
   background-color: var(--pilpul-color);
   font-size: 0.875rem;
   padding: 0.3rem;
 }
 
-.job-title {
+.jobTitle {
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0.5rem 0;
 }
 
-.job-description {
+.jobDescription {
   color: var(--gray-600);
   margin-bottom: 1.5rem;
   display: -webkit-box;
@@ -68,25 +35,25 @@
   overflow: hidden;
 }
 
-.job-details {
+.jobDetails {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.job-location {
+.jobLocation {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   color: var(--red-color);
 }
 
-.job-salary {
+.jobSalary {
   font-weight: 500;
   color: var(--gray-900);
 }
 
-.job-link {
+.jobLink {
   color: var(--gray-900);
   text-decoration: none;
   display: flex;
@@ -95,6 +62,6 @@
   font-weight: 500;
 }
 
-.job-link:hover {
+.jobLink:hover {
   color: var(--primary-color);
 }

@@ -1,25 +1,31 @@
-export default function SearchBar() {
-    return(
-        <>
-                <section className="search-section">
-          <h1>GET HIRED &amp; BUILD A STRONG TEAM</h1>
-          <p>Advance your career and build a strong, successful team.</p>
-          <div className="search-container">
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Position"
-            />
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Location"
-            />
-            <input type="text" className="search-input" placeholder="Salary" />
+import styles from "./SearchBar.module.css";
 
-            <button className="submit-btn">SEARCH BY STACK</button>
-          </div>
-        </section>
-        </>
-    )
+export default function SearchBar() {
+  return (
+    <>
+      <section className={styles.searchSection}>
+        <h1>GET HIRED &amp; BUILD A STRONG TEAM</h1>
+        <p>Advance your career and build a strong, successful team.</p>
+        <div className={styles.searchContainer}>
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Position"
+          />
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Location"
+          />
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Salary"
+          />
+
+          <button className={styles.submitBtn}>SEARCH BY STACK</button>
+        </div>
+      </section>
+    </>
+  );
 }

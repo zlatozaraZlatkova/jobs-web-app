@@ -1,32 +1,38 @@
+import styles from "./Navigation.module.css";
+
 export default function Navigation() {
-    return(
-        <>
-         <nav className="navbar">
-        <div className="navbar-container">
-          <div className="nav-left">
+  return (
+    <>
+      <nav className={styles.navbar}>
+        <div className={styles.navbarContainer}>
+          <div className={styles.navLeft}>
             <h1>
               <a href="index.html">
-                <span className="braces left-brace">{"{"}</span>
+                <span className="braces left-brace">
+                  {"{"}
+                </span>
                 JobLink
-                <span className="braces right-brace">{"}"}</span>
+                <span className="braces right-brace">
+                  {"}"}
+                </span>
               </a>
             </h1>
           </div>
-          <div className="nav-right">
-            <label className="theme-toggle" title="Toggle dark mode">
+          <div className={styles.navRight}>
+            <label className={styles.themeToggle} title="Toggle dark mode">
               <input
                 type="checkbox"
                 id="theme-toggle"
                 aria-label="Toggle dark mode"
               />
-              <span className="slider" />
+              <span className={styles.slider} />
             </label>
-            <button className="mobile-menu-btn" aria-label="Toggle menu">
+            <button className={styles.mobileMenuBtn} aria-label="Toggle menu">
               <span />
               <span />
               <span />
             </button>
-            <ul className="nav-links">
+            <ul className={styles.navLinks}>
               <li>
                 <a href="jobs.html">Tech Jobs</a>
               </li>
@@ -40,12 +46,12 @@ export default function Navigation() {
                 <a href="register.html">Register</a>
               </li>
               <li>
-                <button className="login-btn">Login</button>
+                <button className={styles.loginBtn}>Login</button>
               </li>
             </ul>
           </div>
         </div>
       </nav>
-        </>
-    )
+    </>
+  );
 }
