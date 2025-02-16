@@ -1,12 +1,4 @@
-/* Button group */
-.button-group {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
 /* Buttons */
-
 .btn {
   display: inline-block;
   background: var(--bg-secondary);

@@ -87,49 +87,8 @@ img {
   width: 100%;
 }
 
-.round-img {
-  border-radius: 50%;
-}
 
-.line {
-  height: 1px;
-  background: #ccc;
-  margin: 1.5rem 0;
-}
-
-/* !bg- */
-
-.bg-primary {
-  background: var(--primary-color);
-  color: #fff;
-}
-
-.bg-light {
-  border: #ccc solid 1px;
-}
-
-.bg-dark {
-  background: var(--dark-color);
-  color: #fff;
-}
-
-.bg-danger {
-  background: var(--danger-color);
-  color: #fff;
-}
-
-.bg-success {
-  background: var(--success-color);
-  color: #fff;
-}
-
-.bg-white {
-  background: #fff;
-  color: var(--dark-color);
-  border: #ccc solid 1px;
-}
-
-/* !Button group */
+/* Button group */
 .button-group {
   display: flex;
   gap: 1rem;

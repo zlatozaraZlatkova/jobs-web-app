@@ -72,7 +72,13 @@
   }
 }
 
+
+
 @media (max-width: 768px) {
+  .navbar {
+    padding: 0.7rem 1rem;
+  }
+
   .mobile-menu-btn {
     display: block;
   }
@@ -118,8 +124,3 @@
   }
 }
 
-@media (max-width: 768px) {
-  .navbar {
-    padding: 0.7rem 1rem;
-  }
-}

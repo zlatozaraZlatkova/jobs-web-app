@@ -1,4 +1,11 @@
 /* Braces styles */
+.brace-container {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
 .braces {
   color: var(--primary-color);
   display: inline-block;
@@ -13,3 +20,5 @@
 .right-brace {
   margin-left: 0.1em;
 }
+
+

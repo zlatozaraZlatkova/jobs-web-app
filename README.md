@@ -159,9 +159,28 @@ Devjobs web app/
 │       └── relationship-models-dev-jobs.png
 ├── client/
 │   └── public/           
-│       ├── src/
-|       |   ├── 
-|       |    styles/
+│   └── src/
+│   |    ├── components/
+│   |    │   ├── FeaturedJobSection/
+│   |    │   │   ├── FeaturedJobSection.jsx
+│   |    │   │   └── jobCard/
+│   |    │   │       └── JobCard.jsx
+│   |    │   │
+│   |    │   ├── footer/
+│   |    │   │   └── Footer.jsx
+│   |    │   │
+│   |    │   ├── navigation/
+│   |    │   │   └── Navigation.jsx
+│   |    │   │
+│   |    │   ├── searchBar/
+│   |    │   │   └── SearchBar.jsx
+│   |    │   │
+│   |    │   └── trustedCompaniesSection/
+│   |    │       ├── TrustedCompaniesSection.jsx
+│   |    │       └── companyLogo/
+│   |    │           └── CompanyLogo.jsx
+│   |    │
+│   └── styles/
 |       |    ├── base/
 |       |    │   ├── globals.css        
 |       |    │   ├── typography.css     
@@ -437,19 +456,17 @@ Required: `id=[string]`
 
 <details>
 <summary><h5>5.4.1. Main Dependencies</h5></summary>
-<details>
-<summary><h6>5.4.1.1 Client</h6><summary>
-
+  
+  **Client**
   - `axios`: HTTP client for API requests
   - `dotenv`: Environment variables management
   - `react`: JavaScript library for creating user interfaces
   - `react-dom`: serves as the entry point to the DOM and server renderers for React
   - `react-icons`: Provides popular icon sets as React components
   - `react-router-dom`: Enables routing and navigation in React applications
-  </details>
-  <details>
-  <summary><h6>5.4.1.2 Server</h6><summary>
+ 
   
+   **Server**
     - `express`: Web framework for Node.js
     - `mongoose`: MongoDB object modeling tool
     - `jsonwebtoken`: JWT implementation for authentication
@@ -461,7 +478,6 @@ Required: `id=[string]`
     - `cookie-parser`: Cookie parsing middleware
     - `cors`: Connect/Express middleware
     - `express-rate-limit`: Limit repeated requests to public APIs
-  </details>
 </details>
 
 <details>

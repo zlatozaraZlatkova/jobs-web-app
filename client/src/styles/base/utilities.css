@@ -58,6 +58,37 @@
   margin: 3rem 0;
 }
 
+
+.bg-primary {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.bg-light {
+  border: #ccc solid 1px;
+}
+
+.bg-dark {
+  background: var(--dark-color);
+  color: #fff;
+}
+
+.bg-danger {
+  background: var(--danger-color);
+  color: #fff;
+}
+
+.bg-success {
+  background: var(--success-color);
+  color: #fff;
+}
+
+.bg-white {
+  background: #fff;
+  color: var(--dark-color);
+  border: #ccc solid 1px;
+}
+
 /* Other utilities */
 .round-img {
   border-radius: 50%;

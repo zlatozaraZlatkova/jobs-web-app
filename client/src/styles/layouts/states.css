@@ -142,12 +142,12 @@
 }
 
 /* Brace */
-.brace-container {
+/* .brace-container {
   max-width: 42rem;
   margin: 0 auto;
   padding: 20px;
   position: relative;
-}
+} */
 
 /* Additional CSS for icons  */
 .tech-icon {
