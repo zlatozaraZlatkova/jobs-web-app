@@ -1,57 +1,78 @@
 import styles from "./Navigation.module.css";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navigation() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    navigate("/");
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <>
-      <nav className={styles.navbar}>
-        <div className={styles.navbarContainer}>
-          <div className={styles.navLeft}>
-            <h1>
-              <a href="index.html">
-                <span className="braces left-brace">
-                  {"{"}
-                </span>
-                JobLink
-                <span className="braces right-brace">
-                  {"}"}
-                </span>
-              </a>
-            </h1>
-          </div>
-          <div className={styles.navRight}>
-            <label className={styles.themeToggle} title="Toggle dark mode">
-              <input
-                type="checkbox"
-                id="theme-toggle"
-                aria-label="Toggle dark mode"
-              />
-              <span className={styles.slider} />
-            </label>
-            <button className={styles.mobileMenuBtn} aria-label="Toggle menu">
-              <span />
-              <span />
-              <span />
-            </button>
-            <ul className={styles.navLinks}>
-              <li>
-                <a href="jobs.html">Tech Jobs</a>
-              </li>
-              <li>
-                <a href="profiles.html">Hire Talent</a>
-              </li>
-              <li>
-                <a href="post.html">Forum</a>
-              </li>
-              <li>
-                <a href="register.html">Register</a>
-              </li>
-              <li>
-                <button className={styles.loginBtn}>Login</button>
-              </li>
-            </ul>
-          </div>
+    <nav className={styles.navbar}>
+      <div className={styles.navbarContainer}>
+        <div className={styles.navLeft}>
+          <h1>
+            <Link to="/">
+              <span className="braces left-brace">{"{"}</span>
+              JobLink
+              <span className="braces right-brace">{"}"}</span>
+            </Link>
+          </h1>
         </div>
-      </nav>
-    </>
+
+        <div className={styles.navRight}>
+          {/* Theme Toggle */}
+          <label className={styles.themeToggle} title="Toggle dark mode">
+            <input
+              type="checkbox"
+              id="theme-toggle"
+              aria-label="Toggle dark mode"
+            />
+            <span className={styles.slider} />
+          </label>
+
+          {/* Mobile Menu Button */}
+          <button
+            className={styles.mobileMenuBtn}
+            aria-label="Toggle menu"
+            aria-expanded={isMobileMenuOpen}
+            onClick={toggleMobileMenu}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+
+          {/* Navigation Links */}
+          <ul className={`${styles.navLinks} ${isMobileMenuOpen ? styles.active : ""}`}>
+            <li><Link to="/jobs">Tech Jobs</Link></li>
+            <li><Link to="/profiles">Hire Talent</Link></li>
+            <li><Link to="/posts">Forum</Link></li>
+    
+            {isLoggedIn ? (
+              <li>
+                <button onClick={handleLogout} className={styles.loginBtn}>
+                  Logout
+                </button>
+              </li>) : (
+              <>
+                <li><Link to="/register">Register</Link></li>
+                <li><Link to="/login" className={styles.loginBtn}>Login</Link></li>
+              </>
+            )}
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 }
+

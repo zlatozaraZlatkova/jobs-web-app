@@ -3,7 +3,7 @@
 :root {
   /* Core Brand Colors */
   --primary-color: #3e73fe;
-  --dark-primary-color: #013BD5;
+  --dark-primary-color: #013bd5;
   --dark-color: #343a40;
   --white-color: #ffff;
   --light-color: #f4f4f4;
@@ -43,6 +43,9 @@
   --gray-700: #374151;
   --gray-800: #1f2937;
   --gray-900: #111827;
+
+  /* Calendar Icon Styles */
+  --calendar-icon-invert: 0; /* 0 for dark icon in light mode */
 }
 
 /* Dark Theme Colors */
@@ -68,9 +71,12 @@
   --gray-700: #e2e8f0;
   --gray-800: #f1f5f9;
   --gray-900: #f8fafc;
+
+  /* Calendar Icon Styles */
+  --calendar-icon-invert: 1; /* 1 for light icon in dark mode */
 }
 
-/* Reset */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -95,6 +101,12 @@ img {
   height: 1px;
   background: #ccc;
   margin: 1.5rem 0;
+}
+
+/* Calendar Icon Styles */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(var(--calendar-icon-invert));
+  cursor: pointer;
 }
 
 /* Overlay */
@@ -177,6 +189,35 @@ img {
   border: #ccc solid 1px;
 }
 
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn i {
+  font-size: 1.1rem;
+}
+
+.action-btn:hover {
+  background-color: var(--bg-secondary);
+  transform: translateY(-1px);
+}
+
 /* Brace */
 .brace-container {
   max-width: 42rem;
@@ -200,6 +241,21 @@ img {
   margin-left: 0.1em;
 }
 
+/* Main Container */
+.dashboard-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 8rem 1rem;
+}
+
+/* login-container */
+.register-container,
+.login-container {
+  max-width: 530px;
+  margin: auto;
+  overflow: hidden;
+  padding: 8rem 2rem;
+}
 
 /* Forms */
 .form .form-group {

@@ -1,22 +1,23 @@
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import "./styles/index.css";
 
-import Navigation from "./components/navigation/Navigation";
-import SearchBar from "./components/searchBar/SearchBar";
-import CategoriesJobSection from "./components/categoriesJobSection/CategoriesJobSection";
-import FeaturedJobSection from "./components/FeaturedJobSection/FeaturedJobSection";
-import TrustedCompaniesSection from "./components/trustedCompaniesSection/TrustedCompaniesSection";
-import Footer from "./components/footer/Footer";
+import HomePage from "./components/pages/HomePage";
+import RegisterPage from "./components/pages/RegisterPage";
+import LoginPage from "./components/pages/LoginPage";
+import MainLayout from "./components/mainLayout/MainLayout";
 
 function App() {
   return (
-    <>
-      <Navigation />
-      <SearchBar />
-      <CategoriesJobSection />
-      <FeaturedJobSection />
-      <TrustedCompaniesSection />
-      <Footer />
-    </>
+    <BrowserRouter>
+      <MainLayout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </MainLayout>
+    </BrowserRouter>
   );
 }
 

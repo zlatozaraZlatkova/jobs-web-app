@@ -1,0 +1,37 @@
+import { Link } from "react-router-dom";
+
+// todo use react icons
+
+export default function Register() {
+  return (
+    <>
+      <section className="register-container">
+        <p className="lead">
+          <i className="fas fa-user" /> Create Your Account
+        </p>
+        <form className="form">
+          <div className="form-group">
+            <input type="text" placeholder="Name" name="name" />
+          </div>
+          <div className="form-group">
+            <input type="email" placeholder="Email Address" name="email" />
+          </div>
+          <div className="form-group">
+            <input type="password" placeholder="Password" name="password" />
+          </div>
+          <div className="form-group">
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              name="password2"
+            />
+          </div>
+          <input type="submit" className="btn btn-primary" value="Register" />
+        </form>
+        <p className="my-1">
+          Already have an account? <Link to={"/login"}>Login</Link>
+        </p>
+      </section>
+    </>
+  );
+}
