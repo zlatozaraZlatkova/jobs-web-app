@@ -81,3 +81,7 @@
   border: #ccc solid 1px;
 }
 
+/* Width */
+.w-full {
+  width: 100%;
+}

@@ -5,10 +5,11 @@ import { Link } from "react-router-dom";
 export default function Login() {
   return (
     <>
-      <section className="login-container">
-        <p className="lead">
+      <section className="container">
+        <div  className="login-container">
+        <h3 className="lead">
           <i className="fas fa-user" /> Sign Into Your Account
-        </p>
+        </h3>
         <form className="form">
           <div className="form-group">
             <input type="email" placeholder="Email Address" name="email" />
@@ -16,12 +17,14 @@ export default function Login() {
           <div className="form-group">
             <input type="password" placeholder="Password" name="password" />
           </div>
-          <input type="submit" className="btn btn-primary" value="Login" />
+          <input type="submit" className="btn btn-primary w-full" value="Login" />
         </form>
-        <p className="my-1">
+        <p className="my-1 text-center">
           Don&apos;t have an account? <Link to={"/register"}>Register</Link>
         </p>
-      </section>
+        </div>
+      </section> 
+   
     </>
   );
 }

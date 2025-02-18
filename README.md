@@ -158,9 +158,28 @@ Devjobs web app/
 │    images/
 │       └── relationship-models-dev-jobs.png
 ├── client/
-│   └── public/           
+│   └── public/
+│   |    │             
 │   └── src/
 │   |    ├── components/
+│   |    │   ├── mainLayout/
+│   |    │   |    └──  MainLayout.jsx 
+|   |    |   |
+│   |    │   ├── pages/
+│   |    │   |   ├── CreateEmployeeProfilePage.jsx 
+│   |    │   |   ├── HomePage.jsx 
+│   |    │   |   ├── LoginPage.jsx 
+│   |    │   |   ├── RegisterPage.jsx 
+|   |    |   | 
+│   |    │   ├── auth/
+│   |    │   │    ├── Login.jsx
+│   |    │   │    └── Register.jsx
+│   |    │   │
+│   |    │   ├── employee/
+│   |    │   │   ├── CreateProfile.jsx
+│   |    │   │   ├── AddExperience.jsx
+│   |    │   │   ├── AddEducation.jsx
+│   |    │   │
 │   |    │   ├── FeaturedJobSection/
 │   |    │   │   ├── FeaturedJobSection.jsx
 │   |    │   │   ├── FeaturedJobSection.module.css
@@ -187,6 +206,11 @@ Devjobs web app/
 │   |    │           ├── CompanyLogo.jsx
 │   |    │           └── CompanyLogo.module.css
 │   |    │
+|   |     
+|   |     
+|   |     
+|   |
+│   |      
 │   └── styles/
 |       |    ├── base/
 |       |    │   ├── globals.css        

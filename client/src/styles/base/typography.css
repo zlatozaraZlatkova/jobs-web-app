@@ -6,7 +6,8 @@ html {
 body,
 input,
 textarea,
-button {
+button,
+table {
   font: inherit;
 }
 

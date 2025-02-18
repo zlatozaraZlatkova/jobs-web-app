@@ -5,6 +5,9 @@ import HomePage from "./components/pages/HomePage";
 import RegisterPage from "./components/pages/RegisterPage";
 import LoginPage from "./components/pages/LoginPage";
 import MainLayout from "./components/mainLayout/MainLayout";
+import CreateProfilePage from "./components/pages/CreateProfilePage";
+
+
 
 function App() {
   return (
@@ -13,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="/profile/create" element={<CreateProfilePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>

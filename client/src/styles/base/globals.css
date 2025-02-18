@@ -76,7 +76,6 @@
   --calendar-icon-invert: 1; /* 1 for light icon in dark mode */
 }
 
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -132,7 +131,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   gap: 1rem;
   justify-content: center;
 }
-
 
 .btn {
   display: inline-block;
@@ -241,20 +239,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-left: 0.1em;
 }
 
-/* Main Container */
+/* Containers */
 .dashboard-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 8rem 1rem;
 }
 
-/* login-container */
 .register-container,
 .login-container {
   max-width: 530px;
-  margin: auto;
+  margin: 8rem auto;
   overflow: hidden;
-  padding: 8rem 2rem;
+  background-color: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
 }
 
 /* Forms */
@@ -276,9 +276,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .form textarea {
   display: block;
   width: 100%;
-  padding: 0.4rem;
-  font-size: 1.2rem;
-  border: 1px solid #ccc;
+  flex: 1;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: var(--job-card-bg);
+  color: var(--text-primary);
 }
 
 .form input[type="submit"],
@@ -400,4 +404,339 @@ button {
   background: #fff;
   color: var(--dark-color);
   border: #ccc solid 1px;
+}
+
+
+/* Profile info */
+.container {
+  max-width: 800px;
+  margin: 8rem auto;
+  background-color: var(--job-card-bg);
+}
+
+/* Progress Steps */
+.progress-steps {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.progress-line {
+  position: absolute;
+  top: 24px;
+  left: 50px;
+  right: 50px;
+  height: 2px;
+  background: #ccc;
+  z-index: 1;
+}
+
+.progress-line-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+/* Step Styles */
+.step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.step-circle {
+  width: 48px;
+  height: 48px;
+  background: var(--white-color);
+  border: 2px solid #e5e7eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  position: relative;
+}
+
+.step.completed .step-circle {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--white-color);
+}
+
+.step.active .step-circle {
+  border-color: var(--primary-color);
+  color:  var(--primary-color);
+}
+
+.step-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.step.completed .step-label,
+.step.active .step-label {
+  color:  var(--primary-color);
+  color: var(--white-color);
+}
+
+
+/* Form Styles */
+.form-card {
+  border-radius: 8px;
+  padding: 32px;
+  margin-top: 24px;
+  background-color: var(--section-bg);
+  color: var(--text-primary);
+}
+
+.form-title {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 1.2rem;
+ 
+}
+
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-grid-full {
+  grid-column: 1 / -1;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+/* Form Elements */
+label {
+  display: block;
+  font-size: 14px;
+  color: var(--gray-600);
+  margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="date"],
+textarea {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: var(--gray-600);
+  background-color: var(--white-color);
+  transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="date"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--gray-600);
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.required::after {
+  content: "*";
+  color: var(--gray-600);
+  margin-left: 4px;
+}
+
+/* Checkbox Styles */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.checkbox-group label {
+  margin-bottom: 0;
+}
+
+/* Button Styles */
+.button-group,
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.create-profile-btn,
+.continue-button,
+.btn-save {
+  color: var(--white-color);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.create-profile-btn,
+.continue-button  {
+  background-color: var(--primary-color);
+}
+
+.btn-save {
+  background-color: var(--success-color);
+  opacity: 0.8;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--gray-600);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+/* Table Styles */
+.experience-table,
+.education-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+.experience-table th,
+.education-table th {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid #e5e7eb;
+  color: var(--gray-600);
+  font-weight: 500;
+}
+
+.experience-table td,
+.education-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  color: var(--gray-600);
+}
+
+.action-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit,
+.btn-delete {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-edit {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.btn-delete {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* Add Button Styles */
+.add-experience-button,
+.add-education-button {
+  width: 100%;
+  padding: 16px;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gray-600);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.add-experience-button:hover,
+.add-education-button:hover {
+  border-color: #999;
+  color: #333;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
+  }
+
+  .form-card {
+    padding: 24px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .progress-steps {
+    margin-bottom: 30px;
+  }
+
+  .step-circle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .step-label {
+    font-size: 12px;
+  }
+
+  .button-group,
+  .navigation-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .continue-button {
+    margin-left: 0;
+  }
+
+  .experience-table,
+  .education-table {
+    display: block;
+    overflow-x: auto;
+  }
 }
