@@ -11,28 +11,54 @@ export default function CreateProfilePage() {
 
   return (
     <>
+
       <div className="container">
-        <>
-          {/* Progress Steps */}
-          <div className="progress-steps">
-            <div className="progress-line">
-              <div className="progress-line-fill" />
-            </div>
-            <div className="step active">
-              <div className="step-circle">1</div>
-              <div className="step-label">Profile Info</div>
-            </div>
-            <div className="step">
-              <div className="step-circle">2</div>
-              <div className="step-label">Experience</div>
-            </div>
-            <div className="step">
-              <div className="step-circle">3</div>
-              <div className="step-label">Education</div>
-            </div>
+        <div className="progress-steps">
+
+          <div className="progress-line">
+            <div className="progress-line-fill" />
           </div>
-        </>
-        
+
+          {/* Step 1 */}
+          <div className={`step ${hasProfile ? "complete" : "active"}`}>
+            <div className="step-circle">
+              {hasProfile ? (
+                <span className="step-number">✓</span>
+              ) : (
+                <span className="step-number">1</span>
+              )}
+            </div>
+            <div className="step-label">Profile Info</div>
+          </div>
+
+          {/* Step 2 */}
+          <div
+            className={`step ${hasExperience ? "complete" : hasProfile ? "active" : ""}`}>
+            <div className="step-circle">
+              {hasExperience ? (
+                <span className="step-number">✓</span>
+              ) : (
+                <span className="step-number">2</span>
+              )}
+            </div>
+            <div className="step-label">Experience</div>
+          </div>
+
+          {/* Step 3 */}
+          <div
+            className={`step ${hasEducation ? "complete" : hasExperience ? "active" : ""}`}>
+            <div className="step-circle">
+              {hasEducation ? (
+                <span className="step-number">✓</span>
+              ) : (
+                <span className="step-number">3</span>
+              )}
+            </div>
+            <div className="step-label">Education</div>
+          </div>
+        </div>
+
+
         {/* Forms layout */}
         <div>
           {!hasProfile && (
