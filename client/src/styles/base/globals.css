@@ -482,8 +482,7 @@ button {
 
 .step.completed .step-label,
 .step.active .step-label {
-  color:  var(--primary-color);
-  color: var(--white-color);
+  color: var(--text-secondary);
 }
 
 
@@ -740,3 +739,5 @@ textarea {
     overflow-x: auto;
   }
 }
+
+
