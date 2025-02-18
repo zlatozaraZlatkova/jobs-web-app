@@ -5,8 +5,8 @@ import CreateProfile from "../employee/createProfile/CreateProfile";
 import { useState } from "react";
 
 export default function CreateProfilePage() {
-  const [hasProfile, setHasProfile] = useState(false);
-  const [hasExperience, setHasExperience] = useState(false);
+  const [hasProfile, setHasProfile] = useState(true);
+  const [hasExperience, setHasExperience] = useState(true);
   const [hasEducation, setHasEducation] = useState(false);
 
   return (
@@ -16,11 +16,14 @@ export default function CreateProfilePage() {
         <div className="progress-steps">
 
           <div className="progress-line">
-            <div className="progress-line-fill" />
+          {!hasExperience ? (
+              <div className="progress-line-fill" style={{width: hasProfile ? "50%": "0%"}}></div>
+            ): (<div className="progress-line-fill" style={{width: hasExperience ? "100%": "50%"}}></div>)}
+            
           </div>
 
           {/* Step 1 */}
-          <div className={`step ${hasProfile ? "complete" : "active"}`}>
+          <div className={`step ${hasProfile ? "completed" : "active"}`}>
             <div className="step-circle">
               {hasProfile ? (
                 <span className="step-number">✓</span>
@@ -33,7 +36,7 @@ export default function CreateProfilePage() {
 
           {/* Step 2 */}
           <div
-            className={`step ${hasExperience ? "complete" : hasProfile ? "active" : ""}`}>
+            className={`step ${hasExperience ? "completed" : hasProfile ? "active" : ""}`}>
             <div className="step-circle">
               {hasExperience ? (
                 <span className="step-number">✓</span>
@@ -46,7 +49,7 @@ export default function CreateProfilePage() {
 
           {/* Step 3 */}
           <div
-            className={`step ${hasEducation ? "complete" : hasExperience ? "active" : ""}`}>
+            className={`step ${hasEducation ? "completed" : hasExperience ? "active" : ""}`}>
             <div className="step-circle">
               {hasEducation ? (
                 <span className="step-number">✓</span>
