@@ -166,7 +166,8 @@ Devjobs web app/
 │   |    │   |    └──  MainLayout.jsx 
 |   |    |   |
 │   |    │   ├── pages/
-│   |    │   |   ├── CreateEmployeeProfilePage.jsx 
+│   |    │   |   ├── CreateCompanyProfilePage.jsx 
+│   |    │   |   ├── CreateProfilePage.jsx 
 │   |    │   |   ├── HomePage.jsx 
 │   |    │   |   ├── LoginPage.jsx 
 │   |    │   |   ├── RegisterPage.jsx 
@@ -179,6 +180,11 @@ Devjobs web app/
 │   |    │   │   ├── CreateProfile.jsx
 │   |    │   │   ├── AddExperience.jsx
 │   |    │   │   ├── AddEducation.jsx
+│   |    │   │
+│   |    │   │
+│   |    │   ├── employer/
+│   |    │   │   ├── CreateProfile.jsx
+│   |    │   │
 │   |    │   │
 │   |    │   ├── FeaturedJobSection/
 │   |    │   │   ├── FeaturedJobSection.jsx

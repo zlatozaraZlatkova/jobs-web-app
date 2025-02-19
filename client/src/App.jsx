@@ -6,6 +6,7 @@ import RegisterPage from "./components/pages/RegisterPage";
 import LoginPage from "./components/pages/LoginPage";
 import MainLayout from "./components/mainLayout/MainLayout";
 import CreateProfilePage from "./components/pages/CreateProfilePage";
+import CreateCompanyProfilePage from "./components/pages/CreateCompanyProfilePage";
 
 
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<Navigate to="/" replace />} />
           <Route path="/profile/create" element={<CreateProfilePage />} />
+          <Route path="/company/profile/create" element={<CreateCompanyProfilePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
