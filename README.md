@@ -186,12 +186,18 @@ Devjobs web app/
 |   │    │   ├── createProfile/
 |   │    │   |    └── CreateProfile.jsx
 │   |    │   │
-|   │    │   └── detailsProfile/
+|   │    │   ├── detailsProfile/
 |   │    │   |   ├── BasicProfileCard.jsx
 |   │    │   |   ├── EducationCard.jsx
 |   │    │   |   ├── ExperienceCard.jsx
 |   │    │   |   ├── GitHubRepo.jsx
 |   │    │   |   └── ProfileCard.module.css
+│   |    │   │
+|   │    │   └── editProfile/
+|   │    │   |   ├── BasicProfileEdit.jsx
+|   │    │   |   ├── EducationEdit.jsx
+|   │    │   |   ├── ExperienceEdit.jsx
+|   │    │   |   └── EditProfile.module.css
 │   |    │   │
 │   |    │   │
 │   |    │   ├── employer/
@@ -224,11 +230,13 @@ Devjobs web app/
 │   |    │           ├── CompanyLogo.jsx
 │   |    │           └── CompanyLogo.module.css
 │   |    │
-|   |     
-|   |     
-|   |     
-|   |
-│   |      
+│   └── utils/
+|   |    ├── formatDate.js
+|   |    ├── stringUtils.js        
+│   |    
+│   |    
+│   |    
+│   |    
 │   └── styles/
 |       |    ├── base/
 |       |    │   ├── globals.css        

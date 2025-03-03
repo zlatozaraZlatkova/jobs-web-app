@@ -41,7 +41,7 @@ export default function ExperienceCard() {
   };
 
 
-  const handleSaveExperience = async (updatedData) => {
+  const handleSaveExperience = (updatedData) => {
 
     const updatedExperiences = experiences.map(exp => {
       if (exp.id === currentExperience.id) {
@@ -53,14 +53,25 @@ export default function ExperienceCard() {
       } else {
         return exp;
       }
-      
+
     });
     setExperiences(updatedExperiences);
 
 
   };
 
+  const handleRemoveExperience = (experienceId) => {
+    const isConfirmed = window.confirm("Are you sure you want to remove this experience?");
 
+    if (isConfirmed) {
+      const remainingExperiences = experiences.filter(experience => experience.id !== experienceId);
+      setExperiences(remainingExperiences);
+    }
+  }
+
+  if (experiences.length === 0) {
+    return null; 
+  }
 
   return (
     <>
@@ -85,13 +96,22 @@ export default function ExperienceCard() {
               {experience.description}
             </p>
             {/* isOwner button */}
-            <button
-              className={styles.editProfileBtn}
-              type="button"
-              onClick={() => handleEditClick(experience)}
-            >
-              Edit
-            </button>
+            <div className={styles.buttonGroup}>
+              <button
+                className={styles.editProfileBtn}
+                type="button"
+                onClick={() => handleEditClick(experience)}
+              >
+                Edit
+              </button>
+              <button
+                className={styles.removeExperienceBtn}
+                type="button"
+                onClick={() => handleRemoveExperience(experience.id)}
+              >
+                Remove
+              </button>
+            </div>
           </div>
         ))}
       </div>

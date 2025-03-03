@@ -110,9 +110,10 @@
     padding: 24px;
   }
 
-  .editProfileBtn {
-    margin-left: 0;
-    margin-top: 16px;
+  .editProfileBtn, 
+  .removeExperienceBtn {
+    /* margin-left: 0; */
+    margin-top: 1rem;
   }
 
   .contactLink {
@@ -212,23 +213,47 @@
   font-weight: 500;
 }
 
-/* Edit Button */
+/* Edit/Remove Buttons */
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
 .editProfileBtn {
   background-color: var(--primary-color);
   color: var(--white-color);
   border: none;
+  padding: 0.5rem 1rem;
   border-radius: 6px;
-  padding: 10px 20px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  margin-left: auto;
-  display: block;
+  transition: all 0.2s;
 }
 
 .editProfileBtn:hover {
   background-color: var(--primary-color);
 }
+
+
+
+.removeExperienceBtn {
+  background: var(--red-background);
+  color: var(--danger-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.removeExperienceBtn:hover {
+  background: var(--red-background);
+}
+
 
 /* GitHub Repos Section */
 .reposSection {

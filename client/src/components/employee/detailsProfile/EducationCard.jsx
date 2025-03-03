@@ -30,7 +30,7 @@ export default function EducationCard() {
   };
 
 
-  const handleSaveEducation = async (updatedData) => {
+  const handleSaveEducation = (updatedData) => {
     const updatedEducations = educations.map(exp => {
       if (exp.id === currentEducation.id) {
         return {
@@ -49,12 +49,26 @@ export default function EducationCard() {
 
   };
 
+  const handleRemoveEducation = (educationId) => {
+    const isConfirmed = window.confirm("Are you sure you want to remove this education?");
+
+    if (isConfirmed) {
+      const remainingEducations = educations.filter(education => education.id !== educationId);
+      setEducations(remainingEducations);
+    }
+  }
+
+  if (educations.length === 0) {
+    return null; 
+  }
+
 
   return (
     <>
+    
       <div className={styles.sectionCard}>
         <h2 className={styles.sectionTitle}>Education</h2>
-
+       
         {educations.map((education) => (
           <div key={education.id} className={styles.timelineItem}>
             <div className={styles.timelineHeader}>
@@ -69,13 +83,22 @@ export default function EducationCard() {
             </div>
             <p className={styles.timelineDescription}>{education.description}</p>
             {/* isOwner button */}
-            <button
-              className={styles.editProfileBtn}
-              type="button"
-              onClick={() => handleEditClick(education)}
-            >
-              Edit
-            </button>
+            <div className={styles.buttonGroup}>
+              <button
+                className={styles.editProfileBtn}
+                type="button"
+                onClick={() => handleEditClick(education)}
+              >
+                Edit
+              </button>
+              <button
+                className={styles.removeExperienceBtn}
+                type="button"
+                onClick={() => handleRemoveEducation(education.id)}
+              >
+                Remove
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -89,6 +112,9 @@ export default function EducationCard() {
           onSave={handleSaveEducation}
         />
       )}
+
+   
     </>
+  
   );
 }

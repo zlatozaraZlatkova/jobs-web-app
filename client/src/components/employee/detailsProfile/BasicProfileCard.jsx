@@ -65,7 +65,7 @@ export default function BasicProfileCard() {
             )}
           </div>
         </div>
-
+      
         <button
           className={styles.editProfileBtn}
           type="button"

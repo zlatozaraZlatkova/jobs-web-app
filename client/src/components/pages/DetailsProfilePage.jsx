@@ -8,11 +8,11 @@ export default function DetailsProfilePage() {
     <>
       <div className="container">
         <BasicProfileCard />
+        <GitHubRepo/>
         <div className="content-grid">
           <ExperienceCard />
           <EducationCard />
         </div>
-        <GitHubRepo/>
       </div>
     </>
   );
