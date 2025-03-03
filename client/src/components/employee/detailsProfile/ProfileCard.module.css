@@ -1,0 +1,338 @@
+/* Profile Header */
+.profileHeader {
+  background-color: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 32px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+
+}
+
+.profileAvatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.profileInfo {
+  flex-grow: 1;
+}
+
+.profileName {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.profileTitle {
+  font-size: 16px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.profileLocation {
+  font-size: 14px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.profileBio {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.editProfileBtn {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+/* Skills */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.skillTag {
+  color: var(--white-color);
+  background-color: var(--pilpul-color);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+}
+
+/* Contact Links */
+.contactLink {
+  display: flex;
+  gap: 16px;
+}
+
+.contactLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+}
+.contactLink:hover {
+  color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+  .profileHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .editProfileBtn {
+    margin-left: 0;
+    margin-top: 16px;
+  }
+
+  .contactLink {
+    justify-content: center;
+  }
+
+  .skills {
+    justify-content: center;
+  }
+}
+
+/* Section Card */
+.sectionCard {
+  background-color: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.sectionCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Experience & Education Items */
+.timelineItem {
+  position: relative;
+  padding-left: 24px;
+  padding-bottom: 32px;
+  border-left: 2px solid #e5e7eb;
+}
+
+.timelineItem:last-child {
+  padding-bottom: 0;
+}
+
+.timelineItem::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+}
+
+.timelineHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.timelineTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.timelineSubtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.timelinePeriod {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.timelineDescription {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+.currentBadge {
+  background: #dcfce7;
+  color: #16a34a;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Edit Button */
+.editProfileBtn {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: auto;
+  display: block;
+}
+
+.editProfileBtn:hover {
+  background-color: var(--primary-color);
+}
+
+/* GitHub Repos Section */
+.reposSection {
+  margin-top: 32px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.repoCard {
+  background-color: var(--section-bg);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.repoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.repoTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.repoVisibility {
+  font-size: 12px;
+  color: var(--white-color);
+  background-color: var(--pilpul-color);
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.repoDescription {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.repoMeta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.repoMetaItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.contentGroup {
+  display: flex;
+  gap: 16px;
+}
+
+.contentMain {
+  flex-grow: 1;
+}
+
+
+@media (max-width: 768px) {
+  .profileHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .profileInfo {
+    width: 100%;
+  }
+
+  .contactLink {
+    justify-content: center;
+  }
+
+  .skillsList {
+    justify-content: center;
+  }
+
+  .sectionCard {
+    padding: 24px;
+  }
+  .contentGroup {
+    flex-direction: column;
+  }
+}
+
+

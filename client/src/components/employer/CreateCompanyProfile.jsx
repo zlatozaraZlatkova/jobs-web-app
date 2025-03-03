@@ -4,7 +4,7 @@ export default function CreateCompanyProfile() {
       <form>
         {/* Company Information */}
         <div className="form-section">
-          <h2 className="section-title">Company Information</h2>
+          <h2 className={styles.sectionTitle}>Company Information</h2>
           <div className="form-group">
             <label className="required">Company Name</label>
             <input type="text" placeholder="e.g. Dolor Cloud" required="" />
@@ -25,7 +25,7 @@ export default function CreateCompanyProfile() {
         </div>
         {/* Contact Information */}
         <div className="form-section">
-          <h2 className="section-title">Contact Information</h2>
+          <h2 className={styles.sectionTitle}>Contact Information</h2>
           <div className="contact-grid">
             <div className="form-group">
               <label className="required">Contact Email</label>

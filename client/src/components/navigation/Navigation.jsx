@@ -1,10 +1,13 @@
+/* eslint-disable no-unused-vars */
 import styles from "./Navigation.module.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isEmployee, setIsEmployee] = useState(true);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -15,6 +18,7 @@ export default function Navigation() {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
 
   return (
     <nav className={styles.navbar}>
@@ -53,17 +57,33 @@ export default function Navigation() {
           </button>
 
           {/* Navigation Links */}
-          <ul className={`${styles.navLinks} ${isMobileMenuOpen ? styles.active : ""}`}>
+          <ul className={`${styles.navLinks} ${isMobileMenuOpen ? styles.active : ""}`}
+          >
             <li><Link to="/jobs">Tech Jobs</Link></li>
             <li><Link to="/profiles">Hire Talent</Link></li>
             <li><Link to="/posts">Forum</Link></li>
-    
+
             {isLoggedIn ? (
-              <li>
-                <button onClick={handleLogout} className={styles.loginBtn}>
-                  Logout
-                </button>
-              </li>) : (
+              <>
+                {isEmployee ? (
+                  <>
+                    <li><Link to="/profile">Profile</Link></li>
+                    <li><Link to="/profile/create">Create Profile</Link></li>
+                  </>
+                ) : (
+                    <>
+                     <li><Link to="/company/profile">Admin Profile</Link></li>
+                     <li><Link to="/company/profile/create">Create Company</Link></li>
+                    </>
+                  )}
+
+                <li>
+                  <button onClick={handleLogout} className={styles.loginBtn} type="button">
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
               <>
                 <li><Link to="/register">Register</Link></li>
                 <li><Link to="/login" className={styles.loginBtn}>Login</Link></li>
@@ -75,4 +95,3 @@ export default function Navigation() {
     </nav>
   );
 }
-

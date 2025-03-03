@@ -177,9 +177,21 @@ Devjobs web app/
 │   |    │   │    └── Register.jsx
 │   |    │   │
 │   |    │   ├── employee/
-│   |    │   │   ├── CreateProfile.jsx
-│   |    │   │   ├── AddExperience.jsx
-│   |    │   │   ├── AddEducation.jsx
+|   │    │   ├── addEducation/
+|   │    │   |    └── AddEducation.jsx
+│   |    │   │
+|   │    │   ├── addExperience/
+|   │    │   |    └── AddExperience.jsx
+│   |    │   │
+|   │    │   ├── createProfile/
+|   │    │   |    └── CreateProfile.jsx
+│   |    │   │
+|   │    │   └── detailsProfile/
+|   │    │   |   ├── BasicProfileCard.jsx
+|   │    │   |   ├── EducationCard.jsx
+|   │    │   |   ├── ExperienceCard.jsx
+|   │    │   |   ├── GitHubRepo.jsx
+|   │    │   |   └── ProfileCard.module.css
 │   |    │   │
 │   |    │   │
 │   |    │   ├── employer/
