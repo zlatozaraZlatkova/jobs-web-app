@@ -2,10 +2,9 @@ import styles from "./ProfileCard.module.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import BasicProfileEdit from "../editProfile/BasicProfileEdit";
-import { getInitials } from '../utils/stringUtils';
+import { getInitials } from "../../../utils/stringUtils";
 
 export default function BasicProfileCard() {
-  const userInitials = getInitials(userData.name);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [userData, setUserData] = useState({
@@ -15,9 +14,10 @@ export default function BasicProfileCard() {
     bio: "Experienced software engineer with over 8 years of expertise in full-stack development. Specialized in building scalable web applications and leading development teams.",
     skills: ["JavaScript", "React", "Node.js", "TypeScript", "HTML/CSS"],
     github: "",
-    linkedin: "",
-    email: ""
+    linkedin: ""
   });
+
+  const userInitials = getInitials(userData.name);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -61,11 +61,6 @@ export default function BasicProfileCard() {
             {userData.linkedin && (
               <Link to={userData.linkedin} className={styles.contactLink}>
                 LinkedIn
-              </Link>
-            )}
-            {userData.email && (
-              <Link to={`mailto:${userData.email}`} className={styles.contactLink}>
-                Email
               </Link>
             )}
           </div>

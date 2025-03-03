@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ExperienceProfileEdit from "../editProfile/ExperienceProfileEdit";
 import styles from "./ProfileCard.module.css";
-import { formatDate } from "../../../utils/formDate";
+import { formatDate } from "../../../utils/formatDate";
 
 
 export default function ExperienceCard() {
