@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 
-export default function CreateProfile() {
+export default function CreateProfile({ onSubmit }) {
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -23,6 +24,7 @@ export default function CreateProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    onSubmit(formData);
 
     console.log("Form data submitted:", formData);
   };
@@ -125,9 +127,6 @@ export default function CreateProfile() {
             <button type="submit" className="create-profile-btn">
               Create Profile
             </button>
-            {/* <button type="button" className="continue-button">
-              Continue →
-            </button> */}
           </div>
         </form>
       </div>

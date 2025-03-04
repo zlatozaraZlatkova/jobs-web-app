@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
 
-export default function AddExperience() {
+export default function AddExperience({ onSubmit, onBack }) {
   const [formData, setFormData] = useState({
     title: "",
     company: "",
@@ -37,7 +38,7 @@ export default function AddExperience() {
     e.preventDefault();
 
     const newExperience = {
-      id: Date.now(), 
+      id: Date.now(),
       ...formData,
     };
 
@@ -52,6 +53,8 @@ export default function AddExperience() {
       isCurrentJob: false,
       description: "",
     });
+
+
   };
 
   const handleEdit = (id) => {
@@ -64,6 +67,10 @@ export default function AddExperience() {
 
   const handleDelete = (id) => {
     setExperiences(experiences.filter((exp) => exp.id !== id));
+  };
+
+  const handleContinue = () => {
+    onSubmit(experiences);
   };
 
   return (
@@ -197,10 +204,18 @@ export default function AddExperience() {
 
         {/* Navigation Buttons */}
         <div className="navigation-buttons">
-          <button className="back-button" type="button">
+          <button
+            className="back-button"
+            type="button"
+            onClick={onBack}
+          >
             ← Back
           </button>
-          <button className="continue-button" type="button">
+          <button
+            className="continue-button"
+            type="button"
+            onClick={handleContinue}
+          >
             Continue →
           </button>
         </div>

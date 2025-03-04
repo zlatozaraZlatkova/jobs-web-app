@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
 
-export default function AddEducation() {
+export default function AddEducation({ onSubmit, onBack }) {
   const [formData, setFormData] = useState({
     school: "",
     degree: "",
@@ -64,6 +65,10 @@ export default function AddEducation() {
 
   const handleDelete = (id) => {
     setEducations(educations.filter((edu) => edu.id !== id));
+  };
+
+  const handleContinue = () => {
+    onSubmit(educations);
   };
 
   return (
@@ -198,10 +203,18 @@ export default function AddEducation() {
 
         {/* Navigation Buttons */}
         <div className="navigation-buttons">
-          <button className="back-button" type="button">
+          <button
+            className="back-button"
+            type="button"
+            onClick={onBack}
+          >
             ← Back
           </button>
-          <button className="continue-button" type="button">
+          <button
+            className="continue-button"
+            type="button"
+            onClick={handleContinue}
+          >
             Continue →
           </button>
         </div>

@@ -312,6 +312,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     gap: 1rem;
   }
 }
+
+.profile-completion-message {
+  text-align: center;
+}
+
 /* Forms */
 .form .form-group {
   margin: 1.2rem 0;
