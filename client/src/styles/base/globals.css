@@ -258,6 +258,60 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 1.5rem;
 }
 
+/* Form group container */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+
+.radio-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.radio-container p {
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+
+.radio-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; 
+  gap: 1.5rem;
+}
+
+
+.radio-group label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0;
+  margin: 0.25rem 0;
+  cursor: pointer;
+}
+
+
+.radio-group input[type="radio"] {
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+
+@media (max-width: 576px) {
+  .register-container,
+  .login-container {
+    max-width: 100%;
+    padding: 1rem;
+  }
+  
+  .radio-group {
+    gap: 1rem;
+  }
+}
 /* Forms */
 .form .form-group {
   margin: 1.2rem 0;

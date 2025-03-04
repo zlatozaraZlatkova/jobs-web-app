@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isEmployee, setIsEmployee] = useState(true);
 
   const navigate = useNavigate();
