@@ -4,12 +4,15 @@ import BasicProfileCard from "../employee/detailsProfile/BasicProfileCard";
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("/api/profile/catalog");
+
+        const response = await fetch(`/api/profile/catalog?page=${currentPage}&limit=3`);
 
         if (!response.ok) {
           throw new Error(`Failed to fetch employees: ${response.status}`);
@@ -21,6 +24,7 @@ export default function EmployeesPage() {
         if (result.data && Array.isArray(result.data.items)) {
           setEmployees(result.data.items);
 
+          setTotalPages(result.data.pagination.totalPages);
         } else {
           setEmployees([]);
         }
@@ -32,7 +36,19 @@ export default function EmployeesPage() {
     };
 
     fetchEmployees();
-  }, []);
+  }, [currentPage]);
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <>
@@ -62,10 +78,27 @@ export default function EmployeesPage() {
               )}
             </div>
           )}
-          <div className="view-all-btn">
-            <a href="#" className="btn btn-primary">
-              View All
-            </a>
+
+          <div className="pagination-simple">
+            <button
+              onClick={prevPage}
+              disabled={currentPage === 1}
+              className="btn"
+            >
+              Previous
+            </button>
+
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              onClick={nextPage}
+              disabled={currentPage === totalPages}
+              className="btn"
+            >
+              Next
+            </button>
           </div>
         </div>
       </section>

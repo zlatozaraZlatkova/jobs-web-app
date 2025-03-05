@@ -1,6 +1,6 @@
 const EmployeeProfile = require("../models/EmployeeProfile");
 
-async function getAllProfiles(startIndex = 0, limit = 10) {
+async function getAllProfiles(startIndex = 0, limit = 3) {
   const paginatedProfiles = await EmployeeProfile.find({})
     .sort({ date: -1 })
     .skip(startIndex)

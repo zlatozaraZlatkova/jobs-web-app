@@ -7,10 +7,10 @@ function paginationMiddleware() {
             page = 1
         }
 
-        let limit = parseInt(req.query.limit) || 10;
+        let limit = parseInt(req.query.limit) || 3;
 
         if (limit < 1) { 
-            limit = 10 
+            limit = 3 
         };
 
         const skip = (page - 1) * limit;
