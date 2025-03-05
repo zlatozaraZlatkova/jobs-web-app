@@ -1,21 +1,21 @@
+/* eslint-disable react/prop-types */
 import styles from "./ProfileCard.module.css";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BasicProfileEdit from "../editProfile/BasicProfileEdit";
 import { getInitials } from "../../../utils/stringUtils";
 
-export default function BasicProfileCard() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export default function BasicProfileCard({employee}) {
 
-  const [userData, setUserData] = useState({
-    name: "John Doe",
-    title: "Senior Frontend Developer",
-    location: "London, UK",
-    bio: "Experienced software engineer with over 8 years of expertise in full-stack development. Specialized in building scalable web applications and leading development teams.",
-    skills: ["JavaScript", "React", "Node.js", "TypeScript", "HTML/CSS"],
-    github: "",
-    linkedin: ""
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userData, setUserData] = useState(employee || {});
+  
+  useEffect(() => {
+    if (employee) {
+      setUserData(employee);
+      console.log("Employee data:", employee);
+    }
+  }, [employee]);
 
   const userInitials = getInitials(userData.name);
 
@@ -36,22 +36,24 @@ export default function BasicProfileCard() {
 
   return (
     <>
-      <div className={styles.profileHeader}>
+    <div className={styles.profileHeader}>
         <div className={styles.profileAvatar}>{userInitials}</div>
         <div className={styles.profileInfo}>
           <h1 className={styles.profileName}>{userData.name}</h1>
           <div className={styles.profileTitle}>{userData.title}</div>
           <div className={styles.profileLocation}>{userData.location}</div>
           <p className={styles.profileBio}>{userData.bio}</p>
-
-          <div className={styles.skills}>
-            {userData.skills.map((skill, index) => (
-              <span key={index} className={styles.skillTag}>
-                {skill}
-              </span>
-            ))}
-          </div>
-
+          
+          {userData.skills && (
+            <div className={styles.skills}>
+              {userData.skills.map((skill, index) => (
+                <span key={index} className={styles.skillTag}>
+                  {skill}
+                </span>
+              ))}
+            </div>
+          )}
+          
           <div className={styles.contactLink}>
             {userData.github && (
               <Link to={userData.github} className={styles.contactLink}>
@@ -65,7 +67,7 @@ export default function BasicProfileCard() {
             )}
           </div>
         </div>
-      
+        
         <button
           className={styles.editProfileBtn}
           type="button"
@@ -74,7 +76,7 @@ export default function BasicProfileCard() {
           Edit
         </button>
       </div>
-
+      
       <BasicProfileEdit
         isOpen={isModalOpen}
         onClose={handleCloseModal}

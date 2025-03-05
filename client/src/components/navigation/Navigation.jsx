@@ -60,7 +60,7 @@ export default function Navigation() {
           <ul className={`${styles.navLinks} ${isMobileMenuOpen ? styles.active : ""}`}
           >
             <li><Link to="/jobs">Tech Jobs</Link></li>
-            <li><Link to="/profiles">Hire Talent</Link></li>
+            <li><Link to="/profile/catalog">Hire Talent</Link></li>
             <li><Link to="/posts">Forum</Link></li>
 
             {isLoggedIn ? (

@@ -864,3 +864,55 @@ textarea {
     font-size: 13px;
   }
 }
+
+/* Experts Section */
+.container-catalog {
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 0 1rem;
+}
+
+.experts-section {
+  padding: 4rem 0;
+  background-color: var(--bg-secondary);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-weight: 700;
+  border: none;
+}
+
+.section-description {
+  color: var(--text-secondary);
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+}
+
+.view-all-btn {
+  text-align: center;
+}
+
+/* Responsive Styles */
+
+@media (max-width: 768px) {
+  .experts-section {
+      padding: 3rem 0;
+  }
+
+  .section-title {
+      font-size: 1.75rem;
+  }
+
+  .section-description {
+      font-size: 1rem;
+  }
+}
