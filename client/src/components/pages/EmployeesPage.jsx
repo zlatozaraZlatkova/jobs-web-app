@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import BasicProfileCard from "../employee/detailsProfile/BasicProfileCard";
+import Pagination from "../pagination/Pagination";
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState([]);
@@ -40,13 +41,13 @@ export default function EmployeesPage() {
 
   const nextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+      setCurrentPage((currentPage) => currentPage + 1);
     }
   };
 
   const prevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      setCurrentPage((currentPage) => currentPage - 1);
     }
   };
 
@@ -79,27 +80,12 @@ export default function EmployeesPage() {
             </div>
           )}
 
-          <div className="pagination-simple">
-            <button
-              onClick={prevPage}
-              disabled={currentPage === 1}
-              className="btn"
-            >
-              Previous
-            </button>
-
-            <span>
-              Page {currentPage} of {totalPages}
-            </span>
-
-            <button
-              onClick={nextPage}
-              disabled={currentPage === totalPages}
-              className="btn"
-            >
-              Next
-            </button>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPrevPage={prevPage}
+            onNextPage={nextPage}
+          />
         </div>
       </section>
     </>

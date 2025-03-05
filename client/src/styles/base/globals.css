@@ -866,6 +866,8 @@ textarea {
 }
 
 /* Experts Section */
+
+
 .container-catalog {
   max-width: 1200px;
   margin: 4rem auto;
@@ -914,63 +916,5 @@ textarea {
 
   .section-description {
       font-size: 1rem;
-  }
-}
-
-/* Pagination */
-
-.pagination-simple {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 24px 0;
-  gap: 16px;
- 
-}
-
-.pagination-simple button {
-  padding: 8px 16px;
-  background-color: var(--primary-color);
-  color: var(--white-color, #ffffff);
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  min-width: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pagination-simple button:disabled {
-  background-color: var(--text-secondary);
-  opacity: 0.6;
-  cursor: not-allowed;  /* changes the cursor */
-  box-shadow: none;
-}
-
-.pagination-simple span {
-  font-size: 0.95rem;
-  color: var(--text-primary);
-  font-weight: 500;
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-
-@media (max-width: 640px) {
-  .pagination-simple {
-    gap: 8px;
-  }
-  
-  .pagination-simple button {
-    min-width: auto;
-    padding: 6px 12px;
-    font-size: 0.9rem;
-  }
-  
-  .pagination-simple span {
-    font-size: 0.85rem;
   }
 }
