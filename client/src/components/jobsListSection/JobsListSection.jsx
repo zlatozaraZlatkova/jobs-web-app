@@ -44,7 +44,7 @@ export default function JobsListSection({ isHomePage = false }) {
   const nextPage = () => {
     if (currentPage < totalPages) {
       if (sectionRef.current) {
-        sectionRef.current.scrollIntoView({ behavior: "auto", block: "start" });
+        sectionRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
       }
 
       setCurrentPage((currentPage) => currentPage + 1);
@@ -54,7 +54,7 @@ export default function JobsListSection({ isHomePage = false }) {
   const prevPage = () => {
     if (currentPage > totalPages) {
       if (sectionRef.current) {
-        sectionRef.current.scrollIntoView({ behavior: "auto", block: "start" });
+        sectionRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
       }
 
       setCurrentPage((currentPage) => currentPage + 1);
