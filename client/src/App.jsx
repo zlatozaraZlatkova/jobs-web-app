@@ -9,6 +9,7 @@ import CreateProfilePage from "./components/pages/CreateProfilePage";
 import CreateCompanyProfilePage from "./components/pages/CreateCompanyProfilePage";
 import DetailsProfilePage from "./components/pages/DetailsProfilePage";
 import EmployeesPage from "./components/pages/EmployeesPage";
+import JobsPage from "./components/pages/JobsPage";
 
 
 
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="/jobs" element={<JobsPage/>} />
           <Route path="/profile/catalog" element={<EmployeesPage/>} />
           <Route path="/profile" element={<DetailsProfilePage/>} />
           <Route path="/profile/create" element={<CreateProfilePage />} />

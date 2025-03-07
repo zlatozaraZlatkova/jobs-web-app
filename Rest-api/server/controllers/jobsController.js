@@ -33,7 +33,7 @@ router.get("/search", paginationMiddleware(),
   }
 });
 
-router.get("/", hasUser(), paginationMiddleware(), async (req, res, next) => {
+router.get("/", paginationMiddleware(), async (req, res, next) => {
   try {
     const { page, limit, skip } = req.pagination;
 

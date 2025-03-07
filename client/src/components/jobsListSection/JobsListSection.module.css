@@ -1,3 +1,9 @@
+.searchbar {
+  padding: 4rem 0;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
 .featuredJobs {
   background-color: var(--section-bg);
   padding: 4rem 2rem;

@@ -240,6 +240,41 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-left: 0.1em;
 }
 
+/* Search  Section*/
+.search-section {
+  background-color: var(--section-bg);
+  padding: 8rem 2rem;
+  text-align: center;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.search-section h1 {
+  color: var(--text-primary);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.search-section p {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+ 
+  .search-section h1 {
+    font-size: 2rem;
+    padding-top: 2rem;
+  }
+}
+
 /* Containers */
 .dashboard-container {
   max-width: 800px;

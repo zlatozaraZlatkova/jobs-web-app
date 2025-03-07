@@ -1,22 +1,22 @@
+/* eslint-disable react/prop-types */
 import styles from "./JobCard.module.css";
 // todo: use react icons
 
-export default function JobCard() {
+export default function JobCard({job}) {
   return (
     <>
       <article className={styles.jobCard}>
-        <span className={styles.jobType}>Remote</span>
-        <h3 className={styles.jobTitle}>Front-End Engineer (React)</h3>
+        <span className={styles.jobType}>{job.type}</span>
+        <h3 className={styles.jobTitle}>{job.title}</h3>
         <p className={styles.jobDescription}>
-          Join our team as a Front-End Developer in sunny Miami, FL. We are
-          looking for a motivated individual with a passion... More
+          {job.description}
         </p>
         <div className={styles.jobDetails}>
           <div className={styles.jobLocation}>
             {/* <i className="fa-solid fa-location-dot" /> */}
-            <span>Miami, FL</span>
+            <span>{job.location}</span>
           </div>
-          <div className={styles.jobSalary}>$70K - $80K / Year</div>
+          <div className={styles.jobSalary}>{job.salary} / Year</div>
           <a href="job.html" className={styles.jobLink}>
             Read More
             {/* <i className="fas fa-arrow-right" /> */}

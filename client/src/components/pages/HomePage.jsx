@@ -1,19 +1,23 @@
 import SearchBar from "../searchBar/SearchBar";
 import CategoriesJobSection from "../categoriesJobSection/CategoriesJobSection";
-import FeaturedJobSection from "../FeaturedJobSection/FeaturedJobSection";
+import JobsListSection from "../jobsListSection/JobsListSection";
 import TrustedCompaniesSection from "../trustedCompaniesSection/TrustedCompaniesSection";
 
 export default function HomePage() {
   return (
     <>
-    
       <main>
-        <SearchBar />
+        <section className="search-section">
+          <h1>GET HIRED &amp; BUILD A STRONG TEAM</h1>
+          <p>Advance your career and build a strong, successful team.</p>
+
+          <SearchBar />
+        </section>
+
         <CategoriesJobSection />
-        <FeaturedJobSection />
+        <JobsListSection isHomePage={true} />
         <TrustedCompaniesSection />
       </main>
-     
     </>
   );
 }

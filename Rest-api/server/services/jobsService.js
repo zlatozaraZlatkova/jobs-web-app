@@ -2,7 +2,7 @@ const Job = require("../models/Job");
 const Company = require("../models/Company");
 const EmployerProfile = require("../models/EmployerProfile");
 
-async function getAll(startIndex = 0, limit = 10) {
+async function getAll(startIndex = 0, limit = 3) {
 
   const paginatedJobs = await Job.find({})
     .sort({ date: -1 })
