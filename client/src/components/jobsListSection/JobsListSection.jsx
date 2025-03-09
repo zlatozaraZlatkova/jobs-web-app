@@ -52,12 +52,12 @@ export default function JobsListSection({ isHomePage = false }) {
   };
 
   const prevPage = () => {
-    if (currentPage > totalPages) {
+    if (currentPage > 1) {
       if (sectionRef.current) {
         sectionRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
       }
 
-      setCurrentPage((currentPage) => currentPage + 1);
+      setCurrentPage((currentPage) => currentPage - 1);
     }
   };
 
@@ -67,19 +67,18 @@ export default function JobsListSection({ isHomePage = false }) {
         <div className={styles.container}>
           {isHomePage ? (
             <h2 className={styles.sectionTitle}>Featured Positions</h2>
-          ): (
+          ) : (
             <div className={styles.searchbar}>
-            <h2 className={styles.sectionTitle}>Find your next Position</h2>
-            {!isHomePage && <SearchBar />}
-          </div>
+              <h2 className={styles.sectionTitle}>Find your next Position</h2>
+              {!isHomePage && <SearchBar />}
+            </div>
           )}
-         
 
           <div className={styles.jobsGrid}>
             {isLoading ? (
               <div>Loading open positions...</div>
             ) : (
-              <div>
+              <>
                 {jobs && jobs.length > 0 ? (
                   <>
                     {jobs.map((job) => (
@@ -89,7 +88,7 @@ export default function JobsListSection({ isHomePage = false }) {
                 ) : (
                   <div>No jobs found.</div>
                 )}
-              </div>
+              </>
             )}
           </div>
           {isHomePage ? (
