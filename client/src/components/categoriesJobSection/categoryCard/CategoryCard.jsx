@@ -1,136 +1,142 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import styles from "./CategoryCard.module.css";
 
-
 export default function CategoryCard({ isBackend, technologies }) {
- 
-  // Function to count jobs for a specific technology
   const getCountForTech = (techName) => {
-    return technologies.filter(job => 
+    return technologies.filter((job) =>
       job.title.toLowerCase().includes(techName.toLowerCase())
     ).length;
   };
+
+  function techItemContent(name, icon) {
+    return (
+      <>
+        <i className={`${icon} tech-icon`} />
+        <span className={styles.propertyName}>{name}:</span>
+        <span className={styles.count}>{getCountForTech(name)}</span>
+      </>
+    );
+  }
 
   return (
     <div className={styles.statsContainer}>
       <div className={styles.statsHeader}>
         <span className={styles.keyword}>const</span>
         <span className={styles.objectName}>
-          {isBackend ? 'BackendDevelopment' : 'FrontendDevelopment'}
+          {isBackend ? "BackendDevelopment" : "FrontendDevelopment"}
         </span>
         <span className={styles.totalCount}>= {"{"}</span>
       </div>
-      
+
       {/* MAIN CONTAINER */}
       <div className={styles.statsContent}>
         {isBackend ? (
           // Backend Technologies
           <>
             <div className={styles.statsRow}>
-              <div className={styles.statsItem}>
-                <i className="fab fa-java tech-icon" />
-                <span className={styles.propertyName}>Java:</span>
-                <span className={styles.count}>{getCountForTech('Java')}</span>
-              </div>
-              <div className={styles.statsItem}>
-                <i className="fab fa-microsoft tech-icon" />
-                <span className={styles.propertyName}>.NET:</span>
-                <span className={styles.count}>{getCountForTech('.NET')}</span>
-              </div>
+              {getCountForTech("Java") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("Java", "fab fa-java")}
+                </div>
+              )}
+              {getCountForTech(".NET") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent(".NET", "fab fa-microsoft")}
+                </div>
+              )}
             </div>
             <div className={styles.statsRow}>
-              <div className={styles.statsItem}>
-                <i className="fab fa-php tech-icon" />
-                <span className={styles.propertyName}>PHP:</span>
-                <span className={styles.count}>{getCountForTech('PHP')}</span>
-              </div>
+              {getCountForTech("PHP") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("PHP", "fab fa-php")}
+                </div>
+              )}
             </div>
             <div className={styles.statsRow}>
-              <div className={`${styles.statsItem} ${styles.fullWidth}`}>
-                <i className="fas fa-microchip tech-icon" />
-                <span className={styles.propertyName}>C_Cpp_Embedded:</span>
-                <span className={styles.count}>{getCountForTech('C_Cpp_Embedded')}</span>
-              </div>
+              {getCountForTech("C_Cpp_Embedded") > 0 && (
+                <div className={`${styles.statsItem} ${styles.fullWidth}`}>
+                  {techItemContent("C_Cpp_Embedded", "fas fa-microchip")}
+                </div>
+              )}
             </div>
             <div className={styles.statsRow}>
-              <div className={styles.statsItem}>
-                <i className="fab fa-python tech-icon" />
-                <span className={styles.propertyName}>Python:</span>
-                <span className={styles.count}>{getCountForTech('Python')}</span>
-              </div>
-              <div className={styles.statsItem}>
-                <i className="fas fa-gem tech-icon" />
-                <span className={styles.propertyName}>Ruby:</span>
-                <span className={styles.count}>{getCountForTech('Ruby')}</span>
-              </div>
+              {getCountForTech("Python") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("Python", "fab fa-python")}
+                </div>
+              )}
+              {getCountForTech("Ruby") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("Ruby", "fas fa-gem")}
+                </div>
+              )}
             </div>
             <div className={styles.statsRow}>
-              <div className={styles.statsItem}>
-                <i className="fab fa-golang tech-icon" />
-                <span className={styles.propertyName}>Go:</span>
-                <span className={styles.count}>{getCountForTech('Go')}</span>
-              </div>
-              <div className={styles.statsItem}>
-                <i className="fab fa-node-js tech-icon" />
-                <span className={styles.propertyName}>Node.js:</span>
-                <span className={styles.count}>{getCountForTech('Node.js')}</span>
-              </div>
+              {getCountForTech("Go") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("Go", "fab fa-golang")}
+                </div>
+              )}
+              {getCountForTech("Node.js") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("Node.js", "fab fa-node-js")}
+                </div>
+              )}
             </div>
           </>
         ) : (
           // Frontend Technologies
           <>
             <div className={styles.statsRow}>
-              <div className={styles.statsItem}>
-                <i className="fab fa-html5 tech-icon" />
-                <span className={styles.propertyName}>HTML:</span>
-                <span className={styles.count}>{getCountForTech('HTML')}</span>
-              </div>
-              <div className={styles.statsItem}>
-                <i className="fab fa-css3-alt tech-icon" />
-                <span className={styles.propertyName}>CSS:</span>
-                <span className={styles.count}>{getCountForTech('CSS')}</span>
-              </div>
+              {getCountForTech("HTML") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("HTML", "fab fa-html5")}
+                </div>
+              )}
+              {getCountForTech("CSS") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("CSS", "fab fa-css3-alt")}
+                </div>
+              )}
             </div>
             <div className={styles.statsRow}>
-              <div className={styles.statsItem}>
-                <i className="fab fa-js tech-icon" />
-                <span className={styles.propertyName}>JavaScript:</span>
-                <span className={styles.count}>{getCountForTech('JavaScript')}</span>
-              </div>
+              {getCountForTech("JavaScript") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("JavaScript", "fab fa-js")}
+                </div>
+              )}
             </div>
             <div className={styles.statsRow}>
-              <div className={`${styles.statsItem} ${styles.fullWidth}`}>
-                <i className="fab fa-react tech-icon" />
-                <span className={styles.propertyName}>React:</span>
-                <span className={styles.count}>{getCountForTech('React')}</span>
-              </div>
+              {getCountForTech("React") > 0 && (
+                <div className={`${styles.statsItem} ${styles.fullWidth}`}>
+                  {techItemContent("React", "fab fa-react")}
+                </div>
+              )}
             </div>
             <div className={styles.statsRow}>
-              <div className={styles.statsItem}>
-                <i className="fab fa-angular tech-icon" />
-                <span className={styles.propertyName}>Angular:</span>
-                <span className={styles.count}>{getCountForTech('Angular')}</span>
-              </div>
-              <div className={styles.statsItem}>
-                <i className="fab fa-vuejs tech-icon" />
-                <span className={styles.propertyName}>Vue:</span>
-                <span className={styles.count}>{getCountForTech('Vue')}</span>
-              </div>
+              {getCountForTech("Angular") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("Angular", "fab fa-angular")}
+                </div>
+              )}
+              {getCountForTech("Vue") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("Vue", "fab fa-vuejs")}
+                </div>
+              )}
             </div>
             <div className={styles.statsRow}>
-              <div className={styles.statsItem}>
-                <i className="fas fa-code tech-icon" />
-                <span className={styles.propertyName}>Next.js:</span>
-                <span className={styles.count}>{getCountForTech('Next.js')}</span>
-              </div>
-              <div className={styles.statsItem}>
-                <i className="fas fa-code tech-icon" />
-                <span className={styles.propertyName}>TypeScript:</span>
-                <span className={styles.count}>{getCountForTech('TypeScript')}</span>
-              </div>
+              {getCountForTech("Next.js") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("Next.js", "fas fa-code")}
+                </div>
+              )}
+              {getCountForTech("TypeScript") > 0 && (
+                <div className={styles.statsItem}>
+                  {techItemContent("TypeScript", "fas fa-code")}
+                </div>
+              )}
             </div>
           </>
         )}
@@ -139,7 +145,6 @@ export default function CategoryCard({ isBackend, technologies }) {
       <div className={styles.statsFooter}>{"}"}</div>
       <Link to={"/jobs"} className={styles.jobLink}>
         See More
-        {/* <i className="fas fa-arrow-right" /> */}
       </Link>
     </div>
   );
