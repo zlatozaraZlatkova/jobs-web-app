@@ -6,7 +6,7 @@ const { loadItem } = require("../middlewares/preload");
 const { hasUser, checkUserRole, isOwner } = require("../middlewares/guards");
 const { paginationMiddleware } = require("../middlewares/paginationMiddleware");
 const { formatPaginatedResponse } = require("../util/formatPaginatedResponse");
-const { getAll, getCompanyByUserId, createItem, updateItem, deleteById, getSearchItem } = require("../services/jobsService");
+const { getAll, getCompanyByUserId, createItem, updateItem, deleteById, getSearchItem, getJobsList } = require("../services/jobsService");
 
 // @route GET /api/jobs/search?title=Java
 // @route GET /api/jobs/search?title=React&type=Full-time&location=Brooklyn&salary=70
@@ -50,6 +50,21 @@ router.get("/", paginationMiddleware(), async (req, res, next) => {
   }
 });
 
+router.get("/list", async (req, res, next) => {
+  try {
+   
+    const jobsList = await getJobsList();
+
+    if (jobsList.length == 0) {
+      throw new Error("Jobs not found.");
+    }
+
+    res.status(200).json(jobsList);
+
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.get("/:id", hasUser(), loadItem("Job"), async (req, res, next) => {
   try {
@@ -66,9 +81,8 @@ router.get("/:id", hasUser(), loadItem("Job"), async (req, res, next) => {
 
 router.post("/create", hasUser(), checkUserRole("employer"),
   body("title", "Title is required").not().isEmpty(),
-  body("title", "Please enter a title up to 150 characters long").isLength({ max: 150 }),
   body("type", "Type is required").not().isEmpty(),
-  body("type", "Please enter a type up to 150 characters long").isLength({ max: 150 }),
+  body("technologies", "Type is required").not().isEmpty(),
   body("description", "Job description is required").not().isEmpty(),
   body("description", "Please enter a description up to 3000 characters long").isLength({ max: 3000 }),
   body("location", "Location is required").not().isEmpty(),
@@ -88,12 +102,14 @@ router.post("/create", hasUser(), checkUserRole("employer"),
       const newJob = {
         title: req.body.title,
         type: req.body.type,
+        technologies: req.body.technologies,
         description: req.body.description,
         location: req.body.location,
         salary: req.body.salary,
         ownerId: req.user._id,
         company: company._id
       }
+      console.log(newJob)
 
       const createJob = await createItem(req.user._id, newJob);
 
@@ -108,9 +124,8 @@ router.post("/create", hasUser(), checkUserRole("employer"),
 
 router.put("/update/:id", hasUser(), checkUserRole("employer"), loadItem('Job'),
   body("title", "Title is required").not().isEmpty(),
-  body("title", "Please enter a title up to 150 characters long").isLength({ max: 150 }),
   body("type", "Type is required").not().isEmpty(),
-  body("type", "Please enter a type up to 150 characters long").isLength({ max: 150 }),
+  body("technologies", "Type is required").not().isEmpty(),
   body("description", "Job description is required").not().isEmpty(),
   body("description", "Please enter a description up to 3000 characters long").isLength({ max: 3000 }),
   body("location", "Location is required").not().isEmpty(),
@@ -128,7 +143,7 @@ router.put("/update/:id", hasUser(), checkUserRole("employer"), loadItem('Job'),
         throw new Error("Not authorized.");
       }
 
-      const jobData = { title, type, description, location, salary } = req.body;
+      const jobData = { title, type, technologies, description, location, salary } = req.body;
 
       const updatedJob = await updateItem(req.params.id, jobData);
 

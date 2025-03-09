@@ -153,61 +153,8 @@
   color: #666;
 }
 
-.faJava {
-  color: #007396;
-}
-.faMicrosoft {
-  color: #00a4ef;
-}
-.faPhp {
-  color: #777bb3;
-}
-.faMicrochip {
-  color: #00599c;
-}
-.faPython {
-  color: #3776ab;
-}
-.faGem {
-  color: #cc342d;
-}
-.faGolang {
-  color: #00add8;
-}
-.faNodeJs {
-  color: #339933;
-}
-
 @media screen and (max-width: 480px) {
   .techIcon {
     font-size: 16px;
-  }
-}
-
-/* Second container  */
-
-.circleCount.green {
-  background-color: #e8f5e9;
-  color: #4caf50;
-}
-
-.jsIcon {
-  background-color: #f7df1e;
-  color: black;
-  padding: 2px;
-}
-.faReact {
-  color: #61dafb;
-}
-.faAngular {
-  color: #dd1b16;
-}
-.faVuejs {
-  color: #42b883;
-}
-
-@media screen and (max-width: 480px) {
-  .statsItem .count {
-    font-size: 0.9rem;
   }
 }

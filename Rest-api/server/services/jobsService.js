@@ -14,6 +14,10 @@ async function getAll(startIndex = 0, limit = 3) {
   return { paginatedJobs, totalJobs };
 }
 
+async function getJobsList() {
+  return Job.find({}).sort({ date: -1 });
+}
+
 async function getJobById(jobId) {
   return Job.findOne({ _id: jobId });
 }
@@ -106,5 +110,6 @@ module.exports = {
   updateItem,
   getJobById,
   deleteById,
-  getSearchItem
+  getSearchItem,
+  getJobsList
 }

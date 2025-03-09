@@ -953,3 +953,62 @@ textarea {
       font-size: 1rem;
   }
 }
+
+.fa-html5 {
+  color: var(--red-color);
+}
+.fa-css3-alt {
+  color: orange;
+}
+.fa-js {
+  color: var(--dark-color);
+}
+
+.fa-java {
+  color: #007396;
+}
+.fa-microsoft {
+  color: #00a4ef;
+}
+.fa-php {
+  color: #777bb3;
+}
+.fa-microchip {
+  color: #00599c;
+}
+.fa-python {
+  color: #3776ab;
+}
+.fa-gem {
+  color: #cc342d;
+}
+.fa-golang {
+  color: #00add8;
+}
+.fa-node-js {
+  color: #339933;
+}
+
+
+/* Second container  */
+
+.circle-count.green {
+  background-color: #e8f5e9;
+  color: #4caf50;
+}
+
+.js-icon {
+  background-color: #f7df1e;
+  color: black;
+  padding: 2px;
+}
+.fa-react {
+  color: #61dafb;
+}
+.fa-angular {
+  color: #dd1b16;
+}
+.fa-vuejs {
+  color: #42b883;
+}
+
