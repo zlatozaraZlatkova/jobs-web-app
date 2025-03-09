@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import styles from "./JobCard.module.css";
-// todo: use react icons
+import { Link } from "react-router-dom";
+
 
 export default function JobCard({job}) {
   return (
@@ -13,14 +14,14 @@ export default function JobCard({job}) {
         </p>
         <div className={styles.jobDetails}>
           <div className={styles.jobLocation}>
-            {/* <i className="fa-solid fa-location-dot" /> */}
+            <i className="fa-solid fa-location-dot" />
             <span>{job.location}</span>
           </div>
           <div className={styles.jobSalary}>{job.salary} / Year</div>
-          <a href="job.html" className={styles.jobLink}>
+          <Link to={`/jobs/${job._id}`} className={styles.jobLink}>
             Read More
-            {/* <i className="fas fa-arrow-right" /> */}
-          </a>
+            <i className="fas fa-arrow-right" />
+          </Link>
         </div>
       </article>
     </>

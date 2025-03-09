@@ -747,6 +747,11 @@ textarea {
   background: #eee;
 }
 
+.btn-primary i, .btn-danger i {
+  margin-right: 0.5rem;
+}
+
+
 /* Tables */
 .experience-table,
 .education-table {

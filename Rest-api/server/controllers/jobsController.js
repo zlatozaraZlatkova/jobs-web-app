@@ -66,9 +66,10 @@ router.get("/list", async (req, res, next) => {
   }
 });
 
-router.get("/:id", hasUser(), loadItem("Job"), async (req, res, next) => {
+router.get("/:id", loadItem("Job"), async (req, res, next) => {
   try {
     const job = req.item;
+    await job.populate("company");
 
     res.status(200).json(job);
 
