@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import JobDetails from "../jobDetails/JobDetails"; 
+import NotFoundPage from "./NotFoundPage";
 
 export default function DetailsPage() {
   const [currentJob, setCurrentJob] = useState(null);
@@ -46,12 +47,14 @@ export default function DetailsPage() {
       {isLoading ? (
         <div>Loading job details...</div>
       ) : !currentJob ? (
-        <div>Could not load job details. Please try again later.</div>
+        <NotFoundPage/>
       ) : (
+        
          <JobDetails 
          currentJob={currentJob}
          onEditClick={onEditClickHandler}
          onDeleteClick={onDeleteClickHandler} />
+       
       )}
     </>
   );

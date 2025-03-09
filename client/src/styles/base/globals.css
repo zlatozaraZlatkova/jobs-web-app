@@ -1017,3 +1017,60 @@ textarea {
   color: #42b883;
 }
 
+/* Not Found  */
+
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-secondary);
+  padding: 8rem 0;
+}
+
+.not-found-content {
+  text-align: center;
+  max-width: 500px;
+  padding: 3rem 2rem;
+  background-color: var(--bg-primary);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+ 
+}
+
+.not-found-icon {
+  font-size: 4rem;
+  color: var(--danger-color);
+  margin-bottom: 1.5rem;
+}
+
+.not-found-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+.not-found-text {
+  padding-bottom: 1rem ;
+}
+
+.not-found-content{
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .not-found-title {
+    font-size: 2rem;
+  }
+  
+  .not-found-icon {
+    font-size: 3rem;
+  }
+  
+  .not-found-content{
+    padding: 2rem 1.5rem;
+  }
+}

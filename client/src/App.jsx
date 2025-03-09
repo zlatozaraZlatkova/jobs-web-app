@@ -11,6 +11,7 @@ import DetailsProfilePage from "./components/pages/DetailsProfilePage";
 import EmployeesPage from "./components/pages/EmployeesPage";
 import JobsPage from "./components/pages/JobsPage";
 import DetailsPage from "./components/pages/DetailsPage";
+import NotFoundPage from "./components/pages/NotFoundPage";
 
 
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="/company/profile/create" element={<CreateCompanyProfilePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>
