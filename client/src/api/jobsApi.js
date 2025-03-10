@@ -24,3 +24,15 @@ export const getPaginatedJobs = async (currentPage, limit = 3) => {
     throw error;
   }
 };
+
+export const getJobById = async (id) => {
+  try {
+    const url = `${BASE_URL}/${id}`;
+
+    return await request.get(url);
+
+  } catch (error) {
+    console.error("getAllJobs error:", error);
+    throw error;
+  }
+};

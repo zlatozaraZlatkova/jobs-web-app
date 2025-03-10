@@ -10,7 +10,7 @@ import CreateCompanyProfilePage from "./components/pages/CreateCompanyProfilePag
 import DetailsProfilePage from "./components/pages/DetailsProfilePage";
 import EmployeesPage from "./components/pages/EmployeesPage";
 import JobsPage from "./components/pages/JobsPage";
-import DetailsPage from "./components/pages/DetailsPage";
+import JobDetailsPage from "./components/pages/JobDetailsPage";
 import NotFoundPage from "./components/pages/NotFoundPage";
 
 
@@ -23,7 +23,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<Navigate to="/" replace />} />
           <Route path="/jobs" element={<JobsPage/>} />
-          <Route path="/jobs/:id" element={<DetailsPage/>} />
+          <Route path="/jobs/:id" element={<JobDetailsPage/>} />
           <Route path="/profile/catalog" element={<EmployeesPage/>} />
           <Route path="/profile" element={<DetailsProfilePage/>} />
           <Route path="/profile/create" element={<CreateProfilePage />} />

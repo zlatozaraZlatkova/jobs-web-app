@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import JobDetails from "../jobDetails/JobDetails"; 
 import NotFoundPage from "./NotFoundPage";
+import { getJobById } from "../../api/jobsApi";
 
-export default function DetailsPage() {
+export default function JobDetailsPage() {
   const [currentJob, setCurrentJob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
@@ -12,18 +13,15 @@ export default function DetailsPage() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`/api/jobs/${id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch job details");
-        }
-        const data = await response.json();
-        console.log(data)
+        const job = await getJobById(id);
+        console.log("All fetched job by id", job);
 
-        if(data) {
-          setCurrentJob(data);
-        }else {
+        if(!job) {
           setCurrentJob(null);
+          return;
         }
+
+        setCurrentJob(job);
         
       } catch (err) {
         console.error("Error fetching current job data", err);
