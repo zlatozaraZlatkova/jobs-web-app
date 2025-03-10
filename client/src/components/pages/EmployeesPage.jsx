@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import BasicProfileCard from "../employee/detailsProfile/BasicProfileCard";
 import Pagination from "../pagination/Pagination";
+import { getPaginatedEmployees } from "../../api/eployeeApi";
 
 export default function EmployeesPage() {
     const [employees, setEmployees] = useState([]);
@@ -14,22 +15,18 @@ export default function EmployeesPage() {
             try {
                 setIsLoading(true);
 
-                const response = await fetch(`/api/profile/catalog?page=${currentPage}&limit=3`);
-
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch employees: ${response.status}`);
-                }
-
-                const result = await response.json();
+                const result = await getPaginatedEmployees(currentPage);
 
                 //the response structure is { success, data: { items: [] } }
-                if (result.data && Array.isArray(result.data.items)) {
-                    setEmployees(result.data.items);
-
-                    setTotalPages(result.data.pagination.totalPages);
-                } else {
+                if (!result.data || !Array.isArray(result.data.items)) {
                     setEmployees([]);
+                    return;
                 }
+
+                setEmployees(result.data.items);
+
+                setTotalPages(result.data.pagination.totalPages);
+
             } catch (err) {
                 console.error("Error fetching employees:", err);
             } finally {
