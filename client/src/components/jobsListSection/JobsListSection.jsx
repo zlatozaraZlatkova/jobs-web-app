@@ -5,6 +5,7 @@ import styles from "./JobsListSection.module.css";
 import JobCard from "./jobCard/JobCard";
 import Pagination from "../pagination/Pagination";
 import SearchBar from "../searchBar/SearchBar";
+import { getPaginatedJobs } from "../../api/jobsApi";
 
 export default function JobsListSection({ isHomePage = false }) {
   const [jobs, setJobs] = useState([]);
@@ -17,13 +18,7 @@ export default function JobsListSection({ isHomePage = false }) {
     const fecthJobs = async () => {
       try {
         setIsLoading(true);
-
-        const response = await fetch(`api/jobs?page=${currentPage}&limit=3`);
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch job: ${response.status}`);
-        }
-        const result = await response.json();
+        const result = await getPaginatedJobs(currentPage);
 
         if (result.data && Array.isArray(result.data.items)) {
           setJobs(result.data.items);
@@ -31,6 +26,7 @@ export default function JobsListSection({ isHomePage = false }) {
         } else {
           setJobs([]);
         }
+        
       } catch (err) {
         console.error("Error fetching jobs:", err);
       } finally {
