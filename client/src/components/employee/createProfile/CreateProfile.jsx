@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 
-export default function CreateProfile({ onSubmit }) {
+export default function CreateProfile({ onSubmit, isSubmitting }) {
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -30,7 +30,7 @@ export default function CreateProfile({ onSubmit }) {
   };
 
 
-  
+
   return (
     <>
       <div className="form-card">
@@ -124,8 +124,12 @@ export default function CreateProfile({ onSubmit }) {
             </div>
           </div>
           <div className="button-group">
-            <button type="submit" className="create-profile-btn">
-              Create Profile
+            <button 
+            type="submit" 
+            className="create-profile-btn"
+            disabled={isSubmitting}
+            >
+              {isSubmitting ? "Creating Profile..." : "Create Profile"}
             </button>
           </div>
         </form>

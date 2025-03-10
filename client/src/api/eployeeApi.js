@@ -2,13 +2,47 @@ import * as request from "./requester";
 
 const BASE_URL = `/api/profile`;
 
+export const getEmployeeProfile = async () => {
+  try {
+    return await request.get(BASE_URL);
+  } catch (error) {
+    console.error("getEmployeeProfile error:", error);
+    throw error;
+  }
+};
+
 export const getPaginatedEmployees = async (currentPage, limit = 3) => {
   try {
     const url = `${BASE_URL}/catalog?page=${currentPage}&limit=${limit}`;
 
     return await request.get(url);
   } catch (error) {
-    console.error("getAllJobs error:", error);
+    console.error("getPaginatedEmployees error:", error);
     throw error;
   }
 };
+
+export const createEmployeeProfile = async (profileData) => {
+  try {
+    return await request.post(`${BASE_URL}/create`, profileData);
+  } catch (error) {
+    console.error("createEmployeeProfile error:", error);
+    throw error;
+  }
+};
+export const addEmployeeExperience = async (experienceData) => {
+  try {
+    return await request.put(`${BASE_URL}/experience`, experienceData);
+  } catch (error) {
+    console.error("addEmployeeExperience error:", error);
+    throw error;
+  }
+};
+export const addEmployeeEducation = async(educationData) => {
+  try {
+    return await request.put(`${BASE_URL}/education`, educationData);
+  } catch (error) {
+    console.error("addEmployeeEducation error:", error);
+    throw error;
+  }
+}

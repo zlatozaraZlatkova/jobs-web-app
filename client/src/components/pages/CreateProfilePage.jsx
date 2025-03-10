@@ -4,25 +4,76 @@ import AddExperience from "../employee/addExperience/AddExperience";
 import CreateProfile from "../employee/createProfile/CreateProfile";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { createEmployeeProfile, addEmployeeExperience, addEmployeeEducation } from "../../api/eployeeApi";
 
 
 export default function CreateProfilePage() {
- 
   const [step, setStep] = useState(1);
-  
+  const [profileData, setProfileData] = useState(null);
+  const [experienceData, setExperienceData] = useState(null);
+  const [educationData, setEducationData] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
  
-  const handleProfileSubmit = (profileData) => {
-    setStep(2);
-  };
-  
+  const handleProfileSubmit = async (data) => {
+    try {
+      setIsSubmitting(true);
+      const basicProfile = await createEmployeeProfile(data);
+      setProfileData(basicProfile);
 
-  const handleExperienceSubmit = (experienceData) => {
-    setStep(3);
+      setStep(2);
+
+    } catch (err) {
+      console.error("Failed to create basic profile. Please try again.", err);
+    }finally{
+      setIsSubmitting(false);
+    }
+   
   };
   
   
-  const handleEducationSubmit = (educationData) => {
-    setStep(4);
+  const handleExperienceSubmit = async(formData) => {
+    if (!profileData) {
+      console.error("Profile must be created first");
+      setStep(1); 
+      return;
+    } 
+
+    try {
+      setIsSubmitting(true);
+      const expData = await addEmployeeExperience(formData);
+      setExperienceData(expData);
+
+      setStep(3);
+
+    } catch (err) {
+      console.error("Failed to save experience. Please try again.", err);
+    }finally{
+      setIsSubmitting(false);
+    }
+   
+  };
+  
+  
+  const handleEducationSubmit = async(formData) => {
+    if (!experienceData) {
+      console.error("Experience must be created first");
+      setStep(2); 
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const educationData = await addEmployeeEducation(formData);
+      setEducationData(educationData);
+
+      setStep(4);
+
+    } catch (err) {
+      console.error("Failed to save education. Please try again.", err);
+    }finally{
+      setIsSubmitting(false);
+    }
+    
   };
   
   return (
@@ -63,6 +114,7 @@ export default function CreateProfilePage() {
       {step === 1 && (
         <CreateProfile 
           onSubmit={handleProfileSubmit}
+          isSubmitting={isSubmitting}
         />
       )}
       
@@ -80,7 +132,7 @@ export default function CreateProfilePage() {
         />
       )}
       
-      {step === 4 && (
+      {step === 4 && educationData && (
         <div className="profile-completion-message">
           <h2>Profile Completed!</h2>
           <p>Thank you for completing your profile.</p>
