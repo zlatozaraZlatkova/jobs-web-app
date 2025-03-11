@@ -1,34 +1,22 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+/* eslint-disable no-unused-vars */
 
-// todo use react icons
+import { Link } from "react-router-dom";
+import { useLogin } from "../../apiHooks/useAuth";
+import { useForm } from "../../apiHooks/useForm";
 
 export default function Login() {
-  const navigate = useNavigate();
+  const { user, isLoading, loginHander } = useLogin();
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const initialValues = { email: "", password: "" };
 
-  const { email, password } = formData;
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const handleFormSubmit = ({ email, password }) => {
+    loginHander(email, password);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!email || !password) {
-      console.log("Please enter both email and password");
-      return;
-    }
-    console.log("Submitting user data:", formData);
-    navigate("/home");
-  };
+  const { formValues, changeHander, sumbitHander } = useForm(
+    initialValues,
+    handleFormSubmit
+  );
 
   return (
     <>
@@ -37,16 +25,16 @@ export default function Login() {
           <h3 className="lead">
             <i className="fas fa-user" /> Sign Into Your Account
           </h3>
-  
-          <form className="form" onSubmit={handleSubmit}>
+
+          <form className="form" onSubmit={sumbitHander}>
             <div className="form-group">
               <input
                 autoComplete="username"
                 type="email"
                 placeholder="Email Address"
                 name="email"
-                value={email}
-                onChange={handleChange}
+                value={formValues.email}
+                onChange={changeHander}
                 required
               />
             </div>
@@ -56,16 +44,18 @@ export default function Login() {
                 type="password"
                 placeholder="Password"
                 name="password"
-                value={password}
-                onChange={handleChange}
+                value={formValues.password}
+                onChange={changeHander}
                 required
               />
             </div>
-            <input
+            <button
               type="submit"
               className="btn btn-primary w-full"
-              value="Login"
-            />
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading..." : "Login"}
+            </button>
           </form>
           <p className="my-1 text-center">
             Don&apos;t have an account? <Link to={"/register"}>Register</Link>
