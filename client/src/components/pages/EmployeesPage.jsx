@@ -1,41 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 import BasicProfileCard from "../employee/detailsProfile/BasicProfileCard";
 import Pagination from "../pagination/Pagination";
-import { getPaginatedEmployees } from "../../api/eployeeApi";
+import { useGetPafinatedEmployeeProfile } from "../../apiHooks/useEmployee";
+
 
 export default function EmployeesPage() {
-    const [employees, setEmployees] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
     const sectionRef = useRef(null);
-
-    useEffect(() => {
-        const fetchEmployees = async () => {
-            try {
-                setIsLoading(true);
-
-                const result = await getPaginatedEmployees(currentPage);
-
-                //the response structure is { success, data: { items: [] } }
-                if (!result.data || !Array.isArray(result.data.items)) {
-                    setEmployees([]);
-                    return;
-                }
-
-                setEmployees(result.data.items);
-
-                setTotalPages(result.data.pagination.totalPages);
-
-            } catch (err) {
-                console.error("Error fetching employees:", err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchEmployees();
-    }, [currentPage]);
+    
+    const { employees, isLoading, currentPage, setCurrentPage,totalPages} = useGetPafinatedEmployeeProfile();
 
     const nextPage = () => {
         if (currentPage < totalPages) {

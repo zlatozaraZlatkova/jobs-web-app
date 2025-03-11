@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
 
-export default function AddEducation({ onSubmit, onBack }) {
+export default function AddEducation({ onSubmit, onBack, isSubmitting }) {
   const [formData, setFormData] = useState({
     school: "",
     degree: "",
@@ -214,8 +214,9 @@ export default function AddEducation({ onSubmit, onBack }) {
             className="continue-button"
             type="button"
             onClick={handleContinue}
+            disabled={isSubmitting}
           >
-            Continue →
+           {isSubmitting ? "Creating Profile..." : "Continue →"}
           </button>
         </div>
       </div>

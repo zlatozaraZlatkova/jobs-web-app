@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
 
-export default function AddExperience({ onSubmit, onBack }) {
+export default function AddExperience({ onSubmit, onBack,  isSubmitting}) {
   const [formData, setFormData] = useState({
     title: "",
     company: "",
@@ -215,8 +215,9 @@ export default function AddExperience({ onSubmit, onBack }) {
             className="continue-button"
             type="button"
             onClick={handleContinue}
+            disabled={isSubmitting}
           >
-            Continue →
+            {isSubmitting ? "Creating Profile..." : "Continue →"}
           </button>
         </div>
       </div>
