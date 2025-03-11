@@ -24,6 +24,16 @@ export default function EducationProfileEdit({ isOpen, onClose, educationData, o
                 description: educationData.description || ""
             });
         }
+        return() => {
+            setFormData({
+                degree: "",
+                institution: "",
+                startDate:  "",
+                endDate:  "",
+                isCurrent: false,
+                description: ""
+            });
+        }
     }, [educationData, isOpen]);
 
     const handleChange = (e) => {
