@@ -1,16 +1,22 @@
-/* eslint-disable no-unused-vars */
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../apiHooks/useAuth";
 import { useForm } from "../../apiHooks/useForm";
 
 export default function Login() {
-  const { user, isLoading, loginHander } = useLogin();
+  const navigate = useNavigate();
+  const { isLoading, loginHander } = useLogin();
 
   const initialValues = { email: "", password: "" };
 
-  const handleFormSubmit = ({ email, password }) => {
-    loginHander(email, password);
+  const handleFormSubmit = async (formData) => {
+    try {
+      const { email, password } = formData;
+      await loginHander(email, password);
+      navigate("/");
+    } catch (err) {
+      console.log("Error user login data", err);
+    }
+
   };
 
   const { formValues, changeHander, sumbitHander } = useForm(

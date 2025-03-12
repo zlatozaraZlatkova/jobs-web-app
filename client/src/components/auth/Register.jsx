@@ -1,49 +1,43 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-// todo use react icons
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "../../apiHooks/useForm";
+import { useRegister } from "../../apiHooks/useAuth";
+
 
 export default function Register() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    rePassword: "",
-    role: "employee",
-  });
+  const navigate = useNavigate();
+  const [passwordError, setPasswordError] = useState(null);
 
-  const { name, email, password, rePassword, role } = formData;
+  const { isLoading, registerHandler } = useRegister();
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const initialValues = { name: "", email: "", password: "", rePassword: "", role: "employee" };
 
-  const handleRoleChange = (e) => {
-    setFormData({
-      ...formData,
-      role: e.target.value,
-    });
-  };
+  const handlerFormSumbit = async (formData) => {
+    const { name, email, password, rePassword, role } = formData;
+    
+    try {
+      if (password !== rePassword) {
+        setPasswordError("Passwords do not match! Please try again.");
+        return;
+      }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+      setPasswordError(null);
+      const userData = await registerHandler(name, email, password, role);
+      console.log("Submitting user data:", userData);
 
-    if (password !== rePassword) {
-      console.error("Passwords do not match");
-      return;
+      navigate("/");
+
+
+    } catch (err) {
+      console.log("Error register user", err);
+
     }
 
-    const userData = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      role: formData.role,
-    };
 
-    console.log("Submitting user data:", userData);
   };
+
+  const { formValues, changeHander, sumbitHandler, roleChangeHandler } = useForm(initialValues, handlerFormSumbit);
+
 
   return (
     <>
@@ -52,24 +46,29 @@ export default function Register() {
           <h3 className="lead">
             <i className="fas fa-user" /> Create Your Account
           </h3>
-          <form className="form" onSubmit={handleSubmit}>
+          {passwordError && (
+            <div className="alert alert-danger">{passwordError}</div>
+          )}
+
+          <form className="form" onSubmit={sumbitHandler}>
             <div className="form-group">
               <input
                 type="text"
                 placeholder="Name"
                 name="name"
-                value={name}
-                onChange={handleChange}
+                value={formValues.name}
+                onChange={changeHander}
                 required
               />
             </div>
             <div className="form-group">
               <input
+                autoComplete="username"
                 type="email"
                 placeholder="Email Address"
                 name="email"
-                value={email}
-                onChange={handleChange}
+                value={formValues.email}
+                onChange={changeHander}
                 required
               />
             </div>
@@ -79,8 +78,8 @@ export default function Register() {
                 type="password"
                 placeholder="Password"
                 name="password"
-                value={password}
-                onChange={handleChange}
+                value={formValues.password}
+                onChange={changeHander}
                 minLength="8"
                 required
               />
@@ -91,8 +90,8 @@ export default function Register() {
                 type="password"
                 placeholder="Confirm Password"
                 name="rePassword"
-                value={rePassword}
-                onChange={handleChange}
+                value={formValues.rePassword}
+                onChange={changeHander}
                 minLength="8"
                 required
               />
@@ -106,8 +105,8 @@ export default function Register() {
                       type="radio"
                       name="role"
                       value="employee"
-                      checked={role === "employee"}
-                      onChange={handleRoleChange}
+                      checked={formValues.role === "employee"}
+                      onChange={roleChangeHandler}
                     />
                     Employee
                   </label>
@@ -116,19 +115,20 @@ export default function Register() {
                       type="radio"
                       name="role"
                       value="employer"
-                      checked={role === "employer"}
-                      onChange={handleRoleChange}
+                      checked={formValues.role === "employer"}
+                      onChange={roleChangeHandler}
                     />
                     Employer
                   </label>
                 </div>
               </div>
             </div>
-            <input
+            <button 
               type="submit"
-              className="btn btn-primary w-full"
-              value="Register"
-            />
+              className="btn btn-primary w-full" 
+              disabled={isLoading}>
+              {isLoading ? "Registering..." : "Register"}
+            </button>
           </form>
           <p className="my-1 text-center">
             Already have an account? <Link to={"/login"}>Login</Link>

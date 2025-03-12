@@ -1,26 +1,32 @@
 import { useState } from "react";
 
 export function useForm(initialValues, submitCallback) {
-    const [formValues, setFormValues] = useState(initialValues);
+  const [formValues, setFormValues] = useState(initialValues);
 
-    const changeHander = (e) => {
-        setFormValues((formValues) => ({
-            ...formValues,
-            [e.target.name]: e.target.value
-        }))
+  const changeHander = (e) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-    }
+  const roleChangeHandler = (e) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      role: e.target.value,
+    }));
+  };
 
-    const sumbitHander = (e) => {
-        e.preventDefault();
+  const sumbitHandler = (e) => {
+    e.preventDefault();
 
-        submitCallback(formValues);
-    }
+    submitCallback(formValues);
+  };
 
-    return {
-        formValues,
-        changeHander,
-        sumbitHander
-    }
-
+  return {
+    formValues,
+    changeHander,
+    sumbitHandler,
+    roleChangeHandler
+  };
 }
