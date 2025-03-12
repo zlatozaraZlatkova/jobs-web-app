@@ -4,22 +4,24 @@ import { useForm } from "../../apiHooks/useForm";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { isLoading, loginHander } = useLogin();
+  const { isLoading, loginHandler } = useLogin();
 
   const initialValues = { email: "", password: "" };
 
   const handleFormSubmit = async (formData) => {
     try {
       const { email, password } = formData;
-      await loginHander(email, password);
-      navigate("/");
+      const result = await loginHandler(email, password);
+
+      if (result) {
+        navigate("/");
+      }
     } catch (err) {
       console.log("Error user login data", err);
     }
-
   };
 
-  const { formValues, changeHander, sumbitHander } = useForm(
+  const {  formValues, changeHander, sumbitHandler } = useForm(
     initialValues,
     handleFormSubmit
   );
@@ -32,7 +34,7 @@ export default function Login() {
             <i className="fas fa-user" /> Sign Into Your Account
           </h3>
 
-          <form className="form" onSubmit={sumbitHander}>
+          <form className="form" onSubmit={sumbitHandler}>
             <div className="form-group">
               <input
                 autoComplete="username"

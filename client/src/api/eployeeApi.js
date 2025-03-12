@@ -4,7 +4,7 @@ const BASE_URL = `/api/profile`;
 
 export const getEmployeeProfile = async () => {
   try {
-    return await request.get(BASE_URL);
+    return await request.get(`${BASE_URL}`, { credentials: 'include' });
   } catch (error) {
     console.error("getEmployeeProfile error:", error);
     throw error;
@@ -22,25 +22,30 @@ export const getPaginatedEmployees = async (currentPage, limit = 3) => {
   }
 };
 
+
 export const createEmployeeProfile = async (profileData) => {
   try {
-    return await request.post(`${BASE_URL}/create`, profileData);
+    return await request.post(`${BASE_URL}/create`, profileData, { credentials: 'include' });
   } catch (error) {
     console.error("createEmployeeProfile error:", error);
     throw error;
   }
 };
+
+
 export const addEmployeeExperience = async (experienceData) => {
   try {
-    return await request.put(`${BASE_URL}/experience`, experienceData);
+    return await request.put(`${BASE_URL}/experience`, experienceData, { credentials: 'include' });
   } catch (error) {
     console.error("addEmployeeExperience error:", error);
     throw error;
   }
 };
-export const addEmployeeEducation = async(educationData) => {
+
+
+export const addEmployeeEducation = async (educationData) => {
   try {
-    return await request.put(`${BASE_URL}/education`, educationData);
+    return await request.put(`${BASE_URL}/education`, educationData, { credentials: 'include' });
   } catch (error) {
     console.error("addEmployeeEducation error:", error);
     throw error;

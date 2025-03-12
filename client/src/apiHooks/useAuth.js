@@ -6,13 +6,11 @@ export function useLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
 
-  const loginHander = async (email, password) => {
+  const loginHandler = async (email, password) => {
     try {
       setIsLoading(true);
 
       const result = await login(email, password);
-      console.log("Logged in user data:", result);
-
       setUser(result);
 
       return result;
@@ -29,7 +27,7 @@ export function useLogin() {
   return {
     user,
     isLoading,
-    loginHander,
+    loginHandler,
   };
 }
 
