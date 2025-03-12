@@ -1,5 +1,7 @@
-async function requester(method, url, data) {
-  const options = {};
+async function requester(method, url, data, fetchOptions = {}) {
+  const options = {
+    ...fetchOptions  
+  };
 
   if (method !== "GET") {
     options.method = method;
@@ -27,6 +29,7 @@ async function requester(method, url, data) {
     throw error;
   }
 }
+
 
 export const get = requester.bind(null, "GET");
 export const post = requester.bind(null, "POST");

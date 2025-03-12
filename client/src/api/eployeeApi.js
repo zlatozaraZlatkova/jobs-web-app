@@ -4,7 +4,7 @@ const BASE_URL = `/api/profile`;
 
 export const getEmployeeProfile = async () => {
   try {
-    return await request.get(`${BASE_URL}`, { credentials: 'include' });
+    return await request.get(`${BASE_URL}`, null, { credentials: 'include' });
   } catch (error) {
     console.error("getEmployeeProfile error:", error);
     throw error;
