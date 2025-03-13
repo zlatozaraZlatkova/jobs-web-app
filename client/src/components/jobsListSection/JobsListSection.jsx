@@ -1,20 +1,23 @@
 /* eslint-disable react/prop-types */
 import { useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useGetPaginatedJobs } from "../../apiHooks/useJobs";
 import styles from "./JobsListSection.module.css";
 import JobCard from "./jobCard/JobCard";
 import Pagination from "../pagination/Pagination";
 import SearchBar from "../searchBar/SearchBar";
+import { updateBrowserURL } from "../../utils/updateBrowserUrl";
 
 
 export default function JobsListSection({ isHomePage = false, currentPage, setCurrentPage }) {
   const sectionRef = useRef(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const { jobs, isLoading, totalPages } = useGetPaginatedJobs();
+  const getPageUrl = parseInt(searchParams.get('page') || '1');
+
+  const { jobs, isLoading, totalPages } = useGetPaginatedJobs(getPageUrl);
 
   useEffect(() => {
-
     if (sectionRef.current && !isHomePage) {
       sectionRef.current.scrollIntoView({
         behavior: 'smooth'
@@ -24,16 +27,31 @@ export default function JobsListSection({ isHomePage = false, currentPage, setCu
   }, [currentPage, isHomePage]);
 
 
+  useEffect(() => {
+    if (currentPage !== getPageUrl) {
+      setCurrentPage(getPageUrl);
+    }
+  }, [currentPage, setCurrentPage, getPageUrl]);
+
+
   const nextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage((currentPage) => currentPage + 1)
+      setCurrentPage((currentPage) => {
+        const newPage = currentPage + 1;
+        updateBrowserURL(newPage, searchParams, setSearchParams);
+        return newPage;
+      })
     }
   };
 
 
   const prevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage((currentPage) => currentPage - 1)
+      setCurrentPage((currentPage) => {
+        const newPage = currentPage - 1;
+        updateBrowserURL(newPage, searchParams, setSearchParams);
+        return newPage;
+      })
     }
 
   };
