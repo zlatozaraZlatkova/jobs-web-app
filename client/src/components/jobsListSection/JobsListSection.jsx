@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useGetPaginatedJobs } from "../../apiHooks/useJobs";
 import styles from "./JobsListSection.module.css";
@@ -8,29 +8,34 @@ import Pagination from "../pagination/Pagination";
 import SearchBar from "../searchBar/SearchBar";
 
 
-export default function JobsListSection({ isHomePage = false }) {
+export default function JobsListSection({ isHomePage = false, currentPage, setCurrentPage }) {
   const sectionRef = useRef(null);
 
-  const { jobs, isLoading, currentPage, setCurrentPage, totalPages } = useGetPaginatedJobs();
+  const { jobs, isLoading, totalPages } = useGetPaginatedJobs();
+
+  useEffect(() => {
+
+    if (sectionRef.current && !isHomePage) {
+      sectionRef.current.scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+
+  }, [currentPage, isHomePage]);
+
 
   const nextPage = () => {
     if (currentPage < totalPages) {
-      if (sectionRef.current) {
-        sectionRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
-      }
-
-      setCurrentPage((currentPage) => currentPage + 1);
+      setCurrentPage((currentPage) => currentPage + 1)
     }
   };
 
+
   const prevPage = () => {
     if (currentPage > 1) {
-      if (sectionRef.current) {
-        sectionRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
-      }
-
-      setCurrentPage((currentPage) => currentPage - 1);
+      setCurrentPage((currentPage) => currentPage - 1)
     }
+
   };
 
   return (
