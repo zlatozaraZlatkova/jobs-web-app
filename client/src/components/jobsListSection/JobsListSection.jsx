@@ -1,59 +1,37 @@
 /* eslint-disable react/prop-types */
 import { useRef, useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGetPaginatedJobs } from "../../apiHooks/useJobs";
 import styles from "./JobsListSection.module.css";
 import JobCard from "./jobCard/JobCard";
 import Pagination from "../pagination/Pagination";
 import SearchBar from "../searchBar/SearchBar";
-import { updateBrowserURL } from "../../utils/updateBrowserUrl";
 
 
-export default function JobsListSection({ isHomePage = false, currentPage, setCurrentPage }) {
+
+export default function JobsListSection({ isHomePage = false, currentPage, setCurrentPage  }) {
   const sectionRef = useRef(null);
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const getPageUrl = parseInt(searchParams.get('page') || '1');
-
-  const { jobs, isLoading, totalPages } = useGetPaginatedJobs(getPageUrl);
-
+ 
+  const { jobs, isLoading, totalPages } = useGetPaginatedJobs(currentPage);
+  
   useEffect(() => {
     if (sectionRef.current && !isHomePage) {
       sectionRef.current.scrollIntoView({
         behavior: 'smooth'
       });
     }
-
   }, [currentPage, isHomePage]);
-
-
-  useEffect(() => {
-    if (currentPage !== getPageUrl) {
-      setCurrentPage(getPageUrl);
-    }
-  }, [currentPage, setCurrentPage, getPageUrl]);
-
-
+  
   const nextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage((currentPage) => {
-        const newPage = currentPage + 1;
-        updateBrowserURL(newPage, searchParams, setSearchParams);
-        return newPage;
-      })
+      setCurrentPage(currentPage => currentPage + 1);
     }
   };
-
-
+  
   const prevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage((currentPage) => {
-        const newPage = currentPage - 1;
-        updateBrowserURL(newPage, searchParams, setSearchParams);
-        return newPage;
-      })
+      setCurrentPage(currentPage => currentPage - 1);
     }
-
   };
 
   return (

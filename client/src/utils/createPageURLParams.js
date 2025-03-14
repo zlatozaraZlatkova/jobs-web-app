@@ -1,4 +1,4 @@
-export const updateBrowserURL = (currentPageNumber, searchParams, setSearchParams) => {
+export const createPageURLParams = (currentPageNumber, searchParams) => {
   const urlParameters = new URLSearchParams(searchParams);
 
   if (currentPageNumber === 1) {
@@ -7,5 +7,5 @@ export const updateBrowserURL = (currentPageNumber, searchParams, setSearchParam
     urlParameters.set("page", currentPageNumber);
   }
 
-  setSearchParams(urlParameters);
+  return urlParameters;
 };
