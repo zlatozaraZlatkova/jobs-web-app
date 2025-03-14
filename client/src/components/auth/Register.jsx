@@ -41,7 +41,7 @@ export default function Register() {
 
   return (
     <>
-      <section className="container">
+      <section className="container-profile">
         <div className="register-container">
           <h3 className="lead">
             <i className="fas fa-user" /> Create Your Account

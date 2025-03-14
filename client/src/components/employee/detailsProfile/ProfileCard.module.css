@@ -24,6 +24,10 @@
   flex-shrink: 0;
 }
 
+.profileAvatar img {
+  border-radius: 50%;
+}
+
 .profileInfo {
   flex-grow: 1;
 }
@@ -239,7 +243,7 @@
 
 
 
-.removeExperienceBtn {
+.removeExperienceBtn, .delProfileBtn {
   background: var(--red-background);
   color: var(--danger-color);
   border: none;
@@ -250,7 +254,8 @@
   transition: all 0.2s;
 }
 
-.removeExperienceBtn:hover {
+.removeExperienceBtn:hover,
+.delProfileBtn:hover {
   background: var(--red-background);
 }
 

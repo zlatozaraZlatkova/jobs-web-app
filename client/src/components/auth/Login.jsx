@@ -28,7 +28,7 @@ export default function Login() {
 
   return (
     <>
-      <section className="container">
+      <section className="container-profile">
         <div className="login-container">
           <h3 className="lead">
             <i className="fas fa-user" /> Sign Into Your Account

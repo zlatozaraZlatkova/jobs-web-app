@@ -5,22 +5,24 @@ import GitHubRepo from "../employee/detailsProfile/GitHubRepo";
 import { useGetEmployeeProfile } from "../../apiHooks/useEmployee";
 
 export default function DetailsProfilePage() {
- const { profile, isLoading} = useGetEmployeeProfile();
-
-  return (
+ const { employee, isLoading } = useGetEmployeeProfile();
+  
+ return (
     <>
       <div className="container-profile">
         {isLoading ? (
           <div>Loading employees...</div>
-        ) : (
+        ) : employee ? (
           <>
-            <BasicProfileCard employee={profile} />
+            <BasicProfileCard employee={employee} />
             <GitHubRepo />
             <div className="content-grid">
               <ExperienceCard />
               <EducationCard />
             </div>
           </>
+        ) : (
+          <div>No employee data available</div>
         )}
       </div>
     </>

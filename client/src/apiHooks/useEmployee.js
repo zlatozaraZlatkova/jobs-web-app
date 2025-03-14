@@ -47,7 +47,7 @@ export function useGetPafinatedEmployeeProfile() {
 }
 
 export function useGetEmployeeProfile() {
-  const [profile, setProfile] = useState(null);
+  const [employee, setEmployee] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -55,16 +55,14 @@ export function useGetEmployeeProfile() {
       try {
         setIsLoading(true);
         const result = await getEmployeeProfile();
-        console.log("Employee Profile response data:", result);
+       
+        setEmployee(result); 
 
-        if (!result.data || !Array.isArray(result.data.items)) {
-          setProfile(null);
-          return;
-        }
-
-        setProfile(result.data.items);
       } catch (err) {
         console.error("Error fetching employee profile:", err);
+
+        setEmployee(null);
+        
       } finally {
         setIsLoading(false);
       }
@@ -74,10 +72,8 @@ export function useGetEmployeeProfile() {
   }, []);
 
   return {
-    profile,
-    setProfile,
-    isLoading,
-    setIsLoading,
+    employee,
+    isLoading
   };
 }
 
