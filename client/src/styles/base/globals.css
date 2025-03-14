@@ -90,6 +90,10 @@ body {
   font-family: "Monaco", "Consolas", monospace;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 img {
   width: 100%;
 }
@@ -101,6 +105,13 @@ img {
   height: 1px;
   background: #ccc;
   margin: 1.5rem 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 /* Calendar Icon Styles */
@@ -119,12 +130,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   height: 100%;
 }
 
-.container {
-  max-width: 1100px;
-  margin: auto;
-  overflow: hidden;
-  padding: 0 2rem;
-}
 
 /* Button*/
 .button-group {
@@ -501,8 +506,8 @@ button {
   border: #ccc solid 1px;
 }
 
-/* Container */
-.container {
+/* Container-profile */
+.container-profile {
   max-width: 800px;
   margin: 8rem auto;
   background-color: var(--job-card-bg);

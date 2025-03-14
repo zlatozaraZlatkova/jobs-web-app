@@ -55,7 +55,7 @@ export default function CreateProfilePage() {
   };
 
   return (
-    <div className="container">
+    <div className="container-profile">
       {/* Progress bar */}
       <div className="progress-steps">
         <div className="progress-line">

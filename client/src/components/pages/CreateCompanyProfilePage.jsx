@@ -3,7 +3,7 @@ import CreateCompanyProfile from "../employer/CreateCompanyProfile";
 export default function CreateCompanyProfilePage() {
   return (
     <>
-      <div className="container">
+      <div className="container-profile">
         <div className="form-card">
           <h1 className="form-title">Create Company Profile</h1>
           <p className="form-subtitle">

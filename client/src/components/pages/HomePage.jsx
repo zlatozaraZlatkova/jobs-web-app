@@ -6,18 +6,16 @@ import TrustedCompaniesSection from "../trustedCompaniesSection/TrustedCompanies
 export default function HomePage() {
   return (
     <>
-      <main>
-        <section className="search-section">
-          <h1>GET HIRED &amp; BUILD A STRONG TEAM</h1>
-          <p>Advance your career and build a strong, successful team.</p>
+      <section className="search-section">
+        <h1>GET HIRED &amp; BUILD A STRONG TEAM</h1>
+        <p>Advance your career and build a strong, successful team.</p>
 
-          <SearchBar />
-        </section>
+        <SearchBar />
+      </section>
 
-        <CategoriesJobSection />
-        <JobsListSection isHomePage={true} />
-        <TrustedCompaniesSection />
-      </main>
+      <CategoriesJobSection />
+      <JobsListSection isHomePage={true} />
+      <TrustedCompaniesSection />
     </>
   );
 }

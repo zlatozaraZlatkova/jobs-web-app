@@ -9,7 +9,7 @@ export default function DetailsProfilePage() {
 
   return (
     <>
-      <div className="container">
+      <div className="container-profile">
         {isLoading ? (
           <div>Loading employees...</div>
         ) : (
