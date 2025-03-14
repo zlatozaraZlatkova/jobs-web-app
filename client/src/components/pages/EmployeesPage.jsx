@@ -1,33 +1,35 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import BasicProfileCard from "../employee/detailsProfile/BasicProfileCard";
 import Pagination from "../pagination/Pagination";
 import { useGetPafinatedEmployeeProfile } from "../../apiHooks/useEmployee";
+import { usePaginationWithURL } from "../../apiHooks/usePaginationWithURL";
 
 
 export default function EmployeesPage() {
     const sectionRef = useRef(null);
+    const { currentPage, setCurrentPage } = usePaginationWithURL();
+    const { employees, isLoading, totalPages } = useGetPafinatedEmployeeProfile();
     
-    const { employees, isLoading, currentPage, setCurrentPage,totalPages} = useGetPafinatedEmployeeProfile();
-
+    useEffect(() => {
+        if (sectionRef.current) {
+            sectionRef.current.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    }, [currentPage]);
+    
     const nextPage = () => {
         if (currentPage < totalPages) {
-            if (sectionRef.current) {
-                sectionRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
-            }
-
-            setCurrentPage((currentPage) => currentPage + 1);
+            setCurrentPage(currentPage => currentPage + 1);
         }
     };
-
+    
     const prevPage = () => {
         if (currentPage > 1) {
-            if (sectionRef.current) {
-                sectionRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
-            }
-            setCurrentPage((currentPage) => currentPage - 1);
+            setCurrentPage(currentPage => currentPage - 1);
         }
     };
-
+    
     return (
         <>
             <section className="experts-section" ref={sectionRef}>
