@@ -12,28 +12,48 @@ import EmployeesPage from "./components/pages/EmployeesPage";
 import JobsPage from "./components/pages/JobsPage";
 import JobDetailsPage from "./components/pages/JobDetailsPage";
 import NotFoundPage from "./components/pages/NotFoundPage";
+import { useState } from "react";
+import { AuthContext } from "./contexts/AuthContext";
 
 
 
 function App() {
+  const [authState, setAuthState] = useState({});
+
+  const changeAuthState = (state) => {
+    setAuthState(state)
+
+  }
+
+  const contextData = {
+    email: authState.email,
+    _id: authState._id,
+    isAuthenticated: !!authState.email,
+    changeAuthState
+
+  }
+
+
   return (
-    <BrowserRouter>
-      <MainLayout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route path="/jobs" element={<JobsPage/>} />
-          <Route path="/jobs/:id" element={<JobDetailsPage/>} />
-          <Route path="/profile/catalog" element={<EmployeesPage/>} />
-          <Route path="/profile" element={<DetailsProfilePage/>} />
-          <Route path="/profile/create" element={<CreateProfilePage />} />
-          <Route path="/company/profile/create" element={<CreateCompanyProfilePage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </MainLayout>
-    </BrowserRouter>
+    <AuthContext.Provider value={contextData}>
+      <BrowserRouter>
+        <MainLayout>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/home" element={<Navigate to="/" replace />} />
+            <Route path="/jobs" element={<JobsPage />} />
+            <Route path="/jobs/:id" element={<JobDetailsPage />} />
+            <Route path="/profile/catalog" element={<EmployeesPage />} />
+            <Route path="/profile" element={<DetailsProfilePage />} />
+            <Route path="/profile/create" element={<CreateProfilePage />} />
+            <Route path="/company/profile/create" element={<CreateCompanyProfilePage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </MainLayout>
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 

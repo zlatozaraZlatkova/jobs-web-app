@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { login, register } from "../api/authApi";
+import { AuthContext } from "../contexts/AuthContext";
 
 
 export function useLogin() {
+  const { changeAuthState} = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState(null);
 
   const loginHandler = async (email, password) => {
     try {
       setIsLoading(true);
 
       const result = await login(email, password);
-      setUser(result);
+      changeAuthState(result);
 
-      return result;
+      return true;
 
     } catch (err) {
       console.error("Error user login:", err);
@@ -25,7 +26,7 @@ export function useLogin() {
   };
 
   return {
-    user,
+    changeAuthState,
     isLoading,
     loginHandler,
   };
@@ -33,9 +34,9 @@ export function useLogin() {
 
 
 export function useRegister() {
+  const { changeAuthState } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState(null);
-
+  
   const registerHandler = async(name, email, password, role) => {
 
     try {
@@ -44,7 +45,8 @@ export function useRegister() {
       const result = await register(name, email, password, role);
       console.log("Registration successful:", result);
       
-      setUser(result);
+      changeAuthState(result)
+      
       return result;
 
     } catch (err) {
@@ -57,7 +59,7 @@ export function useRegister() {
   };
 
   return {
-    user,
+    changeAuthState,
     isLoading,
     registerHandler
   };
