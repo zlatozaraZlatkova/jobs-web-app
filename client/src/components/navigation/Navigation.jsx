@@ -2,21 +2,32 @@
 import styles from "./Navigation.module.css";
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useLogout } from "../../apiHooks/useAuth";
 import { AuthContext } from "../../contexts/AuthContext";
 
 
 export default function Navigation() {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [serverError, setServerError] = useState(null);
 
   const { isAuthenticated, email, role } = useContext(AuthContext);
-
+  const { logoutHandler } = useLogout();
   const isEmployee = role === "employee";
 
-  const handleLogout = () => {
-    navigate("/");
-  };
+  const handleLogout = async () => {
+    try {
+      const success = await logoutHandler();
+      navigate("/");
 
+    } catch (err) {
+      console.log("Logout failed:", err);
+
+      const errMsg = "Failed to logout. Please try again.";
+      setServerError(errMsg);
+    }
+
+  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -84,6 +95,9 @@ export default function Navigation() {
                   <button onClick={handleLogout} className={styles.loginBtn} type="button">
                     Logout
                   </button>
+                  {serverError && (
+                    <div className="alert alert-danger">{serverError}</div>
+                  )}
                 </li>
               </>
             ) : (

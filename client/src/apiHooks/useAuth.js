@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { login, register } from "../api/authApi";
+import { login, register, logout } from "../api/authApi";
 import { AuthContext } from "../contexts/AuthContext";
 
 
@@ -71,5 +71,35 @@ export function useRegister() {
     changeAuthState,
     isLoading,
     registerHandler
+  };
+}
+
+
+export function useLogout() {
+  const { changeAuthState } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const logoutHandler = async () => {
+    try {
+      setIsLoading(true);
+
+      await logout();
+    
+      changeAuthState({});  
+      
+      return true;
+
+    } catch (err) {
+      console.error("Error user logout:", err);
+      throw err;
+      
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    isLoading,
+    logoutHandler
   };
 }
