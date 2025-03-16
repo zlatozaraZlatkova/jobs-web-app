@@ -12,7 +12,12 @@ export function useLogin() {
       setIsLoading(true);
 
       const result = await login(email, password);
-      changeAuthState(result);
+
+      changeAuthState({
+        _id: result._id,
+        email: result.email,
+        role: result.role
+      });
 
       return true;
 
@@ -45,7 +50,11 @@ export function useRegister() {
       const result = await register(name, email, password, role);
       console.log("Registration successful:", result);
       
-      changeAuthState(result)
+      changeAuthState({
+        _id: result._id,
+        email: result.email,
+        role: result.role
+      });
       
       return result;
 

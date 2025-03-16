@@ -1,19 +1,22 @@
 /* eslint-disable no-unused-vars */
 import styles from "./Navigation.module.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
+
 
 export default function Navigation() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [isEmployee, setIsEmployee] = useState(true);
-
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const { isAuthenticated, email, role } = useContext(AuthContext);
+
+  const isEmployee = role === "employee";
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
     navigate("/");
   };
+
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -63,7 +66,7 @@ export default function Navigation() {
             <li><Link to="/profile/catalog">Hire Talent</Link></li>
             <li><Link to="/posts">Forum</Link></li>
 
-            {isLoggedIn ? (
+            {isAuthenticated ? (
               <>
                 {isEmployee ? (
                   <>
@@ -71,11 +74,11 @@ export default function Navigation() {
                     <li><Link to="/profile/create">Create Profile</Link></li>
                   </>
                 ) : (
-                    <>
-                     <li><Link to="/company/profile">Admin Profile</Link></li>
-                     <li><Link to="/company/profile/create">Create Company</Link></li>
-                    </>
-                  )}
+                  <>
+                    <li><Link to="/company/profile">Admin Profile</Link></li>
+                    <li><Link to="/company/profile/create">Create Company</Link></li>
+                  </>
+                )}
 
                 <li>
                   <button onClick={handleLogout} className={styles.loginBtn} type="button">

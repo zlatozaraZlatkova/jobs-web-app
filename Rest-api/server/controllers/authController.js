@@ -44,7 +44,7 @@ router.post("/login",
   async (req, res, next) => {
     try {
 
-      const { _id, email, accessToken } = await login(
+      const { _id, email, accessToken, role } = await login(
         req.body.email,
         req.body.password
       );
@@ -56,7 +56,8 @@ router.post("/login",
         sameSite: "lax",
       });
 
-      res.status(200).json({ _id, email });
+      res.status(200).json({ _id, email, role });
+
     } catch (error) {
       next(error);
     }

@@ -28,6 +28,7 @@ function App() {
   const contextData = {
     email: authState.email,
     _id: authState._id,
+    role: authState.role, 
     isAuthenticated: !!authState.email,
     changeAuthState
 
