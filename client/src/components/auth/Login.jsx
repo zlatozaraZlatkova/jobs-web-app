@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../apiHooks/useAuth";
 import { useForm } from "../../apiHooks/useForm";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [serverError, setServerError] = useState(null);
   const { isLoading, loginHandler } = useLogin();
 
   const initialValues = { email: "", password: "" };
@@ -12,16 +14,21 @@ export default function Login() {
     try {
       const { email, password } = formData;
       const result = await loginHandler(email, password);
+      console.log("Submitting user data:", result);
 
-      if (result) {
-        navigate("/");
-      }
+      navigate("/");
+
     } catch (err) {
       console.log("Error user login data", err);
+
+      const errMsg = "Invalid email or password. Please try again.";
+      setServerError(errMsg);
+      
+      resetForm();
     }
   };
 
-  const {  formValues, changeHander, sumbitHandler } = useForm(
+  const {  formValues, changeHander, sumbitHandler, resetForm } = useForm(
     initialValues,
     handleFormSubmit
   );
@@ -29,6 +36,7 @@ export default function Login() {
   return (
     <>
       <section className="container-profile">
+      {serverError && <div className="error-message">{serverError}</div>}
         <div className="login-container">
           <h3 className="lead">
             <i className="fas fa-user" /> Sign Into Your Account

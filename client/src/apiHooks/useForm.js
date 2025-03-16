@@ -23,10 +23,15 @@ export function useForm(initialValues, submitCallback) {
     submitCallback(formValues);
   };
 
+  const resetForm = () => {
+    setFormValues(initialValues);
+  };
+
   return {
     formValues,
     changeHander,
     sumbitHandler,
-    roleChangeHandler
+    roleChangeHandler,
+    resetForm
   };
 }

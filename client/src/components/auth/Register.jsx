@@ -7,6 +7,7 @@ import { useRegister } from "../../apiHooks/useAuth";
 export default function Register() {
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState(null);
+  const [serverError, setServerError] = useState(null);
 
   const { isLoading, registerHandler } = useRegister();
 
@@ -30,18 +31,25 @@ export default function Register() {
 
     } catch (err) {
       console.log("Error register user", err);
+      const errMsg = "Invalid email or password. Please try again.";
+      setServerError(errMsg);
+      
+      resetForm();
 
+  
     }
 
 
   };
 
-  const { formValues, changeHander, sumbitHandler, roleChangeHandler } = useForm(initialValues, handlerFormSumbit);
+  const { formValues, changeHander, sumbitHandler, roleChangeHandler, resetForm } = useForm(initialValues, handlerFormSumbit);
 
 
   return (
     <>
       <section className="container-profile">
+      {serverError && <div className="error-message">{serverError}</div>}
+
         <div className="register-container">
           <h3 className="lead">
             <i className="fas fa-user" /> Create Your Account
@@ -123,9 +131,9 @@ export default function Register() {
                 </div>
               </div>
             </div>
-            <button 
+            <button
               type="submit"
-              className="btn btn-primary w-full" 
+              className="btn btn-primary w-full"
               disabled={isLoading}>
               {isLoading ? "Registering..." : "Register"}
             </button>

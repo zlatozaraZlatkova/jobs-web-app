@@ -18,7 +18,7 @@ export function useLogin() {
 
     } catch (err) {
       console.error("Error user login:", err);
-      return null;
+      throw err;
 
     } finally {
       setIsLoading(false);
@@ -51,7 +51,7 @@ export function useRegister() {
 
     } catch (err) {
       console.error("Registration error:", err);
-      return null;
+      throw err;
 
     } finally {
       setIsLoading(false);
