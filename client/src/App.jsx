@@ -1,4 +1,8 @@
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import { useState } from "react";
+import { AuthContext } from "./contexts/AuthContext";
+import { useInitializeAuth } from "./apiHooks/useAuth";
+
 import "./styles/index.css";
 
 import HomePage from "./components/pages/HomePage";
@@ -12,8 +16,6 @@ import EmployeesPage from "./components/pages/EmployeesPage";
 import JobsPage from "./components/pages/JobsPage";
 import JobDetailsPage from "./components/pages/JobDetailsPage";
 import NotFoundPage from "./components/pages/NotFoundPage";
-import { useState } from "react";
-import { AuthContext } from "./contexts/AuthContext";
 
 
 
@@ -24,6 +26,8 @@ function App() {
     setAuthState(state)
 
   }
+  
+  useInitializeAuth(changeAuthState);
 
   const contextData = {
     email: authState.email,

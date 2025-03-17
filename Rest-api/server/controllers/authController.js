@@ -1,17 +1,17 @@
 const router = require("express").Router();
 const { body } = require("express-validator");
 
-const { register, login, logout } = require("../services/authService");
+const { register, login, logout, validateUserToken} = require("../services/authService");
 const { hasUser } = require("../middlewares/guards");
 const validateRequest = require("../middlewares/validateBodyRequest");
 
 router.post("/register",
   body("name", "Name is required").not().isEmpty(),
-  body("name", "Please enter a name with 2 or more character").isLength({ min: 2 }),
+  body("name", "Please enter a name with 2 or more character").isLength({ min: 2}),
   body("email", "Email is required").not().isEmpty(),
   body("email", "Please provide a valid email address").isEmail(),
   body("role", "Role is required").not().isEmpty(),
-  body("password", "Please enter a password with 8 or more characters").isLength({ min: 8 }),
+  body("password","Please enter a password with 8 or more characters").isLength({ min: 8 }),
   validateRequest,
   async (req, res, next) => {
     try {
@@ -82,6 +82,29 @@ router.get("/logout", hasUser(), async (req, res, next) => {
 
     res.status(204).end();
   } catch (error) {
+    next(error);
+  }
+});
+
+
+router.get("/validate", async (req, res, next) => {
+  try {
+    const token = req.cookies.jwt;
+    
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+    
+    const userData = await validateUserToken(token);
+    
+    res.json({
+      _id: userData._id,
+      email: userData.email,
+      role: userData.role,
+    });
+    
+  } catch (error) {
+    console.error("Token validation error:", error.message);
     next(error);
   }
 });

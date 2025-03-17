@@ -65,6 +65,31 @@ async function logout(token) {
   tokenBlackList.add(token);
 }
 
+async function validateUserToken(token) {
+  try {
+    const verifedUserPayLoad = verifyToken(token);
+    
+    if (!verifedUserPayLoad) {
+      throw new Error("Invalid payload data");
+    }
+    
+    const user = await User.findById(verifedUserPayLoad._id);
+    
+    if (!user) {
+      throw new Error("User not found in database");
+    }
+    
+    return {
+      _id: user._id,
+      email: user.email,
+      role: user.role
+    };
+
+  } catch (err) {
+    throw new Error(`Invalid token: ${err.message}`);
+  }
+}
+
 
 function verifyToken(token) {
   if (tokenBlackList.has(token)) {
@@ -95,5 +120,6 @@ module.exports = {
   register,
   verifyToken,
   login,
-  logout
+  logout,
+  validateUserToken
 };

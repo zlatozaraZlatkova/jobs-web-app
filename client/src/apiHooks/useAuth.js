@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { login, register, logout } from "../api/authApi";
+import { useContext, useState, useEffect } from "react";
+import { login, register, logout, verifyToken } from "../api/authApi";
 import { AuthContext } from "../contexts/AuthContext";
 
 
@@ -102,4 +102,32 @@ export function useLogout() {
     isLoading,
     logoutHandler
   };
+}
+
+export function useInitializeAuth(changeAuthState) {
+
+  useEffect(() => {
+    let isMounted = true; 
+    
+    const fetchCurrentUser = async () => {
+      try {
+        const validateToken = await verifyToken();
+
+        if (isMounted) {
+          changeAuthState(validateToken);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        if (isMounted) {
+          changeAuthState({});
+        }
+      }
+    };
+
+    fetchCurrentUser();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 }

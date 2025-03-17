@@ -25,7 +25,7 @@ export const register = async (name, email, password, role) => {
 
 export const logout = async () => {
   try {
-    const response = await request.get(`${BASE_URL}/logout`, null, { credentials: 'include' } );
+    const response = await request.get(`${BASE_URL}/logout`, null, { credentials: 'include' });
 
     return response;
 
@@ -34,3 +34,13 @@ export const logout = async () => {
     throw error;
   }
 }
+
+export const verifyToken = async () => {
+  try {
+    return await request.get(`${BASE_URL}/validate`, null, { credentials: 'include' });
+
+  } catch (error) {
+    console.error("Token validation error:", error);
+    throw error;
+  }
+};
