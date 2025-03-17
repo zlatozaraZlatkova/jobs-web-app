@@ -5,6 +5,13 @@ const jobSchema = new Schema(
     title: {
       type: String,
       required: true,
+      minLength: [5, "Title should be at least 5 characters long"],
+      maxLength: [150, "Title shouldn't contain more than 150 characters "],
+      lowercase: true,
+    },
+    techStack: {
+      type: String,
+      required: true,
       lowercase: true,
       enum: ["html", "css","javascript","react","angular","vue","next.js","typescript",
       "java",".net","php","python","ruby","go","node.js"],

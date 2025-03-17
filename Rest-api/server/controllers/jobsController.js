@@ -82,6 +82,7 @@ router.get("/:id", loadItem("Job"), async (req, res, next) => {
 
 router.post("/create", hasUser(), checkUserRole("employer"),
   body("title", "Title is required").not().isEmpty(),
+  body("techStack","Title is required").not().isEmpty(),
   body("type", "Type is required").not().isEmpty(),
   body("technologies", "Type is required").not().isEmpty(),
   body("description", "Job description is required").not().isEmpty(),
@@ -102,6 +103,7 @@ router.post("/create", hasUser(), checkUserRole("employer"),
 
       const newJob = {
         title: req.body.title,
+        techStack: req.body.techStack,
         type: req.body.type,
         technologies: req.body.technologies,
         description: req.body.description,
@@ -125,6 +127,7 @@ router.post("/create", hasUser(), checkUserRole("employer"),
 
 router.put("/update/:id", hasUser(), checkUserRole("employer"), loadItem('Job'),
   body("title", "Title is required").not().isEmpty(),
+  body("techStack","Title is required").not().isEmpty(),
   body("type", "Type is required").not().isEmpty(),
   body("technologies", "Type is required").not().isEmpty(),
   body("description", "Job description is required").not().isEmpty(),
@@ -144,7 +147,7 @@ router.put("/update/:id", hasUser(), checkUserRole("employer"), loadItem('Job'),
         throw new Error("Not authorized.");
       }
 
-      const jobData = { title, type, technologies, description, location, salary } = req.body;
+      const jobData = { title,techStack, type, technologies, description, location, salary } = req.body;
 
       const updatedJob = await updateItem(req.params.id, jobData);
 

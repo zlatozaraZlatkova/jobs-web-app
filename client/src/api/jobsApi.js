@@ -36,3 +36,14 @@ export const getJobById = async (id) => {
     throw error;
   }
 };
+
+export const createJob = async (jobData) => {
+  try {
+    return await request.post(`${BASE_URL}/create`, jobData, {
+      credentials: "include",
+    });
+  } catch (error) {
+    console.error("createJob error:", error);
+    throw error;
+  }
+};

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useState, useEffect } from "react";
 import { login, register, logout, verifyToken } from "../api/authApi";
 import { AuthContext } from "../contexts/AuthContext";

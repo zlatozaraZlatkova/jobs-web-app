@@ -86,6 +86,7 @@ export default function Navigation() {
                   </>
                 ) : (
                   <>
+                    <li><Link to="/jobs/create">Add Job</Link></li>
                     <li><Link to="/company/profile">Admin Profile</Link></li>
                     <li><Link to="/company/profile/create">Create Company</Link></li>
                   </>
