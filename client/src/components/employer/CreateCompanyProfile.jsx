@@ -1,44 +1,53 @@
-import { useState } from 'react';
+/* eslint-disable no-unused-vars */
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "../../apiHooks/useForm";
+import { useCreateCompanyProfile } from "../../apiHooks/useEmployer";
 
 export default function CreateCompanyProfile() {
+  const navigate = useNavigate();
+  const [serverError, setServerError] = useState(null);
+  const { isSubmittingProfile, submitCompanyProfile } = useCreateCompanyProfile();
 
-  const [formData, setFormData] = useState({
-    companyName: '',
-    description: '',
-    contactEmail: '',
-    contactPhone: ''
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-    
+  const initialValues = {
+    companyName: "",
+    description: "",
+    contactEmail: "",
+    contactPhone: "",
   };
 
- 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
+  const handleFormSubmit = async (formData) => {
+    try {
+      console.log("Submitting company data:", formData);
 
+      const companyData = {
+        companyName: formData.companyName,
+        description: formData.description,
+        contactEmail: formData.contactEmail,
+        contactPhone: formData.contactPhone,
+      };
+
+      const newCompany = await submitCompanyProfile(companyData);
+      console.log("Response company data:", newCompany);
+
+      navigate("/");
+    } catch (err) {
+      console.log("Error creating company profile:", err);
+      setServerError(err.message || "Failed to create company profile");
+    }
   };
 
-  const handleCancel = () => {
-    setFormData({
-      companyName: '',
-      description: '',
-      contactEmail: '',
-      contactPhone: ''
-    });
-    
+  const { formValues, changeHander, sumbitHandler, resetForm } = useForm(initialValues, handleFormSubmit);
+
+  const clickCancelHandle = () => {
+    resetForm();
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={sumbitHandler}>
         {/* Company Information */}
+        {serverError && <div className="error-message">{serverError}</div>}
         <div className="form-section">
           <h2 className="section-title">Company Information</h2>
           <div className="form-group">
@@ -46,8 +55,8 @@ export default function CreateCompanyProfile() {
             <input
               type="text"
               name="companyName"
-              value={formData.companyName}
-              onChange={handleChange}
+              value={formValues.companyName}
+              onChange={changeHander}
               placeholder="e.g. Dolor Cloud"
               required
             />
@@ -57,8 +66,8 @@ export default function CreateCompanyProfile() {
             <label className="required">Description</label>
             <textarea
               name="description"
-              value={formData.description}
-              onChange={handleChange}
+              value={formValues.description}
+              onChange={changeHander}
               placeholder="Describe your company, its mission, and key offerings..."
               required
             />
@@ -77,20 +86,19 @@ export default function CreateCompanyProfile() {
               <input
                 type="email"
                 name="contactEmail"
-                value={formData.contactEmail}
-                onChange={handleChange}
+                value={formValues.contactEmail}
+                onChange={changeHander}
                 placeholder="e.g. contact@company.com"
                 required
               />
-
             </div>
             <div className="form-group">
               <label className="required">Contact Phone</label>
               <input
                 type="tel"
                 name="contactPhone"
-                value={formData.contactPhone}
-                onChange={handleChange}
+                value={formValues.contactPhone}
+                onChange={changeHander}
                 placeholder="e.g. 555-555-5555"
                 required
               />
@@ -99,15 +107,19 @@ export default function CreateCompanyProfile() {
         </div>
         {/* Button Group */}
         <div className="button-group">
-          <button 
-            type="button" 
+          <button
+            type="button"
             className="button button-secondary"
-            onClick={handleCancel}
+            onClick={clickCancelHandle}
           >
             Cancel
           </button>
-          <button type="submit" className="button button-primary">
-            Create Profile
+          <button
+            type="submit"
+            className="button button-primary"
+            disabled={isSubmittingProfile}
+          >
+            {isSubmittingProfile ? "Creating..." : "Create Profile"}
           </button>
         </div>
       </form>
