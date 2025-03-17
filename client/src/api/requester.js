@@ -18,9 +18,15 @@ async function requester(method, url, data, fetchOptions = {}) {
     const response = await fetch(url, options);
 
     if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
+      const responseData = await response.json();
+  
+      return {
+        isError: true,
+        message: responseData.message || `HTTP error: ${response.status} ${response.statusText}`,
+        status: response.status
+      };
     }
-    
+
     if (response.status === 204) {
       return { success: true };
     }

@@ -32,8 +32,9 @@ export default function CreateCompanyProfile() {
 
       navigate("/");
     } catch (err) {
-      console.log("Error creating company profile:", err);
-      setServerError(err.message || "Failed to create company profile");
+        console.log("Error message:", err.message);
+        setServerError(err.message);
+      
     }
   };
 

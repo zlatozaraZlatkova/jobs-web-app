@@ -9,6 +9,11 @@ export function useCreateCompanyProfile() {
       setIsSubmittingProfile(true);
 
       const response = await createCompanyProfile(formData);
+
+      if (response.isError === true) {
+        throw new Error(response.message);
+      }
+
       return response;
 
     } catch (err) {
