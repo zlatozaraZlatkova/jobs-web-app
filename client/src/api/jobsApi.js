@@ -47,3 +47,15 @@ export const createJob = async (jobData) => {
     throw error;
   }
 };
+
+export const updateJob = async (jobData, id) => {
+  try {
+    return await request.put(`${BASE_URL}/update/${id}`, jobData, {
+      credentials: "include",
+    } )
+    
+  } catch (error) {
+    console.error("editJob error:", error);
+    throw error;
+  }
+}

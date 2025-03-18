@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import JobDetails from "../jobDetails/JobDetails"; 
 import NotFoundPage from "./NotFoundPage";
 import { getJobById } from "../../api/jobsApi";
 
 export default function JobDetailsPage() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  
   const [currentJob, setCurrentJob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { id } = useParams();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +38,7 @@ export default function JobDetailsPage() {
 
   const onEditClickHandler = (id) => {
     console.log(id)
+    navigate(`/jobs/update/${id}`);
   }
   const onDeleteClickHandler = (id) => {
     console.log(id)

@@ -17,6 +17,7 @@ import JobsPage from "./components/pages/JobsPage";
 import JobDetailsPage from "./components/pages/JobDetailsPage";
 import NotFoundPage from "./components/pages/NotFoundPage";
 import CreateJob from "./components/createJob/CreateJob";
+import EditJob from "./components/editJob/EditJob";
 
 
 
@@ -50,6 +51,7 @@ function App() {
             <Route path="/jobs" element={<JobsPage />} />
             <Route path="/jobs/:id" element={<JobDetailsPage />} />
             <Route path="/jobs/create" element={<CreateJob />} />
+            <Route path="/jobs/update/:id" element={<EditJob />} />
             <Route path="/profile/catalog" element={<EmployeesPage />} />
             <Route path="/profile" element={<DetailsProfilePage />} />
             <Route path="/profile/create" element={<CreateProfilePage />} />

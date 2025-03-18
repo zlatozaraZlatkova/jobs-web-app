@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { getPaginatedJobs, createJob } from "../api/jobsApi";
+import {
+  getPaginatedJobs,
+  createJob,
+  getJobById,
+  updateJob,
+} from "../api/jobsApi";
 
 export function useGetPaginatedJobs() {
   const [jobs, setJobs] = useState([]);
@@ -67,4 +72,60 @@ export function useCreateJob() {
     isSubmittingJob,
     submitJob,
   };
+}
+
+export function useEditJob() {
+  const [isSubmittingJob, setIsSubmittingJob] = useState(false);
+
+  const editJob = async (jobData, id) => {
+    try {
+      setIsSubmittingJob(true);
+      const response = await updateJob(jobData, id);
+
+      if (response.isError === true) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    } catch (error) {
+      console.error("Job updating error:", error);
+      throw error;
+    } finally {
+      setIsSubmittingJob(false);
+    }
+  };
+
+  return {
+    isSubmittingJob,
+    editJob,
+  };
+}
+
+export function useFetchingInitialData(id) {
+  const [initialJobData, setInitialJobData] = useState(null);
+
+  useEffect(() => {
+    async function fetchJobData() {
+      if (!id) {
+        return;
+      }
+
+      try {
+        const response = await getJobById(id);
+
+        if (response.isError === true) {
+          throw new Error(response.message);
+        }
+
+        setInitialJobData(response);
+      } catch (err) {
+        console.error("Error fetching job data:", err);
+        throw err;
+      }
+    }
+
+    fetchJobData();
+  }, [id]);
+
+  return { initialJobData };
 }
