@@ -3,10 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import JobDetails from "../jobDetails/JobDetails"; 
 import NotFoundPage from "./NotFoundPage";
 import { getJobById } from "../../api/jobsApi";
+import { useDeleteJob } from "../../apiHooks/useJobs";
 
 export default function JobDetailsPage() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { submitDelJob } = useDeleteJob();
   
   const [currentJob, setCurrentJob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,8 +42,16 @@ export default function JobDetailsPage() {
     console.log(id)
     navigate(`/jobs/update/${id}`);
   }
-  const onDeleteClickHandler = (id) => {
-    console.log(id)
+
+  const onDeleteClickHandler = async (id) => {
+    try {
+      console.log(id);
+      await submitDelJob(id);
+      navigate("/jobs");
+      
+    } catch (error) {
+      console.log("delete", error);
+    }
   }
 
   return (

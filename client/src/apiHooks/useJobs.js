@@ -4,6 +4,7 @@ import {
   createJob,
   getJobById,
   updateJob,
+  deleteJob,
 } from "../api/jobsApi";
 
 export function useGetPaginatedJobs() {
@@ -128,4 +129,22 @@ export function useFetchingInitialData(id) {
   }, [id]);
 
   return { initialJobData };
+}
+
+export function useDeleteJob() {
+  const submitDelJob = async(id) => {
+    try {
+      const response = await deleteJob(id);
+      if(response.isError === true) {
+        throw new Error(response.message);
+      }
+      return response;
+    } catch (error) {
+      console.error("Job deleting error:", error);
+      throw error;
+    }
+  }
+  return {
+    submitDelJob
+  }
 }

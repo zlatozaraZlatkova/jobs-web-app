@@ -1,7 +1,15 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import styles from "./JobDetails.module.css";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function JobDetails({ currentJob, onEditClick, onDeleteClick }) {
+  const { _id } = useContext(AuthContext);
+    
+  const isOwner = currentJob.ownerId === _id;
+  console.log("is owner", isOwner)
+
   return (
     <>
       <div className={styles.jobDetailsPage}>
@@ -70,6 +78,7 @@ export default function JobDetails({ currentJob, onEditClick, onDeleteClick }) {
                 </div>
 
                 {/* Manage Job Card */}
+                {isOwner && (
                 <div className={styles.card}>
                   <h2 className={styles.sectionTitle}>Manage Job</h2>
                   <div className={styles.buttonGroup}>
@@ -88,6 +97,7 @@ export default function JobDetails({ currentJob, onEditClick, onDeleteClick }) {
                     </button>
                   </div>
                 </div>
+                )}
               </aside>
             </div>
           </div>
