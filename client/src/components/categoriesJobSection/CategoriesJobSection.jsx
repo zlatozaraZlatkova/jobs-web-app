@@ -19,11 +19,11 @@ export default function CategoriesJobSection() {
         const allJobs = await getAllJobs();
         console.log("All fetched jobs", allJobs);
 
-        if (!allJobs) {
+        if (allJobs.length === 0) {
           setJobs([]);
           setFrontendTechnologies([]);
           setBackendTechnologies([]);
-          return
+          return;
         }
 
 
@@ -38,6 +38,10 @@ export default function CategoriesJobSection() {
 
       } catch (err) {
         console.error("Error fetching jobs:", err);
+        setJobs([]);
+        setFrontendTechnologies([]);
+        setBackendTechnologies([]);
+
       } finally {
         setIsLoading(false);
       }
