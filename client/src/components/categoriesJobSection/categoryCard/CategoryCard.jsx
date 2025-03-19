@@ -5,7 +5,7 @@ import styles from "./CategoryCard.module.css";
 export default function CategoryCard({ isBackend, technologies }) {
   const getCountForTech = (techName) => {
     return technologies.filter((job) =>
-      job.title.toLowerCase().includes(techName.toLowerCase())
+      job.techStack && job.techStack.toLowerCase() === techName.toLowerCase()
     ).length;
   };
 
