@@ -3,14 +3,14 @@ import { usePaginationWithURL } from "../../apiHooks/usePaginationWithURL";
 
 
 export default function JobsPage() {
-  const { currentPage, setCurrentPage } = usePaginationWithURL();
+  const { urlPageNumber, setUrlPageNumber } = usePaginationWithURL();
 
   return (
     <>
       <JobsListSection
        isHomePage={false} 
-       currentPage={currentPage}
-       setCurrentPage={setCurrentPage}
+       urlPageNumber={urlPageNumber}
+       setUrlPageNumber={setUrlPageNumber}
        />
     </>
   );

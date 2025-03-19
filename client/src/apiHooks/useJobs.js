@@ -1,17 +1,24 @@
 import { useState, useEffect } from "react";
-import {
-  getPaginatedJobs,
-  createJob,
-  getJobById,
-  updateJob,
-  deleteJob,
-} from "../api/jobsApi";
+import { getPaginatedJobs, createJob, getJobById, updateJob, deleteJob } from "../api/jobsApi";
 
-export function useGetPaginatedJobs() {
+export function useGetPaginatedJobs(urlPageNumber) {
+  //console.log("Hook received urlParameters:", urlPageNumber);
+  
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(urlPageNumber || 1);
   const [totalPages, setTotalPages] = useState(1);
+
+  useEffect(() => {
+    if (urlPageNumber) {
+      //console.log("URL page changed to:", urlPageNumber);
+      setCurrentPage(urlPageNumber);
+    }
+  }, [urlPageNumber]);
+
+
+  //console.log("Current internal page:", currentPage);
+
 
   useEffect(() => {
     const fecthJobs = async () => {
@@ -37,13 +44,8 @@ export function useGetPaginatedJobs() {
 
   return {
     jobs,
-    setJobs,
     isLoading,
-    setIsLoading,
-    currentPage,
-    setCurrentPage,
     totalPages,
-    setTotalPages,
   };
 }
 
@@ -132,10 +134,10 @@ export function useFetchingInitialData(id) {
 }
 
 export function useDeleteJob() {
-  const submitDelJob = async(id) => {
+  const submitDelJob = async (id) => {
     try {
       const response = await deleteJob(id);
-      if(response.isError === true) {
+      if (response.isError === true) {
         throw new Error(response.message);
       }
       return response;
@@ -143,8 +145,8 @@ export function useDeleteJob() {
       console.error("Job deleting error:", error);
       throw error;
     }
-  }
+  };
   return {
-    submitDelJob
-  }
+    submitDelJob,
+  };
 }

@@ -1,21 +1,25 @@
-import { useState, useEffect } from "react";
+/* eslint-disable no-unused-vars */
+import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { createPageURLParams } from "../utils/createPageURLParams";
 
 export function usePaginationWithURL() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const pageFromUrl = parseInt(searchParams.get("page") || "1");
-  const [currentPage, setCurrentPage] = useState(pageFromUrl || 1);
 
-  useEffect(() => {
-    if (currentPage !== pageFromUrl) {
-      const newParams = createPageURLParams(currentPage, searchParams);
+  const urlPageNumber = parseInt(searchParams.get("page") || "1");
+
+  const setUrlPageNumber = useCallback(
+    (newPage) => {
+      const newParams = createPageURLParams(newPage, searchParams);
+      //console.log("URL page changed to:", newParams);
       setSearchParams(newParams);
-    }
-  }, [currentPage, pageFromUrl, searchParams, setSearchParams]);
+    },
+    [searchParams, setSearchParams]
+  );
 
   return {
-    currentPage,
-    setCurrentPage,
+    urlPageNumber,
+    setUrlPageNumber,
   };
 }
+

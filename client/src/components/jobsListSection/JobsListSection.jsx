@@ -7,30 +7,27 @@ import JobCard from "./jobCard/JobCard";
 import Pagination from "../pagination/Pagination";
 import SearchBar from "../searchBar/SearchBar";
 
-
-
-export default function JobsListSection({ isHomePage = false, currentPage, setCurrentPage  }) {
+export default function JobsListSection({ isHomePage = false, urlPageNumber, setUrlPageNumber }) {
   const sectionRef = useRef(null);
- 
-  const { jobs, isLoading, totalPages } = useGetPaginatedJobs(currentPage);
-  
+  const { jobs, isLoading, totalPages } = useGetPaginatedJobs(urlPageNumber);
+
   useEffect(() => {
     if (sectionRef.current && !isHomePage) {
       sectionRef.current.scrollIntoView({
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
-  }, [currentPage, isHomePage]);
-  
+  }, [urlPageNumber, isHomePage]);
+
   const nextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage => currentPage + 1);
+    if (urlPageNumber < totalPages) {
+      setUrlPageNumber(urlPageNumber + 1);
     }
   };
   
   const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage => currentPage - 1);
+    if (urlPageNumber > 1) {
+      setUrlPageNumber(urlPageNumber - 1);
     }
   };
 
@@ -72,7 +69,7 @@ export default function JobsListSection({ isHomePage = false, currentPage, setCu
             </div>
           ) : (
             <Pagination
-              currentPage={currentPage}
+              currentPage={urlPageNumber}
               totalPages={totalPages}
               onPrevPage={prevPage}
               onNextPage={nextPage}
@@ -83,4 +80,3 @@ export default function JobsListSection({ isHomePage = false, currentPage, setCu
     </>
   );
 }
- 
