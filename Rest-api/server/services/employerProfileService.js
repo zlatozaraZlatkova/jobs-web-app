@@ -2,32 +2,35 @@ const EmployerProfile = require("../models/EmployerProfile");
 const Company = require("../models/Company");
 
 async function getAll(startIndex = 0, limit = 10) {
-
   const paginatedCompanies = await Company.find({})
     .sort({ date: -1 })
     .skip(startIndex)
-    .limit(limit)
+    .limit(limit);
 
   const totalCompanies = await Company.countDocuments();
 
   return { paginatedCompanies, totalCompanies };
 }
 
-
-
 async function getUserById(userId) {
-  return EmployerProfile.findOne({ ownerId: userId });
+  return EmployerProfile.findOne({ ownerId: userId })
+    .populate("companyId", [
+      "companyName",
+      "contactEmail",
+      "contactPhone",
+      "description",
+    ])
+    .populate("ownerId", ["name", "avatar", "email"])
+    .populate("postedJobs", ["title", "techStack", "location"]);
 }
 
 async function getCompanyById(companyId) {
   return Company.findOne({ _id: companyId });
 }
 
-
 async function getCompanyByUserId(userId) {
   return Company.findOne({ ownerId: userId });
 }
-
 
 async function createItem(userId, data) {
   const newCompany = await Company.create(data);
@@ -39,7 +42,6 @@ async function createItem(userId, data) {
 
   return { company: newCompany, profile: employerProfile };
 }
-
 
 async function updateItem(id, item) {
   return Company.findOneAndUpdate(
@@ -53,10 +55,7 @@ async function deleteCompanyAndProfile(userId) {
   const company = await Company.findOneAndDelete({ ownerId: userId });
   const profile = await EmployerProfile.findOneAndDelete({ ownerId: userId });
   return { company, profile };
-};
-
-
-
+}
 
 module.exports = {
   getAll,
@@ -65,5 +64,5 @@ module.exports = {
   createItem,
   getCompanyByUserId,
   updateItem,
-  deleteCompanyAndProfile
+  deleteCompanyAndProfile,
 };

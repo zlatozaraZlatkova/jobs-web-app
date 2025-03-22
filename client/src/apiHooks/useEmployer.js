@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { createCompanyProfile } from "../api/employerApi";
+import { useState, useEffect } from "react";
+import { createCompanyProfile, getProfileById } from "../api/employerApi";
 
 export function useCreateCompanyProfile() {
   const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
@@ -27,6 +27,35 @@ export function useCreateCompanyProfile() {
 
   return {
     isSubmittingProfile,
-    submitCompanyProfile
+    submitCompanyProfile,
+  };
+}
+
+export function useGetAdminProfile() {
+  const [profileData, setProfileData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        setIsLoading(true);
+        const result = await getProfileById();
+
+        setProfileData(result);
+      } catch (err) {
+        console.error("Error fetching profile data:", err);
+
+        setProfileData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  return {
+    profileData,
+    isLoading,
   };
 }

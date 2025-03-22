@@ -10,7 +10,6 @@ import RegisterPage from "./components/pages/RegisterPage";
 import LoginPage from "./components/pages/LoginPage";
 import MainLayout from "./components/mainLayout/MainLayout";
 import CreateProfilePage from "./components/pages/CreateProfilePage";
-import CreateCompanyProfilePage from "./components/pages/CreateCompanyProfilePage";
 import DetailsProfilePage from "./components/pages/DetailsProfilePage";
 import EmployeesPage from "./components/pages/EmployeesPage";
 import JobsPage from "./components/pages/JobsPage";
@@ -18,8 +17,7 @@ import JobDetailsPage from "./components/pages/JobDetailsPage";
 import NotFoundPage from "./components/pages/NotFoundPage";
 import CreateJob from "./components/createJob/CreateJob";
 import EditJob from "./components/editJob/EditJob";
-
-
+import AdminDashboard from "./components/adminDashboard/AdminDashboar";
 
 function App() {
   const [authState, setAuthState] = useState({});
@@ -55,7 +53,7 @@ function App() {
             <Route path="/profile/catalog" element={<EmployeesPage />} />
             <Route path="/profile" element={<DetailsProfilePage />} />
             <Route path="/profile/create" element={<CreateProfilePage />} />
-            <Route path="/company/profile/create" element={<CreateCompanyProfilePage />} />
+            <Route path="/company/profile" element={<AdminDashboard/>}/>
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<NotFoundPage />} />

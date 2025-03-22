@@ -12,3 +12,13 @@ export const createCompanyProfile = async (companyData) => {
     throw error;
   }
 };
+
+export const getProfileById = async() => {
+  try {
+    return await request.get(`${BASE_URL}/employer`)
+  } catch (error) {
+    console.error("getProfileById error:", error);
+    throw error;
+  }
+}
+

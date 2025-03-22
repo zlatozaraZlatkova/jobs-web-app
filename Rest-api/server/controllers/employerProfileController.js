@@ -52,7 +52,7 @@ router.get("/profile/employer", hasUser(), checkUserRole("employer"),
                 throw new Error("Profile not found.");
             }
 
-            if (employerProfile.ownerId.toString() !== req.user._id.toString()) {
+            if (employerProfile.ownerId._id.toString() !== req.user._id.toString()) {
                 throw new Error("Access denied.");
             }
 

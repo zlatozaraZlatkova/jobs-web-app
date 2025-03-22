@@ -21,10 +21,22 @@ export function useGetPaginatedJobs(urlPageNumber) {
 
 
   useEffect(() => {
-    const fecthJobs = async () => {
+    let isMounted = true;
+
+    const fetchJobs = async () => {
       try {
         setIsLoading(true);
         const result = await getPaginatedJobs(currentPage);
+
+        if (!isMounted) {
+          return
+        }
+
+        if (result.isError) {
+          console.error("API returned an error:", result.message);
+          setJobs([]);
+          return;
+        }
 
         if (result.data && Array.isArray(result.data.items)) {
           setJobs(result.data.items);
@@ -33,13 +45,25 @@ export function useGetPaginatedJobs(urlPageNumber) {
           setJobs([]);
         }
       } catch (err) {
-        console.error("Error fetching jobs:", err);
+       
+        if (!isMounted) {
+          console.error("Error fetching jobs:", err);
+          return;
+        }
+
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
-    fecthJobs();
+    fetchJobs();
+    
+    return () => {
+      isMounted = false;
+    };
+
   }, [currentPage]);
 
   return {

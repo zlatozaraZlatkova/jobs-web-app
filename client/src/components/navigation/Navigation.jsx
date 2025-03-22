@@ -22,11 +22,8 @@ export default function Navigation() {
 
     } catch (err) {
       console.log("Logout failed:", err);
-
-      const errMsg = "Failed to logout. Please try again.";
-      setServerError(errMsg);
+      setServerError("Failed to logout. Please try again.");
     }
-
   };
 
   const toggleMobileMenu = () => {
@@ -71,24 +68,21 @@ export default function Navigation() {
           </button>
 
           {/* Navigation Links */}
-          <ul className={`${styles.navLinks} ${isMobileMenuOpen ? styles.active : ""}`}
-          >
-            <li><Link to="/jobs">Tech Jobs</Link></li>
-            <li><Link to="/profile/catalog">Hire Talent</Link></li>
-            <li><Link to="/posts">Forum</Link></li>
+          <ul className={`${styles.navLinks} ${isMobileMenuOpen ? styles.active : ""}`}>
+            <li><Link to="/jobs">Jobs</Link></li>
+            <li><Link to="/profile/catalog">Devs</Link></li>
 
             {isAuthenticated ? (
               <>
                 {isEmployee ? (
                   <>
                     <li><Link to="/profile">Profile</Link></li>
-                    <li><Link to="/profile/create">Create Profile</Link></li>
+                    <li><Link to="/profile/create">Create CV</Link></li>
                   </>
                 ) : (
                   <>
                     <li><Link to="/jobs/create">Add Job</Link></li>
-                    <li><Link to="/company/profile">Admin Profile</Link></li>
-                    <li><Link to="/company/profile/create">Create Company</Link></li>
+                    <li><Link to="/company/profile">Daschboard</Link></li>
                   </>
                 )}
 
