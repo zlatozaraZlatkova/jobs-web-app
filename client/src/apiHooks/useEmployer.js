@@ -34,6 +34,13 @@ export function useCreateCompanyProfile() {
 export function useGetAdminProfile() {
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  function refreshData() {
+    setRefreshKey(function (currentValue) {
+      return currentValue + 1;
+    });
+  }
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -52,10 +59,11 @@ export function useGetAdminProfile() {
     };
 
     fetchProfileData();
-  }, []);
+  }, [refreshKey]);
 
   return {
     profileData,
     isLoading,
+    refreshData
   };
 }

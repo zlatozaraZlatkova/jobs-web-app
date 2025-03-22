@@ -15,7 +15,7 @@ export default function AdminDashboard() {
   const { _id } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const { profileData } = useGetAdminProfile();
+  const { profileData, refreshData } = useGetAdminProfile();
   const { submitDelJob } = useDeleteJob();
 
   const [activeTab, setActiveTab] = useState("overview");
@@ -38,6 +38,7 @@ export default function AdminDashboard() {
     try {
       console.log("onDelete:", id);
       await submitDelJob(id);
+      refreshData();
     } catch (error) {
       console.log("delete", error);
     }
