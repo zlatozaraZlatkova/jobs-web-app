@@ -18,6 +18,9 @@ import NotFoundPage from "./components/pages/NotFoundPage";
 import CreateJob from "./components/createJob/CreateJob";
 import EditJob from "./components/editJob/EditJob";
 import AdminDashboard from "./components/adminDashboard/AdminDashboar";
+import EditCompanyProfile from "./components/employer/EditCompanyProfile";
+
+
 
 function App() {
   const [authState, setAuthState] = useState({});
@@ -54,6 +57,7 @@ function App() {
             <Route path="/profile" element={<DetailsProfilePage />} />
             <Route path="/profile/create" element={<CreateProfilePage />} />
             <Route path="/company/profile" element={<AdminDashboard/>}/>
+            <Route path="/company/profile/update/:id" element={<EditCompanyProfile />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<NotFoundPage />} />

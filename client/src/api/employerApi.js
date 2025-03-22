@@ -22,3 +22,15 @@ export const getProfileById = async() => {
   }
 }
 
+export const editProfile = async (companyId, companyData) => {
+  try {
+    console.log("Making PUT request to:", `${BASE_URL}/update/${companyId}`);
+    
+    return await request.put(`${BASE_URL}/update/${companyId}`, companyData, {
+      credentials: "include",
+    });
+  } catch (error) {
+    console.error("editCompanyProfile error:", error);
+    throw error;
+  }
+}
