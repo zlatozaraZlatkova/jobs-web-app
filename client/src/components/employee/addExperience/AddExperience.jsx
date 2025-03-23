@@ -1,76 +1,76 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { useForm } from "../../../apiHooks/useForm";
 import { formatDate } from "../../../utils/formatDate";
+import { useExperienceApi, useGetEmployeeProfile } from "../../../apiHooks/useEmployee";
 
-export default function AddExperience({ onSubmit, onBack,  isSubmitting}) {
-  const [formData, setFormData] = useState({
+
+export default function AddExperience({ onBack, onComplete }) {
+  const { submitExperience, isSubmittingExperience } = useExperienceApi();
+  const { employee, refreshData, isLoading } = useGetEmployeeProfile();
+
+  const [serverError, setServerError] = useState(null);
+
+  const initialValues = {
     title: "",
     company: "",
     location: "",
-    fromDate: "",
-    toDate: "",
-    isCurrentJob: false,
+    from: "",
+    to: "",
+    current: false,
     description: "",
-  });
-
-  const [experiences, setExperiences] = useState([
-    {
-      id: 1,
-      title: "Senior Frontend Developer",
-      company: "Oracle",
-      location: "London",
-      fromDate: "2009-10-01",
-      toDate: "",
-      isCurrentJob: true,
-      description: "",
-    },
-  ]);
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleFormSubmit = async (formData) => {
+    const today = new Date().toISOString().split('T')[0];
 
-    const newExperience = {
-      id: Date.now(),
-      ...formData,
-    };
+    try {
+      setServerError(null);
 
-    setExperiences([...experiences, newExperience]);
+      const experienceInputData = {
+        title: formData.title,
+        company: formData.company,
+        location: formData.location,
+        from: formData.from,
+        to: formData.current ? today : formData.to,
+        current: formData.current,
+        description: formData.description || "",
+      };
 
-    setFormData({
-      title: "",
-      company: "",
-      location: "",
-      fromDate: "",
-      toDate: "",
-      isCurrentJob: false,
-      description: "",
-    });
+      const newExperience = await submitExperience(experienceInputData);
+      console.log("Response exp data", newExperience);
 
+      if (newExperience) {
+        refreshData();
+        resetForm();
+      }
 
-  };
-
-  const handleEdit = (id) => {
-    const experienceToEdit = experiences.find((exp) => exp.id === id);
-    if (experienceToEdit) {
-      setFormData(experienceToEdit);
-      setExperiences(experiences.filter((exp) => exp.id !== id));
+    } catch (err) {
+      console.error("Full error:", err);
+      setServerError(err.message || "Failed to save experience");
     }
   };
 
-  const handleDelete = (id) => {
-    setExperiences(experiences.filter((exp) => exp.id !== id));
-  };
+  const { formValues, changeHander, sumbitHandler, resetForm } = useForm(
+    initialValues,
+    handleFormSubmit
+  );
 
   const handleContinue = () => {
-    onSubmit(experiences);
+    if (!employee?.experience || employee.experience.length === 0) {
+      setServerError("Please add at least one experience before continuing");
+      return;
+    }
+
+    onComplete();
+  };
+
+  const handleEdit = (id) => {
+    console.log("on Edit", id);
+  };
+
+  const handleDelete = (id) => {
+    console.log("on Delete", id);
   };
 
   return (
@@ -78,26 +78,27 @@ export default function AddExperience({ onSubmit, onBack,  isSubmitting}) {
       {/* Experience Form */}
       <div className="form-card">
         <h1 className="form-title">Add Your Experience</h1>
-
-        <form onSubmit={handleSubmit}>
+        {serverError && <div className="error-message">{serverError}</div>}
+        <form onSubmit={sumbitHandler}>
           <div className="form-group">
             <label className="required">Title</label>
             <input
               type="text"
               name="title"
-              value={formData.title}
-              onChange={handleChange}
+              value={formValues.title}
+              onChange={changeHander}
               placeholder="e.g. Senior Frontend Developer"
               required
             />
           </div>
+          {/* Other form fields... */}
           <div className="form-group">
             <label className="required">Company</label>
             <input
               type="text"
               name="company"
-              value={formData.company}
-              onChange={handleChange}
+              value={formValues.company}
+              onChange={changeHander}
               placeholder="e.g. Oracle"
               required
             />
@@ -107,8 +108,8 @@ export default function AddExperience({ onSubmit, onBack,  isSubmitting}) {
             <input
               type="text"
               name="location"
-              value={formData.location}
-              onChange={handleChange}
+              value={formValues.location}
+              onChange={changeHander}
               placeholder="e.g. London"
             />
           </div>
@@ -116,9 +117,9 @@ export default function AddExperience({ onSubmit, onBack,  isSubmitting}) {
             <label className="required">From Date</label>
             <input
               type="date"
-              name="fromDate"
-              value={formData.fromDate}
-              onChange={handleChange}
+              name="from"
+              value={formValues.from}
+              onChange={changeHander}
               required
             />
           </div>
@@ -126,18 +127,18 @@ export default function AddExperience({ onSubmit, onBack,  isSubmitting}) {
             <label>To Date</label>
             <input
               type="date"
-              name="toDate"
-              value={formData.toDate}
-              onChange={handleChange}
-              disabled={formData.isCurrentJob}
+              name="to"
+              value={formValues.to}
+              onChange={changeHander}
+              disabled={formValues.current}
             />
             <div className="checkbox-group">
               <input
                 type="checkbox"
                 id="current"
-                name="isCurrentJob"
-                checked={formData.isCurrentJob}
-                onChange={handleChange}
+                name="current"
+                checked={formValues.current}
+                onChange={changeHander}
               />
               <label htmlFor="current">I am currently working here</label>
             </div>
@@ -146,78 +147,88 @@ export default function AddExperience({ onSubmit, onBack,  isSubmitting}) {
             <label>Description</label>
             <textarea
               name="description"
-              value={formData.description}
-              onChange={handleChange}
+              value={formValues.description}
+              onChange={changeHander}
               placeholder="Describe your roles and responsibilities..."
             />
           </div>
           <div className="button-group">
-            <button type="submit" className="btn-save">
-              Save
+            <button
+              type="submit"
+              className="btn-save"
+              disabled={isSubmittingExperience}
+            >
+              {isSubmittingExperience ? "Saving..." : "Save Experience"}
             </button>
           </div>
         </form>
 
         {/* Table showing saved experiences */}
-        <table className="experience-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Company</th>
-              <th>Location</th>
-              <th>Period</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {experiences.map((experience) => (
-              <tr key={experience.id}>
-                <td>{experience.title}</td>
-                <td>{experience.company}</td>
-                <td>{experience.location}</td>
-                <td>
-                  {formatDate(experience.fromDate)} -{" "}
-                  {experience.isCurrentJob
-                    ? "Present"
-                    : formatDate(experience.toDate)}
-                </td>
-                <td className="action-cell">
-                  <button
-                    className="btn-edit"
-                    onClick={() => handleEdit(experience.id)}
-                    type="button"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn-delete"
-                    onClick={() => handleDelete(experience.id)}
-                    type="button"
-                  >
-                    Delete
-                  </button>
-                </td>
+        {isLoading ? (
+          <div className="loading">Loading experiences...</div>
+        ) : employee && employee.experience && employee.experience.length > 0 ? (
+          <table className="experience-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Company</th>
+                <th>Location</th>
+                <th>Period</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {employee.experience.map((experience) => (
+                <tr key={experience._id}>
+                  <td>{experience.title}</td>
+                  <td>{experience.company}</td>
+                  <td>{experience.location}</td>
+                  <td>
+                    {formatDate(experience.formData)} -{" "}
+                    {experience.current ? "Present" : formatDate(experience.to)}
+                  </td>
+                  <td className="action-cell">
+                    <button
+                      className="btn-edit"
+                      onClick={() => handleEdit(experience._id)}
+                      type="button"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn-delete"
+                      onClick={() => handleDelete(experience._id)}
+                      type="button"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="emptyState">
+            <p>No experiences have been added yet.</p>
+          </div>
+        )}
 
         {/* Navigation Buttons */}
         <div className="navigation-buttons">
           <button
             className="back-button"
             type="button"
-            onClick={onBack}
+            onClick={() => onBack()}
           >
             ← Back
           </button>
           <button
             className="continue-button"
             type="button"
+            disabled={isSubmittingExperience}
             onClick={handleContinue}
-            disabled={isSubmitting}
           >
-            {isSubmitting ? "Creating Profile..." : "Continue →"}
+            {isSubmittingExperience ? "Creating Experience..." : "Continue →"}
           </button>
         </div>
       </div>
