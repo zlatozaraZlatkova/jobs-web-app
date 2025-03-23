@@ -1,74 +1,71 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
+import { useForm } from "../../../apiHooks/useForm";
+import { useEducationApi, useGetEmployeeProfile } from "../../../apiHooks/useEmployee";
 
-export default function AddEducation({ onSubmit, onBack, isSubmitting }) {
-  const [formData, setFormData] = useState({
+export default function AddEducation({ onBack, onComplete }) {
+  const { employee, refreshData, isLoading } = useGetEmployeeProfile();
+  const { submitEducation, isSubmittingEducation } = useEducationApi();
+  const [serverError, setServerError] = useState(null);
+
+  const initialValues = {
     school: "",
     degree: "",
     fieldOfStudy: "",
-    fromDate: "",
-    toDate: "",
-    isCurrentStudy: false,
+    from: "",
+    to: "",
+    current: false,
     description: "",
-  });
-
-  const [educations, setEducations] = useState([
-    {
-      id: 1,
-      school: "SoftUni",
-      degree: "Professional",
-      fieldOfStudy: "JS Web Developer",
-      fromDate: "2009-09-01",
-      toDate: "",
-      isCurrentStudy: true,
-      description: "",
-    },
-  ]);
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleFormSubmit = async (formData) => {
+    const today = new Date().toISOString().split('T')[0];
+    try {
+      setServerError(null);
+      const educationInputData = {
+        school: formData.school,
+        degree: formData.degree,
+        fieldOfStudy: formData.fieldOfStudy,
+        from: formData.from,
+        to: formData.current ? today : formData.to,
+        current: formData.current,
+        description: formData.description || "",
+      };
 
-    const newEducation = {
-      id: Date.now(),
-      ...formData,
-    };
+      const newEducation = await submitEducation(educationInputData);
+      console.log("Response education data", newEducation);
 
-    setEducations([...educations, newEducation]);
-
-    setFormData({
-      school: "",
-      degree: "",
-      fieldOfStudy: "",
-      fromDate: "",
-      toDate: "",
-      isCurrentStudy: false,
-      description: "",
-    });
-  };
-
-  const handleEdit = (id) => {
-    const educationToEdit = educations.find((edu) => edu.id === id);
-    if (educationToEdit) {
-      setFormData(educationToEdit);
-      setEducations(educations.filter((edu) => edu.id !== id));
+      if (newEducation) {
+        refreshData();
+        resetForm();
+      }
+    } catch (err) {
+      console.error("Full error:", err);
+      setServerError(err.message || "Failed to save education");
     }
   };
 
-  const handleDelete = (id) => {
-    setEducations(educations.filter((edu) => edu.id !== id));
-  };
+  const { formValues, changeHander, sumbitHandler, resetForm } = useForm(
+    initialValues,
+    handleFormSubmit
+  );
 
   const handleContinue = () => {
-    onSubmit(educations);
+    if (!employee?.education || employee.education.length === 0) {
+      setServerError("Please add at least one education before continuing");
+      return;
+    }
+
+    onComplete();
+  };
+
+  const handleEdit = (id) => {
+    console.log("on Edit", id);
+  };
+
+  const handleDelete = (id) => {
+    console.log("on Delete", id);
   };
 
   return (
@@ -76,15 +73,15 @@ export default function AddEducation({ onSubmit, onBack, isSubmitting }) {
       {/* Education Form */}
       <div className="form-card">
         <h1 className="form-title">Add Your Education</h1>
-
-        <form onSubmit={handleSubmit}>
+        {serverError && <div className="error-message">{serverError}</div>}
+        <form onSubmit={sumbitHandler}>
           <div className="form-group">
             <label className="required">School</label>
             <input
               type="text"
               name="school"
-              value={formData.school}
-              onChange={handleChange}
+              value={formValues.school}
+              onChange={changeHander}
               placeholder="e.g. SoftUni"
               required
             />
@@ -94,8 +91,8 @@ export default function AddEducation({ onSubmit, onBack, isSubmitting }) {
             <input
               type="text"
               name="degree"
-              value={formData.degree}
-              onChange={handleChange}
+              value={formValues.degree}
+              onChange={changeHander}
               placeholder="e.g. Professional"
               required
             />
@@ -105,8 +102,8 @@ export default function AddEducation({ onSubmit, onBack, isSubmitting }) {
             <input
               type="text"
               name="fieldOfStudy"
-              value={formData.fieldOfStudy}
-              onChange={handleChange}
+              value={formValues.fieldOfStudy}
+              onChange={changeHander}
               placeholder="e.g. JS Web Developer"
               required
             />
@@ -115,9 +112,9 @@ export default function AddEducation({ onSubmit, onBack, isSubmitting }) {
             <label className="required">From Date</label>
             <input
               type="date"
-              name="fromDate"
-              value={formData.fromDate}
-              onChange={handleChange}
+              name="from"
+              value={formValues.from}
+              onChange={changeHander}
               required
             />
           </div>
@@ -125,88 +122,100 @@ export default function AddEducation({ onSubmit, onBack, isSubmitting }) {
             <label>To Date</label>
             <input
               type="date"
-              name="toDate"
-              value={formData.toDate}
-              onChange={handleChange}
-              disabled={formData.isCurrentStudy}
+              name="to"
+              value={formValues.to}
+              onChange={changeHander}
+              disabled={formValues.current}
             />
             <div className="checkbox-group">
               <input
                 type="checkbox"
                 id="current"
-                name="isCurrentStudy"
-                checked={formData.isCurrentStudy}
-                onChange={handleChange}
+                name="current"
+                checked={formValues.current}
+                onChange={changeHander}
               />
-              <label htmlFor="current">I am currently studying here</label>
+              <label htmlFor="current">I am currently study here</label>
             </div>
           </div>
           <div className="form-group">
             <label>Description</label>
             <textarea
               name="description"
-              value={formData.description}
-              onChange={handleChange}
+              value={formValues.description}
+              onChange={changeHander}
               placeholder="Describe your course, achievements, and relevant projects..."
             />
           </div>
           <div className="button-group">
-            <button type="submit" className="btn-save">
-              Save
+            <button type="submit" className="btn-save"
+            disabled={isSubmittingEducation}
+            >
+              {isSubmittingEducation? "Saving..." : "Save Education"}
             </button>
           </div>
         </form>
 
         {/* Table showing saved education */}
-        <table className="education-table">
-          <thead>
-            <tr>
-              <th>School</th>
-              <th>Degree</th>
-              <th>Field of Study</th>
-              <th>Period</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {educations.map((education) => (
-              <tr key={education.id}>
-                <td>{education.school}</td>
-                <td>{education.degree}</td>
-                <td>{education.fieldOfStudy}</td>
-                <td>
-                  {formatDate(education.fromDate)} -{" "}
-                  {education.isCurrentStudy
-                    ? "Current"
-                    : formatDate(education.toDate)}
-                </td>
-                <td className="action-cell">
-                  <button
-                    className="btn-edit"
-                    onClick={() => handleEdit(education.id)}
-                    type="button"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn-delete"
-                    onClick={() => handleDelete(education.id)}
-                    type="button"
-                  >
-                    Delete
-                  </button>
-                </td>
+        {isLoading ? (
+          <div className="loading">Loading education...</div>
+        ) : employee &&
+          employee.education &&
+          employee.education.length > 0 ? (
+          <table className="education-table">
+            <thead>
+              <tr>
+                <th>School</th>
+                <th>Degree</th>
+                <th>Field of Study</th>
+                <th>Period</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {employee.education.map((educ) => (
+                <tr key={educ._id}>
+                  <td>{educ.school}</td>
+                  <td>{educ.degree}</td>
+                  <td>{educ.fieldOfStudy}</td>
+                  <td>
+                    {formatDate(educ.fromDate)} -{" "}
+                    {educ.current
+                      ? "Current"
+                      : formatDate(educ.to)}
+                  </td>
+                  <td className="action-cell">
+                    <button
+                      className="btn-edit"
+                      onClick={() => handleEdit(educ._id)}
+                      type="button"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn-delete"
+                      onClick={() => handleDelete(educ._id)}
+                      type="button"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="emptyState">
+            <p>No education have been added yet.</p>
+          </div>
+        )}
 
         {/* Navigation Buttons */}
         <div className="navigation-buttons">
           <button
             className="back-button"
             type="button"
-            onClick={onBack}
+            onClick={() => onBack()}
           >
             ← Back
           </button>
@@ -214,9 +223,9 @@ export default function AddEducation({ onSubmit, onBack, isSubmitting }) {
             className="continue-button"
             type="button"
             onClick={handleContinue}
-            disabled={isSubmitting}
+            disabled={isSubmittingEducation}
           >
-           {isSubmitting ? "Creating Profile..." : "Continue →"}
+            {isSubmittingEducation ? "Creating Education..." : "Continue →"}
           </button>
         </div>
       </div>
