@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { getPaginatedEmployees,getEmployeeProfile, createEmployeeProfile, addEmployeeExperience, addEmployeeEducation} from "../api/eployeeApi";
+import { getPaginatedEmployees, getEmployeeProfile, createEmployeeProfile, addEmployeeExperience, addEmployeeEducation } from "../api/eployeeApi";
 
 export function useGetPafinatedEmployeeProfile() {
   const [employees, setEmployees] = useState([]);
@@ -13,19 +12,26 @@ export function useGetPafinatedEmployeeProfile() {
       try {
         setIsLoading(true);
 
-        const result = await getPaginatedEmployees(currentPage);
+        const response = await getPaginatedEmployees(currentPage);
+        
+        if (response.isError === true) {
+          throw new Error(response.message);
+        }
 
         //the response structure is { success, data: { items: [] } }
-        if (!result.data || !Array.isArray(result.data.items)) {
+        if (!response.data || !Array.isArray(response.data.items)) {
           setEmployees([]);
           return;
         }
 
-        setEmployees(result.data.items);
+        setEmployees(response.data.items);
 
-        setTotalPages(result.data.pagination.totalPages);
+        setTotalPages(response.data.pagination.totalPages);
+
       } catch (err) {
         console.error("Error fetching employees:", err);
+        throw err;
+
       } finally {
         setIsLoading(false);
       }
@@ -49,31 +55,40 @@ export function useGetPafinatedEmployeeProfile() {
 export function useGetEmployeeProfile() {
   const [employee, setEmployee] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
 
+  function refreshData() {
+    setRefreshKey(function (currentValue) {
+      return currentValue + 1;
+    });
+  }
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         setIsLoading(true);
-        const result = await getEmployeeProfile();
-       
-        setEmployee(result); 
+        const response = await getEmployeeProfile();
 
+        if (response.isError === true) {
+          throw new Error(response.message);
+        }
+
+        setEmployee(response);
       } catch (err) {
         console.error("Error fetching employee profile:", err);
+        throw err;
 
-        setEmployee(null);
-        
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchProfileData();
-  }, []);
+  }, [refreshKey]);
 
   return {
     employee,
-    isLoading
+    isLoading,
+    refreshData
   };
 }
 
@@ -86,10 +101,15 @@ export function useProfileApi() {
 
       const response = await createEmployeeProfile(formData);
 
+      if (response.isError === true) {
+        throw new Error(response.message);
+      }
+
       return response;
     } catch (err) {
       console.error("Profile creation error:", err);
-      return null;
+      throw err;
+
     } finally {
       setIsSubmittingProfile(false);
     }
@@ -102,18 +122,22 @@ export function useProfileApi() {
 }
 
 export function useExperienceApi() {
-  const [ isSubmittingExperience, setIsSubmittingExperience] = useState(false);
+  const [isSubmittingExperience, setIsSubmittingExperience] = useState(false);
 
   const submitExperience = async (formData) => {
     try {
       setIsSubmittingExperience(true);
 
       const response = await addEmployeeExperience(formData);
+      if (response.isError === true) {
+        throw new Error(response.message);
+      }
 
       return response;
     } catch (err) {
       console.error("Failed to save experience. Please try again.", err);
-      return null;
+      throw err;
+
     } finally {
       setIsSubmittingExperience(false);
     }
@@ -121,30 +145,33 @@ export function useExperienceApi() {
 
   return {
     submitExperience,
-    isSubmittingExperience
+    isSubmittingExperience,
   };
 }
 
 export function useEducationApi() {
-    const [isSubmittingEducation, setIsSubmittingEducation] = useState(false);
+  const [isSubmittingEducation, setIsSubmittingEducation] = useState(false);
 
-    const submitEducation = async(formData) => {
-        try {
-            setIsSubmittingEducation(true);
-            const response = await addEmployeeEducation(formData);
-            return response;
+  const submitEducation = async (formData) => {
+    try {
+      setIsSubmittingEducation(true);
+      const response = await addEmployeeEducation(formData);
 
-            
-          } catch (err) {
-            console.error("Failed to save education. Please try again.", err);
-            return null;
-          } finally {
-            setIsSubmittingEducation(false);
-          }
+      if (response.isError === true) {
+        throw new Error(response.message);
+      }
 
+      return response;
+    } catch (err) {
+      console.error("Failed to save education. Please try again.", err);
+      throw err;
+
+    } finally {
+      setIsSubmittingEducation(false);
     }
-    return{
-        submitEducation,
-        isSubmittingEducation
-    }
+  };
+  return {
+    submitEducation,
+    isSubmittingEducation,
+  };
 }

@@ -1147,3 +1147,16 @@ textarea {
   border: 1px solid var(--border-color);
   padding: 2rem;
 }
+
+  /* Empty States */
+  .emptyState {
+    text-align: center;
+    padding-top: 6rem;
+    color: var(--text-secondary);
+   
+  }
+  
+  .emptyState p {
+    margin-bottom: 1.5rem;
+  }
+  

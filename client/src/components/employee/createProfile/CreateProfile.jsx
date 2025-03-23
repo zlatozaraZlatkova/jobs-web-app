@@ -1,9 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { useForm } from "../../../apiHooks/useForm";
+import { useProfileApi } from "../../../apiHooks/useEmployee";
 
-export default function CreateProfile({ onSubmit, isSubmitting }) {
 
-  const [formData, setFormData] = useState({
+export default function CreateProfile({ onComplete }) {
+  const [serverError, setServerError] = useState(null);
+  const { submitProfile, isSubmittingProfile } = useProfileApi();
+
+  const initialValues = {
     fullName: "",
     company: "",
     website: "",
@@ -12,49 +17,70 @@ export default function CreateProfile({ onSubmit, isSubmitting }) {
     linkedinProfile: "",
     skills: "",
     bio: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
+  const handleFormSubmit = async (formData) => {
+    try {
+      console.log("Submitting basic profile data:", formData);
 
-    console.log("Form data submitted:", formData);
+      const basicProfileInputData = {
+        fullName: formData.fullName,
+        company: formData.company,
+        website: formData.website,
+        location: formData.location,
+        status: formData.status,
+        linkedinProfile: formData.linkedinProfile,
+        skills: formData.skills,
+        bio: formData.bio,
+      }
+
+      const basicProfile = submitProfile(basicProfileInputData);
+      
+      console.log("Response basic profile data:", basicProfile);
+
+      if (basicProfile && onComplete) {
+        onComplete();
+      }
+
+    } catch (err) {
+      console.log("Error message:", err.message);
+      setServerError(err.message);
+
+    }
+  }
+
+  const { formValues, changeHander, sumbitHandler, resetForm } = useForm(initialValues, handleFormSubmit);
+
+  const clickCancelHandle = () => {
+    resetForm();
   };
-
 
 
   return (
     <>
       <div className="form-card">
         <h1 className="form-title">Create Your Professional Profile</h1>
-        <form onSubmit={handleSubmit}>
+        {serverError && <div className="error-message">{serverError}</div>}
+        <form onSubmit={sumbitHandler}>
           <div className="form-grid">
             <div className="form-group">
               <label className="required">Full Name</label>
               <input
                 type="text"
                 name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
+                value={formValues.fullName}
+                onChange={changeHander}
                 placeholder="e.g. John Doe"
               />
-              
+
             </div>
             <div className="form-group">
               <label>Company</label>
               <input
                 type="text"
                 name="company"
-                value={formData.company}
-                onChange={handleChange}
+                value={formValues.company}
+                onChange={changeHander}
                 placeholder="e.g. Tech Solutions Inc."
               />
             </div>
@@ -63,73 +89,80 @@ export default function CreateProfile({ onSubmit, isSubmitting }) {
               <input
                 type="url"
                 name="website"
-                value={formData.website}
-                onChange={handleChange}
+                value={formValues.website}
+                onChange={changeHander}
                 placeholder="www.example.com"
               />
-             
+
             </div>
             <div className="form-group">
               <label className="required">Location</label>
               <input
                 type="text"
                 name="location"
-                value={formData.location}
-                onChange={handleChange}
+                value={formValues.location}
+                onChange={changeHander}
                 placeholder="e.g. London, UK"
               />
-            
+
             </div>
             <div className="form-group">
               <label className="required">Status</label>
               <input
                 type="text"
                 name="status"
-                value={formData.status}
-                onChange={handleChange}
+                value={formValues.status}
+                onChange={changeHander}
                 placeholder="e.g. Looking for opportunities"
               />
-              
+
             </div>
             <div className="form-group">
               <label>LinkedIn Profile</label>
               <input
                 type="url"
                 name="linkedinProfile"
-                value={formData.linkedinProfile}
-                onChange={handleChange}
+                value={formValues.linkedinProfile}
+                onChange={changeHander}
                 placeholder="www.linkedin.com/in/username"
               />
-            
+
             </div>
             <div className="form-group form-grid-full">
               <label className="required">Skills</label>
               <input
                 type="text"
                 name="skills"
-                value={formData.skills}
-                onChange={handleChange}
+                value={formValues.skills}
+                onChange={changeHander}
                 placeholder="eg. HTML, CSS, JavaScript, React"
               />
-            
+
             </div>
             <div className="form-group form-grid-full">
               <label>Bio</label>
               <textarea
                 name="bio"
-                value={formData.bio}
-                onChange={handleChange}
+                value={formValues.bio}
+                onChange={changeHander}
                 placeholder="Tell us about yourself..."
               />
             </div>
           </div>
           <div className="button-group">
-            <button 
-            type="submit" 
-            className="create-profile-btn"
-            disabled={isSubmitting}
+            <button
+              type="button"
+              className="button button-secondary"
+              onClick={clickCancelHandle}
             >
-              {isSubmitting ? "Creating Profile..." : "Create Profile"}
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="create-profile-btn"
+              disabled={isSubmittingProfile}
+            >
+              {isSubmittingProfile ? "Creating Profile..." : "Create Profile"}
             </button>
           </div>
         </form>
