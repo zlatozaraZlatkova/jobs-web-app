@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { formatDate } from "../../../utils/formatDate";
 import { useForm } from "../../../apiHooks/useForm";
 import { useEducationApi, useGetEmployeeProfile, useDeleteEducation } from "../../../apiHooks/useEmployee";
 
 export default function AddEducation({ onBack, onComplete }) {
   const { employee, refreshData, isLoading } = useGetEmployeeProfile();
-  const { submitEducation, isSubmittingEducation } = useEducationApi();
+  const { submitEducation, isSubmittingEducation, error } = useEducationApi();
   const { submitDelEduc } = useDeleteEducation();
-  const [serverError, setServerError] = useState(null);
+  const [displayError, setDisplayError] = useState(null);
 
   const initialValues = {
     school: "",
@@ -20,10 +20,17 @@ export default function AddEducation({ onBack, onComplete }) {
     description: "",
   };
 
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+    }
+  }, [error]);
+
   const handleFormSubmit = async (formData) => {
     const today = new Date().toISOString().split('T')[0];
     try {
-      setServerError(null);
+      setDisplayError(null);
+
       const educationInputData = {
         school: formData.school,
         degree: formData.degree,
@@ -42,8 +49,7 @@ export default function AddEducation({ onBack, onComplete }) {
         resetForm();
       }
     } catch (err) {
-      console.error("Full error:", err);
-      setServerError(err.message || "Failed to save education");
+      setDisplayError(err.message || "Failed to save education");
     }
   };
 
@@ -54,7 +60,7 @@ export default function AddEducation({ onBack, onComplete }) {
 
   const handleContinue = () => {
     if (!employee?.education || employee.education.length === 0) {
-      setServerError("Please add at least one education before continuing");
+      setDisplayError("Please add at least one education before continuing");
       return;
     }
 
@@ -63,13 +69,12 @@ export default function AddEducation({ onBack, onComplete }) {
 
   const onDeleteClickHandler = async (id) => {
     try {
-      
+
       await submitDelEduc(id);
       refreshData();
 
     } catch (error) {
-      console.log("delete", error);
-      setServerError(error.message || "Failed to delete education");
+      setDisplayError(error.message || "Failed to delete education");
     }
   }
 
@@ -81,7 +86,7 @@ export default function AddEducation({ onBack, onComplete }) {
       {/* Education Form */}
       <div className="form-card">
         <h1 className="form-title">Add Your Education</h1>
-        {serverError && <div className="error-message">{serverError}</div>}
+        {displayError && <div className="error-message">{displayError}</div>}
         <form onSubmit={sumbitHandler}>
           <div className="form-group">
             <label className="required">School</label>
@@ -157,9 +162,9 @@ export default function AddEducation({ onBack, onComplete }) {
           </div>
           <div className="button-group">
             <button type="submit" className="btn-save"
-            disabled={isSubmittingEducation}
+              disabled={isSubmittingEducation}
             >
-              {isSubmittingEducation? "Saving..." : "Save Education"}
+              {isSubmittingEducation ? "Saving..." : "Save Education"}
             </button>
           </div>
         </form>

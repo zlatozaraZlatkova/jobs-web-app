@@ -4,6 +4,8 @@ import { getPaginatedEmployees, getEmployeeProfile, createEmployeeProfile, addEm
 export function useGetPafinatedEmployeeProfile() {
   const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -11,11 +13,13 @@ export function useGetPafinatedEmployeeProfile() {
     const fetchEmployees = async () => {
       try {
         setIsLoading(true);
+        setError(null);
 
         const response = await getPaginatedEmployees(currentPage);
-        
+
         if (response.isError === true) {
-          throw new Error(response.message);
+          setError(response.message);
+          setEmployees([]);
         }
 
         //the response structure is { success, data: { items: [] } }
@@ -27,11 +31,9 @@ export function useGetPafinatedEmployeeProfile() {
         setEmployees(response.data.items);
 
         setTotalPages(response.data.pagination.totalPages);
-
       } catch (err) {
-        console.error("Error fetching employees:", err);
-        throw err;
-
+        setError(err.message);
+        setEmployees([]);
       } finally {
         setIsLoading(false);
       }
@@ -49,12 +51,14 @@ export function useGetPafinatedEmployeeProfile() {
     setCurrentPage,
     totalPages,
     setTotalPages,
+    error,
   };
 }
 
 export function useGetEmployeeProfile() {
   const [employee, setEmployee] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
   function refreshData() {
@@ -62,21 +66,24 @@ export function useGetEmployeeProfile() {
       return currentValue + 1;
     });
   }
+
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         setIsLoading(true);
+        setError(null);
+
         const response = await getEmployeeProfile();
 
         if (response.isError === true) {
-          throw new Error(response.message);
+          setError(response.message);
+          setEmployee(null);
         }
 
         setEmployee(response);
       } catch (err) {
-        console.error("Error fetching employee profile:", err);
-        throw err;
-
+        setError(err.message);
+        setEmployee(null);
       } finally {
         setIsLoading(false);
       }
@@ -88,28 +95,30 @@ export function useGetEmployeeProfile() {
   return {
     employee,
     isLoading,
-    refreshData
+    error,
+    refreshData,
   };
 }
 
 export function useProfileApi() {
+  const [error, setError] = useState(null);
   const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
 
   const submitProfile = async (formData) => {
     try {
       setIsSubmittingProfile(true);
+      setError(null);
 
       const response = await createEmployeeProfile(formData);
 
       if (response.isError === true) {
-        throw new Error(response.message);
+        setError(response.message);
       }
 
       return response;
     } catch (err) {
-      console.error("Profile creation error:", err);
-      throw err;
-
+      setError(err.message);
+      setIsSubmittingProfile(false);
     } finally {
       setIsSubmittingProfile(false);
     }
@@ -118,26 +127,28 @@ export function useProfileApi() {
   return {
     submitProfile,
     isSubmittingProfile,
+    error,
   };
 }
 
 export function useExperienceApi() {
+  const [error, setError] = useState(null);
   const [isSubmittingExperience, setIsSubmittingExperience] = useState(false);
 
   const submitExperience = async (formData) => {
     try {
       setIsSubmittingExperience(true);
+      setError(null);
 
       const response = await addEmployeeExperience(formData);
       if (response.isError === true) {
-        throw new Error(response.message);
+        setError(response.message);
       }
 
       return response;
     } catch (err) {
-      console.error("Failed to save experience. Please try again.", err);
-      throw err;
-
+      setError(err.message);
+      setIsSubmittingExperience(false);
     } finally {
       setIsSubmittingExperience(false);
     }
@@ -146,26 +157,29 @@ export function useExperienceApi() {
   return {
     submitExperience,
     isSubmittingExperience,
+    error,
   };
 }
 
 export function useEducationApi() {
+  const [error, setError] = useState(null);
   const [isSubmittingEducation, setIsSubmittingEducation] = useState(false);
 
   const submitEducation = async (formData) => {
     try {
       setIsSubmittingEducation(true);
+      setError(null);
+
       const response = await addEmployeeEducation(formData);
 
       if (response.isError === true) {
-        throw new Error(response.message);
+        setError(response.message);
       }
 
       return response;
     } catch (err) {
-      console.error("Failed to save education. Please try again.", err);
-      throw err;
-
+      setError(err.message);
+      setIsSubmittingEducation(false);
     } finally {
       setIsSubmittingEducation(false);
     }
@@ -173,41 +187,50 @@ export function useEducationApi() {
   return {
     submitEducation,
     isSubmittingEducation,
+    error,
   };
 }
 
 export function useDeleteExperience() {
+  const [error, setError] = useState(null);
+
   const submitDelExp = async (id) => {
     try {
+      setError(null);
+
       const response = await deleteEmployeeExperience(id);
       if (response.isError === true) {
-        throw new Error(response.message);
+        setError(response.message);
       }
       return response;
-    } catch (error) {
-      console.error("Exp deleting error:", error);
-      throw error;
+    } catch (err) {
+      setError(err.message);
     }
   };
   return {
     submitDelExp,
+    error,
   };
 }
 
 export function useDeleteEducation() {
+  const [error, setError] = useState(null);
+
   const submitDelEduc = async (id) => {
     try {
+      setError(null);
+
       const response = await deleteEmployeeEducation(id);
       if (response.isError === true) {
-        throw new Error(response.message);
+        setError(response.message);
       }
       return response;
-    } catch (error) {
-      console.error("Educ deleting error:", error);
-      throw error;
+    } catch (err) {
+      setError(err.message);
     }
   };
   return {
     submitDelEduc,
+    error,
   };
 }

@@ -2,16 +2,24 @@
 import AddEducation from "../employee/addEducation/AddEducation";
 import AddExperience from "../employee/addExperience/AddExperience";
 import CreateProfile from "../employee/createProfile/CreateProfile";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetEmployeeProfile } from "../../apiHooks/useEmployee";
 
 export default function CreateProfilePage() {
   const navigate = useNavigate();
+  const [displayError, setDisplayError] = useState(null);
   const [step, setStep] = useState(1);
-  
-  const { employee, isLoading } = useGetEmployeeProfile();
+
+  const { employee, isLoading, error } = useGetEmployeeProfile();
+
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+    }
+  }, [error]);
  
+
   const handleProfileComplete = () => {
     navigate("/profile");
   };
@@ -31,8 +39,9 @@ export default function CreateProfilePage() {
           <div className="loading-spinner"></div>
           <p>Loading your profile information...</p>
         </div>
-      ) : employee ? (
+      ) : (employee && employee._id) ? (
         <div className="container-profile">
+          {displayError && <div className="error-message">{displayError}</div>}
           <div className="profile-completion-message">
             <h2>Your Profile is Ready!</h2>
             <p>
@@ -51,6 +60,7 @@ export default function CreateProfilePage() {
       ) : (
         <div className="container-profile">
           {/* Progress bar */}
+          {displayError && <div className="error-message">{displayError}</div>}
           <div className="progress-steps">
             <div className="progress-line">
               <div
@@ -60,9 +70,8 @@ export default function CreateProfilePage() {
             </div>
 
             <div
-              className={`step ${
-                step >= 1 ? (step > 1 ? "completed" : "active") : ""
-              }`}
+              className={`step ${step >= 1 ? (step > 1 ? "completed" : "active") : ""
+                }`}
             >
               <div className="step-circle">
                 {step > 1 ? <span>✓</span> : <span>1</span>}
@@ -71,9 +80,8 @@ export default function CreateProfilePage() {
             </div>
 
             <div
-              className={`step ${
-                step >= 2 ? (step > 2 ? "completed" : "active") : ""
-              }`}
+              className={`step ${step >= 2 ? (step > 2 ? "completed" : "active") : ""
+                }`}
             >
               <div className="step-circle">
                 {step > 2 ? <span>✓</span> : <span>2</span>}
@@ -82,9 +90,8 @@ export default function CreateProfilePage() {
             </div>
 
             <div
-              className={`step ${
-                step >= 3 ? (step > 3 ? "completed" : "active") : ""
-              }`}
+              className={`step ${step >= 3 ? (step > 3 ? "completed" : "active") : ""
+                }`}
             >
               <div className="step-circle">
                 {step > 3 ? <span>✓</span> : <span>3</span>}
@@ -93,10 +100,10 @@ export default function CreateProfilePage() {
             </div>
           </div>
 
- 
+
           {step === 1 && (
-            <CreateProfile 
-            onComplete={goToNextStep} />)
+            <CreateProfile
+              onComplete={goToNextStep} />)
           }
 
           {step === 2 && (

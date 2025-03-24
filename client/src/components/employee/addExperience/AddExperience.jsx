@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "../../../apiHooks/useForm";
 import { formatDate } from "../../../utils/formatDate";
 import { useExperienceApi, useGetEmployeeProfile, useDeleteExperience } from "../../../apiHooks/useEmployee";
@@ -7,10 +7,16 @@ import { useExperienceApi, useGetEmployeeProfile, useDeleteExperience } from "..
 
 export default function AddExperience({ onBack, onComplete }) {
   const { submitExperience, isSubmittingExperience } = useExperienceApi();
-  const { employee, refreshData, isLoading } = useGetEmployeeProfile();
+  const { employee, refreshData, isLoading, error } = useGetEmployeeProfile();
   const { submitDelExp } =useDeleteExperience();
 
-  const [serverError, setServerError] = useState(null);
+  const [displayError, setDisplayError] = useState(null);
+  
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+    }
+  }, [error]);
 
   const initialValues = {
     title: "",
@@ -26,7 +32,7 @@ export default function AddExperience({ onBack, onComplete }) {
     const today = new Date().toISOString().split('T')[0];
 
     try {
-      setServerError(null);
+      setDisplayError(null);
 
       const experienceInputData = {
         title: formData.title,
@@ -47,8 +53,7 @@ export default function AddExperience({ onBack, onComplete }) {
       }
 
     } catch (err) {
-      console.error("Full error:", err);
-      setServerError(err.message || "Failed to save experience");
+      setDisplayError(err.message || "Failed to save experience");
     }
   };
 
@@ -59,7 +64,7 @@ export default function AddExperience({ onBack, onComplete }) {
 
   const handleContinue = () => {
     if (!employee?.experience || employee.experience.length === 0) {
-      setServerError("Please add at least one experience before continuing");
+      setDisplayError("Please add at least one experience before continuing");
       return;
     }
 
@@ -73,8 +78,7 @@ export default function AddExperience({ onBack, onComplete }) {
       refreshData();
     
     } catch (error) {
-      console.log("delete", error);
-      setServerError(error.message || "Failed to delete experience");
+      setDisplayError(error.message || "Failed to delete experience");
     }
   }
 
@@ -84,7 +88,7 @@ export default function AddExperience({ onBack, onComplete }) {
       {/* Experience Form */}
       <div className="form-card">
         <h1 className="form-title">Add Your Experience</h1>
-        {serverError && <div className="error-message">{serverError}</div>}
+        {displayError && <div className="error-message">{displayError}</div>}
         <form onSubmit={sumbitHandler}>
           <div className="form-group">
             <label className="required">Title</label>

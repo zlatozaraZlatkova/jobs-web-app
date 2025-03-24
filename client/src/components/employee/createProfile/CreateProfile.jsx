@@ -1,12 +1,18 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "../../../apiHooks/useForm";
 import { useProfileApi } from "../../../apiHooks/useEmployee";
 
 
 export default function CreateProfile({ onComplete }) {
-  const [serverError, setServerError] = useState(null);
-  const { submitProfile, isSubmittingProfile } = useProfileApi();
+  const [displayError, setDisplayError] = useState(null);
+  const { submitProfile, isSubmittingProfile, error } = useProfileApi();
+
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+    }
+  }, [error]);
 
   const initialValues = {
     fullName: "",
@@ -21,6 +27,7 @@ export default function CreateProfile({ onComplete }) {
 
   const handleFormSubmit = async (formData) => {
     try {
+      setDisplayError(null);
       console.log("Submitting basic profile data:", formData);
 
       const basicProfileInputData = {
@@ -44,7 +51,7 @@ export default function CreateProfile({ onComplete }) {
 
     } catch (err) {
       console.log("Error message:", err.message);
-      setServerError(err.message);
+      setDisplayError(err.message);
 
     }
   }
@@ -60,7 +67,7 @@ export default function CreateProfile({ onComplete }) {
     <>
       <div className="form-card">
         <h1 className="form-title">Create Your Professional Profile</h1>
-        {serverError && <div className="error-message">{serverError}</div>}
+        {displayError && <div className="error-message">{displayError}</div>}
         <form onSubmit={sumbitHandler}>
           <div className="form-grid">
             <div className="form-group">

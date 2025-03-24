@@ -1,7 +1,5 @@
 async function requester(method, url, data, fetchOptions = {}) {
-  const options = {
-    ...fetchOptions  
-  };
+  const options = { ...fetchOptions };
 
   if (method !== "GET") {
     options.method = method;
@@ -22,7 +20,7 @@ async function requester(method, url, data, fetchOptions = {}) {
         const responseData = await response.json();
         return {
           isError: true,
-          message: responseData.message || `HTTP error: ${response.status} ${response.statusText}`,
+          message: responseData.message || `HTTP error: ${response.status}`,
           status: response.status
         };
       } catch (jsonError) {
@@ -38,20 +36,16 @@ async function requester(method, url, data, fetchOptions = {}) {
       return { success: true };
     }
 
-    try {
-      const result = await response.json();
-      return result;
-      
-    } catch (jsonError) {
-      console.error(`JSON parsing error for ${url}:`, jsonError);
-      throw new Error(`Failed to parse JSON response: ${jsonError.message}`);
-    }
-    
+    return await response.json();
   } catch (error) {
-    console.error(`Fetch error for ${url}:`, error);
-    throw error;
+    return {
+      isError: true,
+      message: `Network error: ${error.message}`,
+      status: 0
+    };
   }
 }
+
 
 export const get = requester.bind(null, "GET");
 export const post = requester.bind(null, "POST");
