@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "../../apiHooks/useForm";
 import { useCreateJob } from "../../apiHooks/useJobs";
@@ -6,8 +6,8 @@ import styles from "./CreateJob.module.css";
 
 export default function CreateJob() {
   const navigate = useNavigate();
-  const [serverError, setServerError] = useState(null);
-  const { isSubmittingJob, submitJob } = useCreateJob();
+  const [displayError, setDisplayError] = useState(null);
+  const { isSubmittingJob, submitJob, error } = useCreateJob();
 
   const initialValues = {
     title: "",
@@ -19,9 +19,16 @@ export default function CreateJob() {
     salary: "Under $50K",
   };
 
+    useEffect(() => {
+      if (error) {
+        setDisplayError(error);
+      }
+    }, [error]);
+
   const handleFormSubmit = async (formData) => {
     try {
-      console.log("Submitting job data:", formData);
+      setDisplayError(null);
+
       const jobData = {
         title: formData.title,
         techStack: formData.techStack, 
@@ -33,12 +40,11 @@ export default function CreateJob() {
       };
 
       const newJob = await submitJob(jobData);
-      console.log("Response job data:", newJob);
+      //console.log("Response job data:", newJob);
 
       navigate(`/jobs/${newJob._id}`);
     } catch (err) {
-      console.log("Error message:", err.message);
-      setServerError(err.message);
+      setDisplayError(err.message);
       resetForm();
     }
   };
@@ -53,7 +59,7 @@ export default function CreateJob() {
     <section className={styles.formSection}>
       <div className={styles.container}>
         <div className={styles.formCard}>
-        {serverError && <div className="error-message">{serverError}</div>}
+        {displayError && <div className="error-message">{displayError}</div>}
           <form onSubmit={sumbitHandler}>
             <h2 className={styles.formTitle}>Add Job</h2>
 

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetPaginatedJobs } from "../../apiHooks/useJobs";
 import styles from "./JobsListSection.module.css";
@@ -9,7 +9,15 @@ import SearchBar from "../searchBar/SearchBar";
 
 export default function JobsListSection({ isHomePage = false, urlPageNumber, setUrlPageNumber }) {
   const sectionRef = useRef(null);
-  const { jobs, isLoading, totalPages } = useGetPaginatedJobs(urlPageNumber);
+  const [displayError, setDisplayError] = useState(null);
+
+  const { jobs, isLoading, totalPages, error } = useGetPaginatedJobs(urlPageNumber);
+
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (sectionRef.current && !isHomePage) {
@@ -24,7 +32,7 @@ export default function JobsListSection({ isHomePage = false, urlPageNumber, set
       setUrlPageNumber(urlPageNumber + 1);
     }
   };
-  
+
   const prevPage = () => {
     if (urlPageNumber > 1) {
       setUrlPageNumber(urlPageNumber - 1);
@@ -35,6 +43,7 @@ export default function JobsListSection({ isHomePage = false, urlPageNumber, set
     <>
       <section className={styles.featuredJobs} ref={sectionRef}>
         <div className={styles.container}>
+          {displayError && <div className="error-message">{displayError}</div>}
           {isHomePage ? (
             <h2 className={styles.sectionTitle}>Featured Positions</h2>
           ) : (

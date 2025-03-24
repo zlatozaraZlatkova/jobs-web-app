@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,8 +9,8 @@ import styles from "../createJob/CreateJob.module.css";
 export default function EditJob() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [serverError, setServerError] = useState(null);
-  const { isSubmittingJob, editJob } = useEditJob();
+  const [displayError, setDisplayError] = useState(null);
+  const { isSubmittingJob, editJob, error } = useEditJob();
   const { initialJobData } = useFetchingInitialData(id);
 
   const initialValues = {
@@ -22,9 +23,15 @@ export default function EditJob() {
     salary: "Under $50K",
   };
 
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+    }
+  }, [error]);
+
   const handleFormSubmit = async (formData) => {
     try {
-      console.log("Submitting edited data:", formData);
+      setDisplayError(null);
       
       const jobData = {
         title: formData.title,
@@ -37,12 +44,11 @@ export default function EditJob() {
       };
 
       const updatedJob = await editJob(jobData, id);
-      console.log("Response edited data:", updatedJob);
+      //console.log("Response edited data:", updatedJob);
 
       navigate(`/jobs/${id}`);
     } catch (err) {
-      console.log("Error message:", err.message);
-      setServerError(err.message);
+      setDisplayError(err.message);
       resetForm();
     }
   };
@@ -76,7 +82,7 @@ export default function EditJob() {
     <section className={styles.formSection}>
       <div className={styles.container}>
         <div className={styles.formCard}>
-          {serverError && <div className="error-message">{serverError}</div>}
+          {displayError && <div className="error-message">{displayError}</div>}
           <form onSubmit={sumbitHandler}>
             <h2 className={styles.formTitle}>Edit Job</h2>
 

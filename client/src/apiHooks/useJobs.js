@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import { getPaginatedJobs, createJob, getJobById, updateJob, deleteJob } from "../api/jobsApi";
+import {getAllJobs, getPaginatedJobs, createJob, getJobById, updateJob, deleteJob } from "../api/jobsApi";
 
 export function useGetPaginatedJobs(urlPageNumber) {
-  //console.log("Hook received urlParameters:", urlPageNumber);
-  
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(urlPageNumber || 1);
   const [totalPages, setTotalPages] = useState(1);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (urlPageNumber) {
@@ -16,9 +15,7 @@ export function useGetPaginatedJobs(urlPageNumber) {
     }
   }, [urlPageNumber]);
 
-
   //console.log("Current internal page:", currentPage);
-
 
   useEffect(() => {
     let isMounted = true;
@@ -26,14 +23,16 @@ export function useGetPaginatedJobs(urlPageNumber) {
     const fetchJobs = async () => {
       try {
         setIsLoading(true);
+        setError(null);
+
         const result = await getPaginatedJobs(currentPage);
 
         if (!isMounted) {
-          return
+          return;
         }
 
-        if (result.isError) {
-          console.error("API returned an error:", result.message);
+        if (result.isError === true) {
+          setError(result.message);
           setJobs([]);
           return;
         }
@@ -45,12 +44,10 @@ export function useGetPaginatedJobs(urlPageNumber) {
           setJobs([]);
         }
       } catch (err) {
-       
         if (!isMounted) {
-          console.error("Error fetching jobs:", err);
+          setError(err);
           return;
         }
-
       } finally {
         if (isMounted) {
           setIsLoading(false);
@@ -59,37 +56,136 @@ export function useGetPaginatedJobs(urlPageNumber) {
     };
 
     fetchJobs();
-    
+
     return () => {
       isMounted = false;
     };
-
   }, [currentPage]);
 
   return {
     jobs,
     isLoading,
     totalPages,
+    error,
   };
+}
+
+export function useGetJobDetails(id) {
+  const [currentJob, setCurrentJob] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const response = await getJobById(id);
+
+        if (!response) {
+          setCurrentJob(null);
+          return;
+        }
+
+        if (response.isError === true) {
+          setError(response.message);
+        }
+
+        setCurrentJob(response);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+  return {
+    currentJob,
+    isLoading,
+    error,
+  };
+}
+
+export function useGetCategoriesJob() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [jobs, setJobs] = useState([]);
+  const [frontendTechnologies, setFrontendTechnologies] = useState([]);
+  const [backendTechnologies, setBackendTechnologies] = useState([]);
+  const [erros, setErros] = useState(null);
+  
+    useEffect(() => {
+  
+      const fetchAllJobs = async () => {
+        try {
+          setIsLoading(true);
+          setErros(null);
+  
+          const reasponse = await getAllJobs();
+
+          if(reasponse.isError === true) {
+            setErros(reasponse.message);
+          }
+          
+          if (reasponse.length === 0) {
+            setJobs([]);
+            setFrontendTechnologies([]);
+            setBackendTechnologies([]);
+            return;
+          }
+  
+  
+          setJobs(reasponse);
+         
+          const frontend = reasponse.filter(job => job.technologies === "frontend");
+          const backend = reasponse.filter(job => job.technologies === "backend");
+  
+          setFrontendTechnologies(frontend);
+          setBackendTechnologies(backend);
+  
+  
+        } catch (err) {
+          setJobs([]);
+          setFrontendTechnologies([]);
+          setBackendTechnologies([]);
+  
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      fetchAllJobs();
+    }, []);
+  
+  return {
+    isLoading,
+    jobs,
+    frontendTechnologies,
+    backendTechnologies,
+    erros
+  }
 }
 
 export function useCreateJob() {
   const [isSubmittingJob, setIsSubmittingJob] = useState(false);
+  const [error, setError] = useState(null);
 
   const submitJob = async (formData) => {
     try {
       setIsSubmittingJob(true);
+      setError(null);
 
       const response = await createJob(formData);
 
       if (response.isError === true) {
-        throw new Error(response.message);
+        setError(response.message);
       }
 
       return response;
     } catch (err) {
-      console.error("Job creation error:", err);
-      throw err;
+      setError(err);
     } finally {
       setIsSubmittingJob(false);
     }
@@ -98,25 +194,28 @@ export function useCreateJob() {
   return {
     isSubmittingJob,
     submitJob,
+    error,
   };
 }
 
 export function useEditJob() {
   const [isSubmittingJob, setIsSubmittingJob] = useState(false);
+  const [error, setError] = useState(null);
 
   const editJob = async (jobData, id) => {
     try {
       setIsSubmittingJob(true);
+      setError(null);
+
       const response = await updateJob(jobData, id);
 
       if (response.isError === true) {
-        throw new Error(response.message);
+        setError(response.message);
       }
 
       return response;
-    } catch (error) {
-      console.error("Job updating error:", error);
-      throw error;
+    } catch (err) {
+      setError(err);
     } finally {
       setIsSubmittingJob(false);
     }
@@ -125,11 +224,13 @@ export function useEditJob() {
   return {
     isSubmittingJob,
     editJob,
+    error,
   };
 }
 
 export function useFetchingInitialData(id) {
   const [initialJobData, setInitialJobData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchJobData() {
@@ -138,39 +239,47 @@ export function useFetchingInitialData(id) {
       }
 
       try {
+        setError(null);
+
         const response = await getJobById(id);
 
         if (response.isError === true) {
-          throw new Error(response.message);
+          setError(response.message);
         }
 
         setInitialJobData(response);
       } catch (err) {
-        console.error("Error fetching job data:", err);
-        throw err;
+        setError(err);
       }
     }
 
     fetchJobData();
   }, [id]);
 
-  return { initialJobData };
+  return {
+    initialJobData,
+    error,
+  };
 }
 
 export function useDeleteJob() {
+  const [error, setError] = useState(null);
+
   const submitDelJob = async (id) => {
     try {
+      setError(null);
+
       const response = await deleteJob(id);
       if (response.isError === true) {
-        throw new Error(response.message);
+        setError(response.message);
       }
       return response;
-    } catch (error) {
-      console.error("Job deleting error:", error);
-      throw error;
+    } catch (err) {
+      setError(err);
     }
   };
   return {
     submitDelJob,
+    error,
   };
 }
