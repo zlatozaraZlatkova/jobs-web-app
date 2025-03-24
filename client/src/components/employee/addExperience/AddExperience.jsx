@@ -74,6 +74,7 @@ export default function AddExperience({ onBack, onComplete }) {
     
     } catch (error) {
       console.log("delete", error);
+      setServerError(error.message || "Failed to delete experience");
     }
   }
 
