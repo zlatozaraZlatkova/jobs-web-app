@@ -3,37 +3,40 @@ import { createCompanyProfile, editProfile, getProfileById } from "../api/employ
 
 export function useCreateCompanyProfile() {
   const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
+  const [error, setError] = useState(null);
 
   const submitCompanyProfile = async (formData) => {
     try {
       setIsSubmittingProfile(true);
+      setError(null);
 
       const response = await createCompanyProfile(formData);
 
       if (response.isError === true) {
-        throw new Error(response.message);
+        setError(response.message);
       }
 
       return response;
 
     } catch (err) {
-      console.error("Profile creation error:", err);
-      throw err;
-      
-    } finally {
+      setError(err.message);
       setIsSubmittingProfile(false);
+      
     }
   };
 
   return {
     isSubmittingProfile,
     submitCompanyProfile,
+    error
   };
 }
 
 export function useGetAdminProfile() {
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+ 
   const [refreshKey, setRefreshKey] = useState(0);
 
   function refreshData() {
@@ -46,13 +49,21 @@ export function useGetAdminProfile() {
     const fetchProfileData = async () => {
       try {
         setIsLoading(true);
-        const result = await getProfileById();
+        setError(null);
 
-        setProfileData(result);
+        const response = await getProfileById();
+
+        if(response.isError === true) {
+          setError(response.message);
+        }
+
+        setProfileData(response);
+       
+
       } catch (err) {
-        console.error("Error fetching profile data:", err);
-
+        setError(null);
         setProfileData(null);
+
       } finally {
         setIsLoading(false);
       }
@@ -65,26 +76,28 @@ export function useGetAdminProfile() {
     profileData,
     isLoading,
     refreshData,
+    error
   };
 }
 
 export function useEditCompanyProfile() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   const editCompany = async (companyData, companyId) => {
     try {
       setIsSubmitting(true);
+      setError(null);
 
       const response = await editProfile(companyId, companyData);
 
       if (response.isError === true) {
-        throw new Error(response.message);
+        setError(response.message);
       }
       return response;
 
     } catch (err) {
-      console.error("Profile creation error:", err);
-      throw err;
+      setError(err.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -92,12 +105,14 @@ export function useEditCompanyProfile() {
 
   return { 
     isSubmitting, 
-    editCompany 
+    editCompany,
+    error 
   };
 }
 
 export function useFetchingInitialData(id) {
   const [initialCompanyData, setInitialCompanyData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchCompanyData() {
@@ -106,17 +121,19 @@ export function useFetchingInitialData(id) {
       }
 
       try {
-        const response = await getProfileById(id);
-        console.log("Fetch data from response:", response);
+        setError(null);
 
+        const response = await getProfileById(id);
+        
         if (response.isError === true) {
-          throw new Error(response.message);
+          setError(response.message);
         }
 
         setInitialCompanyData(response);
+        
       } catch (err) {
-        console.error("Error fetching job data:", err);
-        throw err;
+        setError(err.message);
+        setInitialCompanyData(null);
       }
     }
 
@@ -124,6 +141,7 @@ export function useFetchingInitialData(id) {
   }, [id]);
 
   return { 
-    initialCompanyData
+    initialCompanyData,
+    error
    };
 }

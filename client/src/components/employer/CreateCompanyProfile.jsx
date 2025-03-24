@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "../../apiHooks/useForm";
 import { useCreateCompanyProfile } from "../../apiHooks/useEmployer";
 
 export default function CreateCompanyProfile() {
   const navigate = useNavigate();
-  const [serverError, setServerError] = useState(null);
-  const { isSubmittingProfile, submitCompanyProfile } = useCreateCompanyProfile();
+  const [displayError, setDisplayError] = useState(null);
+  const { isSubmittingProfile, submitCompanyProfile, error } = useCreateCompanyProfile();
 
   const initialValues = {
     companyName: "",
@@ -16,9 +16,16 @@ export default function CreateCompanyProfile() {
     contactPhone: "",
   };
 
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+    }
+  }, [error]);
+
   const handleFormSubmit = async (formData) => {
     try {
       console.log("Submitting company data:", formData);
+      setDisplayError(null);
 
       const companyData = {
         companyName: formData.companyName,
@@ -33,7 +40,7 @@ export default function CreateCompanyProfile() {
       navigate("/");
     } catch (err) {
         console.log("Error message:", err.message);
-        setServerError(err.message);
+        setDisplayError(err.message);
       
     }
   };
@@ -48,7 +55,7 @@ export default function CreateCompanyProfile() {
     <>
       <form onSubmit={sumbitHandler}>
         {/* Company Information */}
-        {serverError && <div className="error-message">{serverError}</div>}
+        {displayError && <div className="error-message">{displayError}</div>}
         <div className="form-section">
           <h2 className="section-title">Company Information</h2>
           <div className="form-group">

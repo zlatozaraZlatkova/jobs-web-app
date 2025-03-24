@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./AdminDashboard.module.css";
 
@@ -15,20 +15,25 @@ export default function AdminDashboard() {
   const { _id } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const { profileData, refreshData } = useGetAdminProfile();
+  const { profileData, refreshData, error } = useGetAdminProfile();
   const { submitDelJob } = useDeleteJob();
 
   const [activeTab, setActiveTab] = useState("overview");
-  const [serverError, setServerError] = useState(null);
+  const [displayError, setDisplayError] = useState(null);
 
   const isProfileOwner = profileData?.ownerId?._id === _id;
   console.log("_id from AuthContext:", _id);
   console.log("isProfile owner:", isProfileOwner);
   console.log("profile data", profileData);
 
-  
   const hasCompleteProfile =
     profileData && profileData.ownerId && profileData.companyId;
+
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+    }
+  }, [error]);
 
   const onEditClickHander = (id) => {
     navigate(`/jobs/update/${id}`);
@@ -36,22 +41,23 @@ export default function AdminDashboard() {
 
   const onDeleteClickHandler = async (id) => {
     try {
-      console.log("onDelete:", id);
       await submitDelJob(id);
+
       refreshData();
+
     } catch (error) {
-      console.log("delete", error);
+      setDisplayError(error);
     }
   };
 
   const onCompanyEditClickHander = (id) => {
-    console.log("onClick hander Company ID:", id);
     navigate(`/company/profile/update/${id}`);
   };
 
   return (
     <section className={styles.dashboardSection}>
-    {serverError && <div className="error-message">{serverError}</div>}
+      {displayError && <div className="error-message">{displayError}</div>}
+      
       {hasCompleteProfile ? (
         <div className={styles.adminDashboard}>
           <header className={styles.dashboardHeader}>
@@ -313,7 +319,6 @@ export default function AdminDashboard() {
           <div className={styles.adminDashboard}>
             <div className={styles.dashboardContent}>
               <div className={`${styles.card} ${styles.createCompany}`}>
-
                 <div className={styles.emptyState}>
                   <header className={styles.dashboardHeader}>
                     <h1 className={styles.dashboardTitle}>
@@ -324,11 +329,10 @@ export default function AdminDashboard() {
                     <CreateCompanyProfile />
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
-        </div> 
+        </div>
       )}
     </section>
   );

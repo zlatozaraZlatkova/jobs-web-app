@@ -7,8 +7,9 @@ import { useEditCompanyProfile, useFetchingInitialData } from "../../apiHooks/us
 export default function EditCompanyProfile() {
     const navigate = useNavigate();
     const { id } = useParams();
-    const [serverError, setServerError] = useState(null);
-    const { isSubmitting, editCompany } = useEditCompanyProfile();
+    const [displayError, setDisplayError] = useState(null);
+
+    const { isSubmitting, editCompany, error } = useEditCompanyProfile();
     const { initialCompanyData } = useFetchingInitialData(id);
 
     const initialValues = {
@@ -17,6 +18,13 @@ export default function EditCompanyProfile() {
         contactEmail: "",
         contactPhone: "",
     };
+
+    useEffect(() => {
+        if (error) {
+          setDisplayError(error);
+        }
+      }, [error]);
+
     const handleFormSubmit = async (formData) => {
         try {
             console.log("Submitting edited data:", formData);
@@ -33,7 +41,7 @@ export default function EditCompanyProfile() {
 
         } catch (err) {
             console.log("Error message:", err.message);
-            setServerError(err.message);
+            setDisplayError(err.message);
             resetForm();
         }
     };
@@ -61,12 +69,12 @@ export default function EditCompanyProfile() {
             <section className="formSection">
                 <div className="container-formSection">
                     <div className="formCard">
-                        {serverError && <div className="error-message">{serverError}</div>}
+                        {displayError && <div className="error-message">{displayError}</div>}
 
                         <form onSubmit={sumbitHandler}>
                             {/* Company Information */}
-                            {serverError && (
-                                <div className="error-message">{serverError}</div>
+                            {displayError && (
+                                <div className="error-message">{displayError}</div>
                             )}
                             <div className="form-section">
                                 <h2 className="section-title">Company Information</h2>
