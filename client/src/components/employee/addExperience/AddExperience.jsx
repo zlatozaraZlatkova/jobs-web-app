@@ -2,12 +2,13 @@
 import { useState } from "react";
 import { useForm } from "../../../apiHooks/useForm";
 import { formatDate } from "../../../utils/formatDate";
-import { useExperienceApi, useGetEmployeeProfile } from "../../../apiHooks/useEmployee";
+import { useExperienceApi, useGetEmployeeProfile, useDeleteExperience } from "../../../apiHooks/useEmployee";
 
 
 export default function AddExperience({ onBack, onComplete }) {
   const { submitExperience, isSubmittingExperience } = useExperienceApi();
   const { employee, refreshData, isLoading } = useGetEmployeeProfile();
+  const { submitDelExp } =useDeleteExperience();
 
   const [serverError, setServerError] = useState(null);
 
@@ -65,13 +66,17 @@ export default function AddExperience({ onBack, onComplete }) {
     onComplete();
   };
 
-  const handleEdit = (id) => {
-    console.log("on Edit", id);
-  };
 
-  const handleDelete = (id) => {
-    console.log("on Delete", id);
-  };
+  const onDeleteClickHandler = async (id) => {
+    try {
+      await submitDelExp(id);
+      refreshData();
+    
+    } catch (error) {
+      console.log("delete", error);
+    }
+  }
+
 
   return (
     <>
@@ -184,20 +189,15 @@ export default function AddExperience({ onBack, onComplete }) {
                   <td>{experience.company}</td>
                   <td>{experience.location}</td>
                   <td>
-                    {formatDate(experience.formData)} -{" "}
-                    {experience.current ? "Present" : formatDate(experience.to)}
+                    {formatDate(experience.from)} -{" "}
+                    {experience.current 
+                      ? "Present" 
+                      : formatDate(experience.to)}
                   </td>
                   <td className="action-cell">
                     <button
-                      className="btn-edit"
-                      onClick={() => handleEdit(experience._id)}
-                      type="button"
-                    >
-                      Edit
-                    </button>
-                    <button
                       className="btn-delete"
-                      onClick={() => handleDelete(experience._id)}
+                      onClick={() => onDeleteClickHandler(experience._id)}
                       type="button"
                     >
                       Delete
