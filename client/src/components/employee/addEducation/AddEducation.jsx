@@ -2,11 +2,12 @@
 import { useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
 import { useForm } from "../../../apiHooks/useForm";
-import { useEducationApi, useGetEmployeeProfile } from "../../../apiHooks/useEmployee";
+import { useEducationApi, useGetEmployeeProfile, useDeleteEducation } from "../../../apiHooks/useEmployee";
 
 export default function AddEducation({ onBack, onComplete }) {
   const { employee, refreshData, isLoading } = useGetEmployeeProfile();
   const { submitEducation, isSubmittingEducation } = useEducationApi();
+  const { submitDelEduc } = useDeleteEducation();
   const [serverError, setServerError] = useState(null);
 
   const initialValues = {
@@ -60,13 +61,20 @@ export default function AddEducation({ onBack, onComplete }) {
     onComplete();
   };
 
-  const handleEdit = (id) => {
-    console.log("on Edit", id);
-  };
+  const onDeleteClickHandler = async (id) => {
+    try {
+      
+      await submitDelEduc(id);
+      refreshData();
 
-  const handleDelete = (id) => {
-    console.log("on Delete", id);
-  };
+    } catch (error) {
+      console.log("delete", error);
+      setServerError(error.message || "Failed to delete education");
+    }
+  }
+
+
+
 
   return (
     <>
@@ -179,22 +187,15 @@ export default function AddEducation({ onBack, onComplete }) {
                   <td>{educ.degree}</td>
                   <td>{educ.fieldOfStudy}</td>
                   <td>
-                    {formatDate(educ.fromDate)} -{" "}
+                    {formatDate(educ.from)} -{" "}
                     {educ.current
                       ? "Current"
                       : formatDate(educ.to)}
                   </td>
                   <td className="action-cell">
                     <button
-                      className="btn-edit"
-                      onClick={() => handleEdit(educ._id)}
-                      type="button"
-                    >
-                      Edit
-                    </button>
-                    <button
                       className="btn-delete"
-                      onClick={() => handleDelete(educ._id)}
+                      onClick={() => onDeleteClickHandler(educ._id)}
                       type="button"
                     >
                       Delete

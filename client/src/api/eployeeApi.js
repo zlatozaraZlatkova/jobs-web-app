@@ -60,3 +60,12 @@ export const deleteEmployeeExperience = async (id) => {
     throw error;
   }
 };
+
+export const deleteEmployeeEducation = async (id) => {
+  try {
+    return await request.del(`${BASE_URL}/education/${id}`);
+  } catch (error) {
+    console.log("deleteEmployeeEduc error:", error);
+    throw error;
+  }
+};

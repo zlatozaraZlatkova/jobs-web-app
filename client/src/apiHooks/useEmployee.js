@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getPaginatedEmployees, getEmployeeProfile, createEmployeeProfile, addEmployeeExperience, addEmployeeEducation, deleteEmployeeExperience } from "../api/eployeeApi";
+import { getPaginatedEmployees, getEmployeeProfile, createEmployeeProfile, addEmployeeExperience, addEmployeeEducation, deleteEmployeeExperience, deleteEmployeeEducation } from "../api/eployeeApi";
 
 export function useGetPafinatedEmployeeProfile() {
   const [employees, setEmployees] = useState([]);
@@ -185,11 +185,29 @@ export function useDeleteExperience() {
       }
       return response;
     } catch (error) {
-      console.error("Job deleting error:", error);
+      console.error("Exp deleting error:", error);
       throw error;
     }
   };
   return {
     submitDelExp,
+  };
+}
+
+export function useDeleteEducation() {
+  const submitDelEduc = async (id) => {
+    try {
+      const response = await deleteEmployeeEducation(id);
+      if (response.isError === true) {
+        throw new Error(response.message);
+      }
+      return response;
+    } catch (error) {
+      console.error("Educ deleting error:", error);
+      throw error;
+    }
+  };
+  return {
+    submitDelEduc,
   };
 }

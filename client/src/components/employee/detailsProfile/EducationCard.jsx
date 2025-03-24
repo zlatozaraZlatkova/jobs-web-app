@@ -1,5 +1,4 @@
 import { useState } from "react";
-import EducationProfileEdit from "../editProfile/EducationProfileEdit";
 import styles from "./ProfileCard.module.css";
 import { formatDate } from "../../../utils/formatDate";
 
@@ -16,38 +15,38 @@ export default function EducationCard() {
     }
   ]);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentEducation, setCurrentEducation] = useState(null);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  //const [currentEducation, setCurrentEducation] = useState(null);
 
-  const handleEditClick = (education) => {
-    setCurrentEducation(education);
-    setIsModalOpen(true);
-  };
-
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  // const handleEditClick = (education) => {
+  //   setCurrentEducation(education);
+  //   setIsModalOpen(true);
+  // };
 
 
-  const handleSaveEducation = (updatedData) => {
-    const updatedEducations = educations.map(exp => {
-      if (exp.id === currentEducation.id) {
-        return {
-          ...updatedData,
-          id: currentEducation.id
-        };
-
-      } else {
-        return exp;
-      }
-
-    });
-
-    setEducations(updatedEducations);
+  // const handleCloseModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
 
-  };
+  // const handleSaveEducation = (updatedData) => {
+  //   const updatedEducations = educations.map(exp => {
+  //     if (exp.id === currentEducation.id) {
+  //       return {
+  //         ...updatedData,
+  //         id: currentEducation.id
+  //       };
+
+  //     } else {
+  //       return exp;
+  //     }
+
+  //   });
+
+  //   setEducations(updatedEducations);
+
+
+  // };
 
   const handleRemoveEducation = (educationId) => {
     const isConfirmed = window.confirm("Are you sure you want to remove this education?");
@@ -87,7 +86,7 @@ export default function EducationCard() {
               <button
                 className={styles.editProfileBtn}
                 type="button"
-                onClick={() => handleEditClick(education)}
+                // onClick={() => handleEditClick(education)}
               >
                 Edit
               </button>
@@ -104,14 +103,14 @@ export default function EducationCard() {
       </div>
 
       {/* Education Edit Modal */}
-      {currentEducation && (
+      {/* {currentEducation && (
         <EducationProfileEdit
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           educationData={currentEducation}
           onSave={handleSaveEducation}
         />
-      )}
+      )} */}
 
    
     </>

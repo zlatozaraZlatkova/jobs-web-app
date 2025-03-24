@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ExperienceProfileEdit from "../editProfile/ExperienceProfileEdit";
+// import ExperienceProfileEdit from "../editProfile/ExperienceProfileEdit";
 import styles from "./ProfileCard.module.css";
 import { formatDate } from "../../../utils/formatDate";
 
@@ -26,39 +26,39 @@ export default function ExperienceCard() {
     }
   ]);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentExperience, setCurrentExperience] = useState(null);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [currentExperience, setCurrentExperience] = useState(null);
 
 
-  const handleEditClick = (experience) => {
-    setCurrentExperience(experience);
-    setIsModalOpen(true);
-  };
+  // const handleEditClick = (experience) => {
+  //   setCurrentExperience(experience);
+  //   setIsModalOpen(true);
+  // };
 
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  // const handleCloseModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
 
-  const handleSaveExperience = (updatedData) => {
+  // const handleSaveExperience = (updatedData) => {
 
-    const updatedExperiences = experiences.map(exp => {
-      if (exp.id === currentExperience.id) {
-        return {
-          ...updatedData,
-          id: currentExperience.id
-        };
+  //   const updatedExperiences = experiences.map(exp => {
+  //     if (exp.id === currentExperience.id) {
+  //       return {
+  //         ...updatedData,
+  //         id: currentExperience.id
+  //       };
 
-      } else {
-        return exp;
-      }
+  //     } else {
+  //       return exp;
+  //     }
 
-    });
-    setExperiences(updatedExperiences);
+  //   });
+  //   setExperiences(updatedExperiences);
 
 
-  };
+  // };
 
   const handleRemoveExperience = (experienceId) => {
     const isConfirmed = window.confirm("Are you sure you want to remove this experience?");
@@ -100,7 +100,7 @@ export default function ExperienceCard() {
               <button
                 className={styles.editProfileBtn}
                 type="button"
-                onClick={() => handleEditClick(experience)}
+                // onClick={() => handleEditClick(experience)}
               >
                 Edit
               </button>
@@ -117,14 +117,14 @@ export default function ExperienceCard() {
       </div>
 
       {/* Experience Edit Modal */}
-      {currentExperience && (
+      {/* {currentExperience && (
         <ExperienceProfileEdit
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           experienceData={currentExperience}
           onSave={handleSaveExperience}
         />
-      )}
+      )} */}
     </>
   );
 }
