@@ -7,8 +7,12 @@ export const getAllJobs = async () => {
   return await request.get(JOBS_LIST_URL);
 };
 
-export const getPaginatedJobs = async (currentPage, limit = 3) => {
-  const url = `${BASE_URL}?page=${currentPage}&limit=${limit}`;
+export const getPaginatedJobs = async (currentPage, technology = null, limit = 3) => {
+  let url = `${BASE_URL}?page=${currentPage}&limit=${limit}`;
+
+  if (technology) {
+    url += `&technology=${technology}`;
+  }
 
   return await request.get(url);
 };

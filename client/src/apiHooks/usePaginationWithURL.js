@@ -5,8 +5,10 @@ import { createPageURLParams } from "../utils/createPageURLParams";
 
 export function usePaginationWithURL() {
   const [searchParams, setSearchParams] = useSearchParams();
-
+  
   const urlPageNumber = parseInt(searchParams.get("page") || "1");
+  const technologyFilter = searchParams.get("technology");
+
 
   const setUrlPageNumber = useCallback(
     (newPage) => {
@@ -20,6 +22,6 @@ export function usePaginationWithURL() {
   return {
     urlPageNumber,
     setUrlPageNumber,
+    technologyFilter,
   };
 }
-

@@ -5,16 +5,18 @@ import CategoryCard from "./categoryCard/CategoryCard";
 import {useGetCategoriesJob } from "../../apiHooks/useJobs";
 
 export default function CategoriesJobSection() {
-  const { frontendTechnologies, backendTechnologies, isLoading, error } = useGetCategoriesJob();
+  const {jobs, frontendTechnologies, backendTechnologies, isLoading, error } = useGetCategoriesJob();
   const [displayError, setDisplayError] = useState(null);
+  
+  // console.log("Fetched data at CategoriesJobSection component:", jobs)
+  // console.log("frontend", frontendTechnologies.length);
+  // console.log("backend", backendTechnologies.length)
 
   useEffect(() => {
     if (error) {
       setDisplayError(error);
     }
   }, [error]);
-  
-  
   
   return (
     <>

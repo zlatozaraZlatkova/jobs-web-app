@@ -7,11 +7,12 @@ import JobCard from "./jobCard/JobCard";
 import Pagination from "../pagination/Pagination";
 import SearchBar from "../searchBar/SearchBar";
 
-export default function JobsListSection({ isHomePage = false, urlPageNumber, setUrlPageNumber }) {
+export default function JobsListSection({ isHomePage = false, urlPageNumber, setUrlPageNumber, technologyFilter }) {
   const sectionRef = useRef(null);
   const [displayError, setDisplayError] = useState(null);
+ 
+  const { jobs, isLoading, totalPages, error } = useGetPaginatedJobs(urlPageNumber, technologyFilter);
 
-  const { jobs, isLoading, totalPages, error } = useGetPaginatedJobs(urlPageNumber);
 
   useEffect(() => {
     if (error) {
@@ -38,6 +39,7 @@ export default function JobsListSection({ isHomePage = false, urlPageNumber, set
       setUrlPageNumber(urlPageNumber - 1);
     }
   };
+
 
   return (
     <>

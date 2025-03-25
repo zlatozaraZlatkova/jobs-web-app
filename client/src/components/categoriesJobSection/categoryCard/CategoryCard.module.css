@@ -93,8 +93,36 @@
 
 .statsFooter {
   color: var(--gray-600);
-  margin-top: 20px;
+  margin: 20px;
 }
+
+.seeMoreBtn {
+  padding: 0.30rem 0.5rem;
+  color: var(--gray-600);
+  background-color: var(--section-bg);
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+
+.seeMoreBtn[href],
+.seeMoreBtn:link,
+.seeMoreBtn:visited {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.seeMoreBtn:hover,
+.seeMoreBtn:active {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  opacity: 1;
+}
+
 
 @media screen and (max-width: 768px) {
   .statsContainer {

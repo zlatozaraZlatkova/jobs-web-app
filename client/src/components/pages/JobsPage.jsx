@@ -3,7 +3,7 @@ import { usePaginationWithURL } from "../../apiHooks/usePaginationWithURL";
 
 
 export default function JobsPage() {
-  const { urlPageNumber, setUrlPageNumber } = usePaginationWithURL();
+  const { urlPageNumber, setUrlPageNumber, technologyFilter } = usePaginationWithURL();
 
   return (
     <>
@@ -11,6 +11,7 @@ export default function JobsPage() {
        isHomePage={false} 
        urlPageNumber={urlPageNumber}
        setUrlPageNumber={setUrlPageNumber}
+       technologyFilter={technologyFilter}
        />
     </>
   );

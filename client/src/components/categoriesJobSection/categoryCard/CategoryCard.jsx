@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./CategoryCard.module.css";
 
 export default function CategoryCard({ isBackend, technologies }) {
+  const navigate = useNavigate();
+  const technologyType = isBackend ? "backend" : "frontend";
+
   const getCountForTech = (techName) => {
     return technologies.filter((job) =>
       job.techStack && job.techStack.toLowerCase() === techName.toLowerCase()
@@ -19,6 +22,11 @@ export default function CategoryCard({ isBackend, technologies }) {
     );
   }
 
+  const clickHandler = () => {
+    console.log("Clicked button:", `/jobs?technology=${technologyType}`)
+    navigate(`/jobs?technology=${technologyType}`)
+  }
+  
   return (
     <div className={styles.statsContainer}>
       <div className={styles.statsHeader}>
@@ -143,9 +151,12 @@ export default function CategoryCard({ isBackend, technologies }) {
       </div>
 
       <div className={styles.statsFooter}>{"}"}</div>
-      <Link to={"/jobs"} className={styles.jobLink}>
+
+      <button className={styles.seeMoreBtn}
+       onClick={clickHandler}>
         See More
-      </Link>
+      </button>
+
     </div>
   );
 }

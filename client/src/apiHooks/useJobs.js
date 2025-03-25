@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {getAllJobs, getPaginatedJobs, createJob, getJobById, updateJob, deleteJob } from "../api/jobsApi";
 
-export function useGetPaginatedJobs(urlPageNumber) {
+export function useGetPaginatedJobs(urlPageNumber, technologyFilter) {
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(urlPageNumber || 1);
@@ -25,7 +25,7 @@ export function useGetPaginatedJobs(urlPageNumber) {
         setIsLoading(true);
         setError(null);
 
-        const result = await getPaginatedJobs(currentPage);
+        const result = await getPaginatedJobs(currentPage, technologyFilter);
 
         if (!isMounted) {
           return;
@@ -60,7 +60,7 @@ export function useGetPaginatedJobs(urlPageNumber) {
     return () => {
       isMounted = false;
     };
-  }, [currentPage]);
+  }, [currentPage, technologyFilter]);
 
   return {
     jobs,
