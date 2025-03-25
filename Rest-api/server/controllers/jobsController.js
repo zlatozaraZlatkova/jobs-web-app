@@ -36,14 +36,15 @@ router.get("/search", paginationMiddleware(),
 router.get("/", paginationMiddleware(), async (req, res, next) => {
   try {
     const { page, limit, skip } = req.pagination;
+    const technology = req.query.technology || null;
 
-    const { paginatedJobs, totalJobs } = await getAll(skip, limit);
+    const { paginatedJobs, totalJobs } = await getAll(skip, limit, technology);
 
     if (paginatedJobs.length === 0) {
       throw new Error("No jobs available yet.");
     }
 
-    res.status(200).json(formatPaginatedResponse(paginatedJobs, page, limit, totalJobs));
+    res.status(200).json(formatPaginatedResponse(paginatedJobs, page, limit, totalJobs, technology));
 
   } catch (error) {
     next(error);

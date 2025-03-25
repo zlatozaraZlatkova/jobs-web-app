@@ -1,10 +1,11 @@
-function formatPaginatedResponse(data, page, limit, totalItems) {
+function formatPaginatedResponse(data, page, limit, totalItems, technology) {
     const totalPages = Math.ceil(totalItems / limit);
 
     return {
         success: true,
         data: {
             items: data,
+            technology,
             pagination: {
                 currentPage: page,
                 totalPages,

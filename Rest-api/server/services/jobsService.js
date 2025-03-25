@@ -2,13 +2,20 @@ const Job = require("../models/Job");
 const Company = require("../models/Company");
 const EmployerProfile = require("../models/EmployerProfile");
 
-async function getAll(skip = 0, limit = 3) {
-  const paginatedJobs = await Job.find({})
+async function getAll(skip = 0, limit = 3, technology = null) {
+  const query = {};
+  
+  if (technology) {
+    query.technologies = technology;
+  }
+
+  const paginatedJobs = await Job.find(query)
     .sort({ date: -1, _id: 1 }) 
     .skip(skip)
     .limit(limit);
     
-  const totalJobs = await Job.countDocuments();
+ 
+  const totalJobs = await Job.countDocuments(query);
   
   return { paginatedJobs, totalJobs };
 }
