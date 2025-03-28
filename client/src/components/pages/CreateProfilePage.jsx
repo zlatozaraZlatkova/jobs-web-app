@@ -3,7 +3,7 @@ import AddEducation from "../employee/addEducation/AddEducation";
 import AddExperience from "../employee/addExperience/AddExperience";
 import CreateProfile from "../employee/createProfile/CreateProfile";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGetEmployeeProfile } from "../../apiHooks/useEmployee";
 
 export default function CreateProfilePage() {
@@ -32,6 +32,10 @@ export default function CreateProfilePage() {
     setStep((prevStep) => prevStep - 1);
   };
 
+  const onClickViewProfileBtn = () => {
+    navigate("/profile");
+  };
+
   return (
     <>
       {isLoading ? (
@@ -48,13 +52,16 @@ export default function CreateProfilePage() {
               You&apos;ve successfully created your professional
               profile.
             </p>
-            <p>
+            <p className="p-1">
               You can now apply for jobs, connect with employers, and showcase
               your skills.
             </p>
-            <Link to={"/profile"} className="view-profile-btn">
+            <button type="button" 
+             className="btn btn-primary"
+             onClick={onClickViewProfileBtn}
+             >
               View Your Profile
-            </Link>
+            </button>
           </div>
         </div>
       ) : (

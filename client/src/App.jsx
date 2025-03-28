@@ -19,6 +19,7 @@ import CreateJob from "./components/createJob/CreateJob";
 import EditJob from "./components/editJob/EditJob";
 import AdminDashboard from "./components/adminDashboard/AdminDashboar";
 import EditCompanyProfile from "./components/employer/EditCompanyProfile";
+import CVPage from "./components/pages/CVPage";
 
 
 
@@ -49,17 +50,24 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/home" element={<Navigate to="/" replace />} />
+
             <Route path="/jobs" element={<JobsPage />} />
             <Route path="/jobs/:id" element={<JobDetailsPage />} />
             <Route path="/jobs/create" element={<CreateJob />} />
             <Route path="/jobs/update/:id" element={<EditJob />} />
-            <Route path="/profile/catalog" element={<EmployeesPage />} />
+
+        
             <Route path="/profile" element={<DetailsProfilePage />} />
             <Route path="/profile/create" element={<CreateProfilePage />} />
+            <Route path="/profile/catalog" element={<EmployeesPage />} />
+            <Route path="/profile/catalog/:id" element={<CVPage />} />
+
             <Route path="/company/profile" element={<AdminDashboard/>}/>
             <Route path="/company/profile/update/:id" element={<EditCompanyProfile />} />
+            
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
+
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </MainLayout>

@@ -1147,15 +1147,94 @@ textarea {
   padding: 2rem;
 }
 
-  /* Empty States */
-  .emptyState {
-    text-align: center;
-    padding-top: 6rem;
-    color: var(--text-secondary);
-   
+/* Empty States */
+.emptyState {
+  text-align: center;
+  padding-top: 6rem;
+  color: var(--text-secondary);
+}
+
+.emptyState p {
+  margin-bottom: 1.5rem;
+}
+
+/* CV Page */
+
+.profile-grid {
+  display: grid;
+  grid-template-areas:
+    "top top"
+    "about about"
+    "exp edu"
+    "github github";
+  grid-gap: 1rem;
+}
+
+.profile-top {
+  grid-area: top;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.profile-about {
+  grid-area: about;
+}
+
+.profile-exp {
+  grid-area: exp;
+}
+
+.profile-edu {
+  grid-area: edu;
+}
+.profile-github {
+  grid-area: github;
+}
+
+.profile-github .repo {
+  display: flex;
+}
+
+.repo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: var(--white-color);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.profile-github h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.my-1 {
+  margin: 1rem 0;
+}
+
+.p-1 {
+  padding: 1rem;
+}
+
+.bg-var\(--white-color\) {
+  background: var(--white-color);
+} 
+
+
+@media (max-width: 768px) {
+  .profile-grid {
+    grid-template-areas:
+      "top"
+      "about"
+      "exp"
+      "edu"
+      "github";
+    grid-template-columns: 1fr;
   }
-  
-  .emptyState p {
-    margin-bottom: 1.5rem;
-  }
-  
+}

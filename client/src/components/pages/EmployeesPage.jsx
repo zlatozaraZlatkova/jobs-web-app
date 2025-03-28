@@ -1,14 +1,18 @@
 import { useRef, useEffect, useState } from "react";
-import BasicProfileCard from "../employee/detailsProfile/BasicProfileCard";
-import Pagination from "../pagination/Pagination";
 import { useGetPafinatedEmployeeProfile } from "../../apiHooks/useEmployee";
 import { usePaginationWithURL } from "../../apiHooks/usePaginationWithURL";
+import BasicProfileCard from "../employee/detailsProfile/BasicProfileCard";
+import Pagination from "../pagination/Pagination";
 
 export default function EmployeesPage() {
   const sectionRef = useRef(null);
-  const { currentPage, setCurrentPage } = usePaginationWithURL();
-  const { employees, isLoading, totalPages, error } = useGetPafinatedEmployeeProfile();
   const [displayError, setDisplayError] = useState(null);
+
+  const { urlPageNumber, setUrlPageNumber } = usePaginationWithURL();
+
+  const { employees, isLoading, totalPages, error } = useGetPafinatedEmployeeProfile(urlPageNumber);
+  console.log("Response profile data", employees);
+
 
   useEffect(() => {
     if (error) {
@@ -22,19 +26,20 @@ export default function EmployeesPage() {
         behavior: "smooth",
       });
     }
-  }, [currentPage]);
+  }, [urlPageNumber]);
 
   const nextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((currentPage) => currentPage + 1);
+    if (urlPageNumber < totalPages) {
+      setUrlPageNumber(urlPageNumber + 1);
     }
   };
 
   const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((currentPage) => currentPage - 1);
+    if (urlPageNumber > 1) {
+      setUrlPageNumber(urlPageNumber - 1);
     }
   };
+
 
   return (
     <>
@@ -59,7 +64,8 @@ export default function EmployeesPage() {
               {employees && employees.length > 0 ? (
                 <div className="employees-grid">
                   {employees.map((employee) => (
-                    <BasicProfileCard key={employee._id} employee={employee} />
+                    <BasicProfileCard isEmployeesPage={true}
+                     key={employee._id} employee={employee} />
                   ))}
                 </div>
               ) : (
@@ -69,10 +75,10 @@ export default function EmployeesPage() {
           )}
 
           <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPrevPage={prevPage}
-            onNextPage={nextPage}
+             currentPage={urlPageNumber}
+             totalPages={totalPages}
+             onPrevPage={prevPage}
+             onNextPage={nextPage}
           />
         </div>
       </section>

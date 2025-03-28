@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getPaginatedEmployees, getEmployeeProfile, createEmployeeProfile, addEmployeeExperience, addEmployeeEducation, deleteEmployeeExperience, deleteEmployeeEducation } from "../api/eployeeApi";
+import { getEmployeeProfileById, getPaginatedEmployees, getEmployeeProfile, createEmployeeProfile, addEmployeeExperience, addEmployeeEducation, deleteEmployeeExperience, deleteEmployeeEducation } from "../api/eployeeApi";
 
-export function useGetPafinatedEmployeeProfile() {
+export function useGetPafinatedEmployeeProfile(urlPageNumber) {
   const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,6 +10,18 @@ export function useGetPafinatedEmployeeProfile() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
+    if (urlPageNumber) {
+      console.log("URL page changed to:", urlPageNumber);
+      setCurrentPage(urlPageNumber);
+    }
+  }, [urlPageNumber]);
+
+   console.log("Current internal page:", currentPage);
+
+
+  useEffect(() => {
+    let isMounted = true;
+
     const fetchEmployees = async () => {
       try {
         setIsLoading(true);
@@ -17,9 +29,14 @@ export function useGetPafinatedEmployeeProfile() {
 
         const response = await getPaginatedEmployees(currentPage);
 
+        if (!isMounted) {
+          return;
+        }
+
         if (response.isError === true) {
           setError(response.message);
           setEmployees([]);
+          return;
         }
 
         //the response structure is { success, data: { items: [] } }
@@ -31,26 +48,31 @@ export function useGetPafinatedEmployeeProfile() {
         setEmployees(response.data.items);
 
         setTotalPages(response.data.pagination.totalPages);
+        
       } catch (err) {
-        setError(err.message);
-        setEmployees([]);
+        if (!isMounted) {
+          setError(err);
+          return;
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
-
+  
     fetchEmployees();
+
+    return () => {
+      isMounted = false;
+    };
+
   }, [currentPage]);
 
   return {
     employees,
-    setEmployees,
     isLoading,
-    setIsLoading,
-    currentPage,
-    setCurrentPage,
     totalPages,
-    setTotalPages,
     error,
   };
 }
@@ -234,3 +256,46 @@ export function useDeleteEducation() {
     error,
   };
 }
+
+
+
+export function useGetEmployeeProfileById(id) {
+  const [employee, setEmployee] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const response = await getEmployeeProfileById(id);
+
+        if (!response) {
+          setEmployee(null);
+          return;
+        }
+
+        if (response.isError === true) {
+          setError(response.message);
+        }
+
+        setEmployee(response);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  return {
+    employee,
+    isLoading,
+    error,
+  };
+}
+

@@ -12,6 +12,12 @@ export const getPaginatedEmployees = async (currentPage, limit = 3) => {
 };
 
 
+export const getEmployeeProfileById = async (id) => {
+  const url = `${BASE_URL}/catalog/${id}`;
+
+  return await request.get(url);
+};
+
 export const createEmployeeProfile = async (profileData) => {
   return await request.post(`${BASE_URL}/create`, profileData, { credentials: 'include' });
 };

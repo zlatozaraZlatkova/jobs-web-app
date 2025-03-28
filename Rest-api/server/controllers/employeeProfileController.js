@@ -181,6 +181,10 @@ router.get("/catalog/:id", hasUser(), loadItem("EmployeeProfile"),
     try {
       const userProfile = req.item;
 
+      if (userProfile) {
+        await userProfile.populate("ownerId", ["name", "avatar"]);
+      }
+
       res.status(200).json(userProfile);
 
     } catch (error) {
