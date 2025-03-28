@@ -1,10 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import { useGetEmployeeProfile } from "../../apiHooks/useEmployee";
 import BasicProfileCard from "../employee/detailsProfile/BasicProfileCard";
 import EducationCard from "../employee/detailsProfile/EducationCard";
 import ExperienceCard from "../employee/detailsProfile/ExperienceCard";
 import GitHubRepo from "../employee/detailsProfile/GitHubRepo";
-
+import { useGetEmployeeProfile } from "../../apiHooks/useEmployee";
+import { useNavigate } from "react-router-dom";
 
 export default function DetailsProfilePage() {
   const navigate = useNavigate();
@@ -46,7 +45,7 @@ export default function DetailsProfilePage() {
               <ExperienceCard employee={employee} />
               <EducationCard employee={employee} />
             </div>
-            <GitHubRepo />
+            <GitHubRepo employee={employee} />
           </>
         ) : (
           <div>No employee data available. Please create your profile</div>

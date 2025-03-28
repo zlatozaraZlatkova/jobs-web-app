@@ -39,3 +39,7 @@ export const deleteEmployeeExperience = async (id) => {
 export const deleteEmployeeEducation = async (id) => {
   return await request.del(`${BASE_URL}/education/${id}`);
 };
+
+export const getGitHubRepo = async (username) => {
+  return await request.get(`${BASE_URL}/github/${username}`);
+}

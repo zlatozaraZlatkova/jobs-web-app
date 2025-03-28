@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getEmployeeProfileById, getPaginatedEmployees, getEmployeeProfile, createEmployeeProfile, addEmployeeExperience, addEmployeeEducation, deleteEmployeeExperience, deleteEmployeeEducation } from "../api/eployeeApi";
+import { getGitHubRepo, getEmployeeProfileById, getPaginatedEmployees, getEmployeeProfile, createEmployeeProfile, addEmployeeExperience, addEmployeeEducation, deleteEmployeeExperience, deleteEmployeeEducation } from "../api/eployeeApi";
 
 export function useGetPafinatedEmployeeProfile(urlPageNumber) {
   const [employees, setEmployees] = useState([]);
@@ -299,3 +299,38 @@ export function useGetEmployeeProfileById(id) {
   };
 }
 
+export function useGetGitHubProfile(username) {
+  const [profileRepo, setprofileRepo] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const response = await getGitHubRepo(username);
+        console.log("Response data after fetching", response)
+        if (!response) {
+          setprofileRepo(null);
+          return;
+        }
+        if (response.isError === true) {
+          setError(response.message);
+        }
+        setprofileRepo(response);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [username]);
+
+  return {
+    profileRepo,
+    isLoading,
+    error,
+  };
+}

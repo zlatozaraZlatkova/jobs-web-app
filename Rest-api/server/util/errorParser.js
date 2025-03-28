@@ -46,7 +46,7 @@ function errorParser(err) {
   }
 
   if(err.name = "BSON field") {
-    errorResponse.message = "Page number must be positive";
+    errorResponse.message = "Invalid data format";
     errorResponse.statusCode = 400;
     return errorResponse;
 

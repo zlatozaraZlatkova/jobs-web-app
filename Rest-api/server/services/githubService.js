@@ -7,7 +7,7 @@ const clientSecret = process.env.GITHUB_SECRET;
 
 
 const baseUri = "https://api.github.com/users";
-const limitPerPage = 5;
+const limitPerPage = 100;
 
 async function getGithubRepos(username) {
 
@@ -16,15 +16,18 @@ async function getGithubRepos(username) {
     headers: { "user-agent": "node.js" },
     params: {
       per_page: limitPerPage,
-      sort: "created:asc",
+      sort: "stars",
+      direction: "desc",
       client_id: clientId,
       client_secret: clientSecret,
     },
   };
 
   const response = await axios.get(`${baseUri}/${username}/repos`, options);
+  
+  const topFiveRepos = response.data.slice(0, 5);
 
-  return response.data;
+  return topFiveRepos;
 }
 
 module.exports = { getGithubRepos };
