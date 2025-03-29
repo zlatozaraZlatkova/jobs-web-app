@@ -1,5 +1,17 @@
 import { useState, useEffect } from "react";
-import { getGitHubRepo, getEmployeeProfileById, getPaginatedEmployees, getEmployeeProfile, createEmployeeProfile, addEmployeeExperience, addEmployeeEducation, deleteEmployeeExperience, deleteEmployeeEducation, editEmployeeProfile } from "../api/eployeeApi";
+import {
+  getEmployeeProfileById,
+  getPaginatedEmployees,
+  getEmployeeProfile,
+  createEmployeeProfile,
+  addEmployeeExperience,
+  addEmployeeEducation,
+  deleteEmployeeExperience,
+  deleteEmployeeEducation,
+  editEmployeeProfile,
+  getGitHubRepo,
+  deleteEmployeeProfile,
+} from "../api/eployeeApi";
 
 export function useGetPaginatedEmployeeProfile(urlPageNumber) {
   const [employees, setEmployees] = useState([]);
@@ -15,8 +27,6 @@ export function useGetPaginatedEmployeeProfile(urlPageNumber) {
       setCurrentPage(urlPageNumber);
     }
   }, [urlPageNumber]);
-
-
 
   useEffect(() => {
     let isMounted = true;
@@ -47,7 +57,6 @@ export function useGetPaginatedEmployeeProfile(urlPageNumber) {
         setEmployees(response.data.items);
 
         setTotalPages(response.data.pagination.totalPages);
-        
       } catch (err) {
         if (!isMounted) {
           setError(err);
@@ -59,13 +68,12 @@ export function useGetPaginatedEmployeeProfile(urlPageNumber) {
         }
       }
     };
-  
+
     fetchEmployees();
 
     return () => {
       isMounted = false;
     };
-
   }, [currentPage]);
 
   return {
@@ -83,7 +91,7 @@ export function useGetEmployeeProfile() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   function refreshData() {
-    setRefreshKey(prevKey => prevKey + 1);
+    setRefreshKey((prevKey) => prevKey + 1);
   }
 
   useEffect(() => {
@@ -166,7 +174,6 @@ export function useEditEmployeeProfile() {
       }
 
       return response;
-
     } catch (err) {
       setError(err.message);
     } finally {
@@ -177,10 +184,9 @@ export function useEditEmployeeProfile() {
   return {
     isSubmitting,
     editBasicProfile,
-    error
+    error,
   };
 }
-
 
 export function useExperienceApi() {
   const [error, setError] = useState(null);
@@ -286,8 +292,6 @@ export function useDeleteEducation() {
   };
 }
 
-
-
 export function useGetEmployeeProfileById(id) {
   const [employee, setEmployee] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -338,7 +342,7 @@ export function useGetGitHubProfile(username) {
         setIsLoading(true);
         setError(null);
         const response = await getGitHubRepo(username);
-        console.log("Response data after fetching", response)
+        console.log("Response data after fetching", response);
         if (!response) {
           setprofileRepo(null);
           return;
@@ -360,6 +364,28 @@ export function useGetGitHubProfile(username) {
   return {
     profileRepo,
     isLoading,
+    error,
+  };
+}
+
+export function useDeleteEmployeeProfile() {
+  const [error, setError] = useState(null);
+
+  const submitDelProfile = async () => {
+    try {
+      setError(null);
+
+      const response = await deleteEmployeeProfile();
+      if (response.isError === true) {
+        setError(response.message);
+      }
+      return response;
+    } catch (err) {
+      setError(err);
+    }
+  };
+  return {
+    submitDelProfile,
     error,
   };
 }

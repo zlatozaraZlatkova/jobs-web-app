@@ -1,18 +1,28 @@
 /* eslint-disable react/prop-types */
-import styles from "./ProfileCard.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
-import BasicProfileEdit from "../editProfile/BasicProfileEdit";
-import { getInitials, capitalizeName } from "../../../utils/stringUtils";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
+import {useDeleteEmployeeProfile} from "../../../apiHooks/useEmployee";
+import { getInitials, capitalizeName } from "../../../utils/stringUtils";
+import BasicProfileEdit from "../editProfile/BasicProfileEdit";
+import styles from "./ProfileCard.module.css";
 
 export default function BasicProfileCard({isEmployeesPage = false, isCVPage= false, employee, refreshData }) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [displayError, setDisplayError] = useState(null);
+
+  const { submitDelProfile, error} = useDeleteEmployeeProfile();
   
   const { _id } = useContext(AuthContext);
   const isProfileOwner = employee?.ownerId?._id === _id;
   console.log("isProfileOwner:", isProfileOwner);
+
+    useEffect(() => {
+      if (error) {
+        setDisplayError(error);
+      }
+    }, [error]);
 
   const userAvatar = employee?.ownerId?.avatar
     ? (<img src={employee.ownerId.avatar} alt="Profile avatar" />)
@@ -35,9 +45,18 @@ export default function BasicProfileCard({isEmployeesPage = false, isCVPage= fal
     console.log("Profile updated:", updatedData);
   };
 
-  const handleDeleteProfile = () => {
-    console.log("Deleting profile:", employee._id);
+  const handleDeleteProfile = async () => {
+    console.log("on delete click hander");
+    try {
+      await submitDelProfile();
+
+      navigate("/profile/create")
+
+    } catch (error) {
+      setDisplayError(error);
+    }
   };
+
 
   const handleViewProfile = () => {
     navigate(`/profile/catalog/${employee._id}`);
@@ -46,6 +65,7 @@ export default function BasicProfileCard({isEmployeesPage = false, isCVPage= fal
   return (
     <>
       <div className={styles.profileHeader}>
+      {displayError && <div className="error-message">{displayError}</div>}
         <div className={styles.profileAvatar}>
           {employee ? userAvatar : userInitials}
         </div>
