@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { useParams } from "react-router-dom";
 import { useGetEmployeeProfileById } from "../../apiHooks/useEmployee";
@@ -10,8 +9,6 @@ import GitHubRepo from "../employee/detailsProfile/GitHubRepo";
 export default function CVPage() {
   const { id } = useParams();
   const { employee, isLoading } = useGetEmployeeProfileById(id);
-  console.log("params ID:", id);
-  console.log("Get profile data by id:", employee);
 
   return (
     <>
@@ -22,17 +19,27 @@ export default function CVPage() {
           <>
             <div className="profile-grid my-1">
               <div className="profile-about p-2">
-                <BasicProfileCard employee={employee} isCVPage={true}/>
+                <BasicProfileCard employee={employee} isCVPage={true} />
               </div>
-              <div className="profile-exp p-2">
-                <ExperienceCard employee={employee}  />
-              </div>
-              <div className="profile-edu  p-2">
-                <EducationCard  employee={employee} />
-              </div>
-              <div className="profile-github">
-                <GitHubRepo employee={employee}/>
-              </div>
+              {employee?.experience && employee.experience.length > 0 && (
+                <div className="profile-exp p-2">
+                  <ExperienceCard experienceData={employee.experience} />
+                </div>
+              )}
+
+              {employee?.education && employee.education.length > 0 && (
+                <div className="profile-edu p-2">
+                  <EducationCard educationData={employee.education} />
+                </div>
+              )}
+              {employee?.githubUsername ? (
+                 <div className="profile-github">
+                 <GitHubRepo githubUsername={employee.githubUsername} />
+               </div>
+              ): (<>
+                <div>No username provided</div>
+              </>)}
+             
             </div>
           </>
         ) : (

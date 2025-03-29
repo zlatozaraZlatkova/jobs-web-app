@@ -2,27 +2,27 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
-import {useDeleteEmployeeProfile} from "../../../apiHooks/useEmployee";
+import { useDeleteEmployeeProfile } from "../../../apiHooks/useEmployee";
 import { getInitials, capitalizeName } from "../../../utils/stringUtils";
 import BasicProfileEdit from "../editProfile/BasicProfileEdit";
 import styles from "./ProfileCard.module.css";
 
-export default function BasicProfileCard({isEmployeesPage = false, isCVPage= false, employee, refreshData }) {
+export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = false, employee, refreshData }) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [displayError, setDisplayError] = useState(null);
 
-  const { submitDelProfile, error} = useDeleteEmployeeProfile();
-  
+  const { submitDelProfile, error } = useDeleteEmployeeProfile();
+
   const { _id } = useContext(AuthContext);
   const isProfileOwner = employee?.ownerId?._id === _id;
   console.log("isProfileOwner:", isProfileOwner);
 
-    useEffect(() => {
-      if (error) {
-        setDisplayError(error);
-      }
-    }, [error]);
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+    }
+  }, [error]);
 
   const userAvatar = employee?.ownerId?.avatar
     ? (<img src={employee.ownerId.avatar} alt="Profile avatar" />)
@@ -61,11 +61,11 @@ export default function BasicProfileCard({isEmployeesPage = false, isCVPage= fal
   const handleViewProfile = () => {
     navigate(`/profile/catalog/${employee._id}`);
   };
-  
+
   return (
     <>
       <div className={styles.profileHeader}>
-      {displayError && <div className="error-message">{displayError}</div>}
+        {displayError && <div className="error-message">{displayError}</div>}
         <div className={styles.profileAvatar}>
           {employee ? userAvatar : userInitials}
         </div>
@@ -107,31 +107,36 @@ export default function BasicProfileCard({isEmployeesPage = false, isCVPage= fal
             )}
           </div>
         </div>
-        {!isEmployeesPage && isProfileOwner ? (<>
+        {!isEmployeesPage && isProfileOwner ? (
+          <>
+            <button
+              className={styles.editProfileBtn}
+              type="button"
+              onClick={handleOpenModal}
+            >
+              Edit
+            </button>
+            <button
+              className={styles.delProfileBtn}
+              type="button"
+              onClick={handleDeleteProfile}
+            >
+              Delete
+            </button>
+          </>
+        ) : !isCVPage && !isProfileOwner ? (
           <button
             className={styles.editProfileBtn}
             type="button"
-            onClick={handleOpenModal}
+            onClick={handleViewProfile}
           >
-            Edit
-          </button>
-          <button
-            className={styles.delProfileBtn}
-            type="button"
-            onClick={handleDeleteProfile}
-          >
-            Delete
-          </button>
-        </>) : (
-          !isCVPage && (
-          <button className={styles.editProfileBtn}
-            type="button"
-            onClick={handleViewProfile}>
             View
           </button>
-          )
-          
-        )}
+        ) : !isCVPage && isProfileOwner ? (
+          <button className={styles.editProfileBtn}>
+            <Link to="/profile">My Profile</Link>
+          </button>
+        ) : null}
 
       </div>
 

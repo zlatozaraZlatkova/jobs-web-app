@@ -71,6 +71,9 @@
   cursor: pointer;
   margin-left: auto;
 }
+.editProfileBtn a {
+  color: var(--white-color);
+}
 
 /* Skills */
 .skills {

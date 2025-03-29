@@ -10,12 +10,12 @@ export default function DetailsProfilePage() {
   const navigate = useNavigate();
   const { employee, isLoading, error, refreshData } = useGetEmployeeProfile();
   const [displayError, setDisplayError] = useState(null);
-  
-    useEffect(() => {
-      if (error) {
-        setDisplayError(error);
-      }
-    }, [error]);
+
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+    }
+  }, [error]);
 
   const onClickCreateProfileBtn = () => {
     navigate("/profile/create");
@@ -28,7 +28,9 @@ export default function DetailsProfilePage() {
           <div>Loading employees...</div>
         ) : error ? (
           <div className="container-profile">
-            {displayError && <div className="error-message">{displayError}</div>}
+            {displayError && (
+              <div className="error-message">{displayError}</div>
+            )}
             <div className="profile-completion-message">
               <h2>You&apos;re on the right track!</h2>
               <p>Complete your professional profile to move forward.</p>
@@ -47,12 +49,16 @@ export default function DetailsProfilePage() {
           </div>
         ) : employee ? (
           <>
-            <BasicProfileCard employee={employee} refreshData={refreshData}/>
+            <BasicProfileCard employee={employee} refreshData={refreshData} />
             <div className="content-grid">
-              <ExperienceCard employee={employee} />
-              <EducationCard employee={employee} />
+              {employee?.experience && employee.experience.length > 0 && (
+                <ExperienceCard experienceData={employee.experience} />
+              )}
+              {employee?.education && employee.education.length > 0 && (
+                <EducationCard educationData={employee.education} />
+              )}
             </div>
-            <GitHubRepo employee={employee} />
+            <GitHubRepo githubUsername={employee.githubUsername} />
           </>
         ) : (
           <div>No employee data available. Please create your profile</div>

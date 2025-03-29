@@ -4,9 +4,9 @@ import styles from "./ProfileCard.module.css";
 import { useGetGitHubProfile } from "../../../apiHooks/useEmployee";
 import { useEffect, useState } from "react";
 
-export default function GitHubRepo({ employee }) {
+export default function GitHubRepo({ githubUsername }) {
   const [displayError, setDisplayError] = useState(null);
-  const { profileRepo, isLoading, error } = useGetGitHubProfile(employee.githubUsername);
+  const { profileRepo, isLoading, error } = useGetGitHubProfile(githubUsername);
   
   useEffect(() => {
     if (error) {
