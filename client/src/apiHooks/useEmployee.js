@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getGitHubRepo, getEmployeeProfileById, getPaginatedEmployees, getEmployeeProfile, createEmployeeProfile, addEmployeeExperience, addEmployeeEducation, deleteEmployeeExperience, deleteEmployeeEducation } from "../api/eployeeApi";
+import { getGitHubRepo, getEmployeeProfileById, getPaginatedEmployees, getEmployeeProfile, createEmployeeProfile, addEmployeeExperience, addEmployeeEducation, deleteEmployeeExperience, deleteEmployeeEducation, editEmployeeProfile } from "../api/eployeeApi";
 
-export function useGetPafinatedEmployeeProfile(urlPageNumber) {
+export function useGetPaginatedEmployeeProfile(urlPageNumber) {
   const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,7 +16,6 @@ export function useGetPafinatedEmployeeProfile(urlPageNumber) {
     }
   }, [urlPageNumber]);
 
-   console.log("Current internal page:", currentPage);
 
 
   useEffect(() => {
@@ -84,9 +83,7 @@ export function useGetEmployeeProfile() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   function refreshData() {
-    setRefreshKey(function (currentValue) {
-      return currentValue + 1;
-    });
+    setRefreshKey(prevKey => prevKey + 1);
   }
 
   useEffect(() => {
@@ -152,6 +149,38 @@ export function useProfileApi() {
     error,
   };
 }
+
+export function useEditEmployeeProfile() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
+  const editBasicProfile = async (profileData) => {
+    try {
+      setIsSubmitting(true);
+      setError(null);
+
+      const response = await editEmployeeProfile(profileData);
+
+      if (response.isError === true) {
+        setError(response.message);
+      }
+
+      return response;
+
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return {
+    isSubmitting,
+    editBasicProfile,
+    error
+  };
+}
+
 
 export function useExperienceApi() {
   const [error, setError] = useState(null);

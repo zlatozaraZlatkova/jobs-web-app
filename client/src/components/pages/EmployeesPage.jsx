@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { useGetPafinatedEmployeeProfile } from "../../apiHooks/useEmployee";
+import { useGetPaginatedEmployeeProfile } from "../../apiHooks/useEmployee";
 import { usePaginationWithURL } from "../../apiHooks/usePaginationWithURL";
 import BasicProfileCard from "../employee/detailsProfile/BasicProfileCard";
 import Pagination from "../pagination/Pagination";
@@ -10,7 +10,7 @@ export default function EmployeesPage() {
 
   const { urlPageNumber, setUrlPageNumber } = usePaginationWithURL();
 
-  const { employees, isLoading, totalPages, error } = useGetPafinatedEmployeeProfile(urlPageNumber);
+  const { employees, isLoading, totalPages, error } = useGetPaginatedEmployeeProfile(urlPageNumber);
   console.log("Response profile data", employees);
 
 

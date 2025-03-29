@@ -111,19 +111,23 @@ router.post("/create", hasUser(), checkUserRole("employee"),
 router.post("/update", hasUser(), checkUserRole("employee"),
   body("company", "Company name is required").notEmpty(),
   body("company", "Please enter a company name up to 150 characters long").isLength({ max: 150 }),
-  body("websiteUrl", "Please provide a valid website URL").optional().isURL(),
+  body("website", "Please provide a valid URL").optional().isURL(),
   body("location", "Location is required").notEmpty(),
   body("location", "Please enter a location up to 50 characters long").isLength({ max: 50 }),
+  body("status", "Status is required").notEmpty(),
+  body("linkedin", "Please provide a valid URL").optional().isURL(),
+  body("githubUsername", "GitHub username is required").optional().isURL(),
   body("bio", "Short bio is required").notEmpty(),
   body("bio", "Short description up to 3000 characters long").isLength({ max: 3000 }),
-  body("status", "Status is required").notEmpty(),
   body("skills", "Skills is required").notEmpty(),
   validateRequest,
   async (req, res, next) => {
 
     try {
       const userId = req.user._id;
-      const { company, website, location, bio, status, skills, githubUsername, linkedin } = req.body;
+
+      const { company, website, location, status, linkedin, githubUsername, bio, skills } = req.body;
+      console.log("Received profile update:", req.body);
 
       const profileInputFields = {
         company,

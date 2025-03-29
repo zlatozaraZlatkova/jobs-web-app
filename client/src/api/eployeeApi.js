@@ -2,6 +2,13 @@ import * as request from "./requester";
 
 const BASE_URL = `/api/profile`;
 
+export const editEmployeeProfile = async (profileData) => {
+  return await request.post(`${BASE_URL}/update`, profileData, {
+    credentials: "include",
+  });
+};
+
+
 export const getEmployeeProfile = async () => {
   return await request.get(`${BASE_URL}`, null, { credentials: 'include' });
 };

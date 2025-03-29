@@ -6,13 +6,13 @@ import BasicProfileEdit from "../editProfile/BasicProfileEdit";
 import { getInitials, capitalizeName } from "../../../utils/stringUtils";
 import { AuthContext } from "../../../contexts/AuthContext";
 
-export default function BasicProfileCard({isEmployeesPage = false, isCVPage= false, employee }) {
+export default function BasicProfileCard({isEmployeesPage = false, isCVPage= false, employee, refreshData }) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const { _id } = useContext(AuthContext);
   const isProfileOwner = employee?.ownerId?._id === _id;
- 
+  console.log("isProfileOwner:", isProfileOwner);
 
   const userAvatar = employee?.ownerId?.avatar
     ? (<img src={employee.ownerId.avatar} alt="Profile avatar" />)
@@ -120,6 +120,7 @@ export default function BasicProfileCard({isEmployeesPage = false, isCVPage= fal
         onClose={handleCloseModal}
         userData={employee}
         onSave={handleSaveProfile}
+        refreshData={refreshData}
       />
     </>
   );

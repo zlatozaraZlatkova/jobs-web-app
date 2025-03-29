@@ -2,71 +2,98 @@
 import styles from "./EditProfile.module.css";
 import Modal from "react-modal";
 import { useState, useEffect } from "react";
+import { useForm } from "../../../apiHooks/useForm";
+import { useEditEmployeeProfile } from "../../../apiHooks/useEmployee";
 
-export default function BasicProfileEdit({isOpen, onClose, userData, onSave}) {
-  const [formData, setFormData] = useState({
-    name: "",
-    title: "",
+export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, refreshData }) {
+  const [displayError, setDisplayError] = useState(null);
+  const { isSubmitting, editBasicProfile, error } = useEditEmployeeProfile();
+
+  const initialValues = {
+    company: "",
+    website: "",
     location: "",
-    bio: "",
-    skillsString: "",
-    github: "",
+    status: "",
     linkedin: "",
-    email: "",
-  });
-
-  useEffect(() => {
-    if (userData) {
-      const skillsString = userData.skills ? userData.skills.join(", ") : "";
-
-      setFormData({
-        name: userData.name || "",
-        title: userData.title || "",
-        location: userData.location || "",
-        bio: userData.bio || "",
-        skillsString: skillsString,
-        github: userData.github || "",
-        linkedin: userData.linkedin || ""
-      });
-    }
-
-    return () => {
-      console.log("Modal is unmounted");
-      setFormData({
-        name: "",
-        title: "",
-        location: "",
-        bio: "",
-        skillsString: "",
-        github: "",
-        linkedin: ""
-      });
-    };
-  }, [userData, isOpen]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    githubUsername: "",
+    bio: "",
+    skills: "",
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+    }
+  }, [error]);
 
-    const skills = formData.skillsString
-      .split(",")
-      .map((skill) => skill.trim())
-      .filter((skill) => skill !== "");
+  const handleFormSubmit = async (formData) => {
+    try {
+      setDisplayError(null);
 
-    const updatedData = {
-      ...formData,
-      skills: skills,
-    };
+      const profileData = {
+        company: formData.company,
+        website: formData.website,
+        location: formData.location,
+        status: formData.status,
+        linkedin: formData.linkedin,
+        githubUsername: formData.githubUsername,
+        bio: formData.bio,
+        skills: Array.isArray(formData.skills)
+          ? formData.skills.join(",")
+          : formData.skills,
+      };
 
-    onSave(updatedData);
+      const updatedProfile = await editBasicProfile(profileData);
 
+      if (onSave) {
+        onSave(updatedProfile);
+      }
+
+
+      refreshData();
+
+      onClose();
+
+    } catch (err) {
+      setDisplayError(err.message);
+    }
+  };
+
+  const { formValues, setFormValues, changeHander, sumbitHandler, resetForm } =
+    useForm(initialValues, handleFormSubmit);
+
+
+  useEffect(() => {
+    if (userData && isOpen) {
+
+      const timer = setTimeout(() => {
+        setFormValues({
+          company: userData.company || "",
+          website: userData.website || "",
+          location: userData.location || "",
+          status: userData.status || "",
+          githubUsername: userData.githubUsername || "",
+          linkedin: userData.socialMedia?.linkedin || "",
+          skills: Array.isArray(userData.skills)
+            ? userData.skills.join(",")
+            : userData.skills || "",
+          bio: userData.bio || "",
+        });
+
+        //console.log("Form values set");
+      }, 10);
+
+      return () => {
+        clearTimeout(timer);
+        if (!isOpen) {
+          //console.log("Modal is unmounted");
+        }
+      };
+    }
+  }, [userData, isOpen, setFormValues]);
+
+  const clickCancelHandle = () => {
+    resetForm();
     onClose();
   };
 
@@ -77,6 +104,7 @@ export default function BasicProfileEdit({isOpen, onClose, userData, onSave}) {
       contentLabel="Edit Profile"
       className={styles.modal}
       overlayClassName={styles.overlay}
+      ariaHideApp={false}
     >
       <div className={styles.header}>
         <h2>Edit Profile</h2>
@@ -84,28 +112,25 @@ export default function BasicProfileEdit({isOpen, onClose, userData, onSave}) {
           ×
         </button>
       </div>
-
-      <form onSubmit={handleSubmit} className={styles.form}>
+      {displayError && <div className="error-message">{displayError}</div>}
+      <form onSubmit={sumbitHandler} className={styles.form}>
         <div className={styles.formGroup}>
-          <label htmlFor="name">Name</label>
+          <label>Company</label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
+            name="company"
+            value={formValues.company}
+            onChange={changeHander}
             required
           />
         </div>
-
         <div className={styles.formGroup}>
-          <label htmlFor="title">Job Title</label>
+          <label htmlFor="website">Website</label>
           <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
+            type="url"
+            name="website"
+            value={formValues.website}
+            onChange={changeHander}
           />
         </div>
 
@@ -113,10 +138,39 @@ export default function BasicProfileEdit({isOpen, onClose, userData, onSave}) {
           <label htmlFor="location">Location</label>
           <input
             type="text"
-            id="location"
             name="location"
-            value={formData.location}
-            onChange={handleChange}
+            value={formValues.location}
+            onChange={changeHander}
+            required
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label className="required">Status</label>
+          <input
+            type="text"
+            name="status"
+            value={formValues.status}
+            onChange={changeHander}
+            required
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="linkedin">LinkedIn URL</label>
+          <input
+            type="url"
+            name="linkedin"
+            value={formValues.linkedin}
+            onChange={changeHander}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="github">GitHub URL</label>
+          <input
+            type="text"
+            name="githubUsername"
+            value={formValues.githubUsername}
+            onChange={changeHander}
+            required
           />
         </div>
 
@@ -125,54 +179,21 @@ export default function BasicProfileEdit({isOpen, onClose, userData, onSave}) {
           <textarea
             id="bio"
             name="bio"
-            value={formData.bio}
-            onChange={handleChange}
+            value={formValues.bio}
+            onChange={changeHander}
             rows="4"
+            required
           />
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="skillsString">Skills (comma separated)</label>
+          <label className="required">Skills (comma separated)</label>
           <input
             type="text"
-            id="skillsString"
-            name="skillsString"
-            value={formData.skillsString}
-            onChange={handleChange}
-            placeholder="JavaScript, React, Node.js, etc."
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label htmlFor="github">GitHub URL</label>
-          <input
-            type="url"
-            id="github"
-            name="github"
-            value={formData.github}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label htmlFor="linkedin">LinkedIn URL</label>
-          <input
-            type="url"
-            id="linkedin"
-            name="linkedin"
-            value={formData.linkedin}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
+            name="skills"
+            value={formValues.skills}
+            onChange={changeHander}
+            required
           />
         </div>
 
@@ -180,12 +201,16 @@ export default function BasicProfileEdit({isOpen, onClose, userData, onSave}) {
           <button
             type="button"
             className={styles.cancelButton}
-            onClick={onClose}
+            onClick={clickCancelHandle}
           >
             Cancel
           </button>
-          <button type="submit" className={styles.saveButton}>
-            Save Changes
+          <button
+            type="submit"
+            className={styles.saveButton}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Saving Changes" : "Save Changes"}
           </button>
         </div>
       </form>

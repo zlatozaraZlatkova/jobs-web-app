@@ -4,11 +4,18 @@ import ExperienceCard from "../employee/detailsProfile/ExperienceCard";
 import GitHubRepo from "../employee/detailsProfile/GitHubRepo";
 import { useGetEmployeeProfile } from "../../apiHooks/useEmployee";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function DetailsProfilePage() {
   const navigate = useNavigate();
-  const { employee, isLoading, error } = useGetEmployeeProfile();
-  console.log("Get profile data from useProfile", employee);
+  const { employee, isLoading, error, refreshData } = useGetEmployeeProfile();
+  const [displayError, setDisplayError] = useState(null);
+  
+    useEffect(() => {
+      if (error) {
+        setDisplayError(error);
+      }
+    }, [error]);
 
   const onClickCreateProfileBtn = () => {
     navigate("/profile/create");
@@ -21,7 +28,7 @@ export default function DetailsProfilePage() {
           <div>Loading employees...</div>
         ) : error ? (
           <div className="container-profile">
-            {/* {displayError && <div className="error-message">{displayError}</div>} */}
+            {displayError && <div className="error-message">{displayError}</div>}
             <div className="profile-completion-message">
               <h2>You&apos;re on the right track!</h2>
               <p>Complete your professional profile to move forward.</p>
@@ -40,7 +47,7 @@ export default function DetailsProfilePage() {
           </div>
         ) : employee ? (
           <>
-            <BasicProfileCard employee={employee} />
+            <BasicProfileCard employee={employee} refreshData={refreshData}/>
             <div className="content-grid">
               <ExperienceCard employee={employee} />
               <EducationCard employee={employee} />
