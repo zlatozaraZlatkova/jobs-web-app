@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {getAllJobs, getPaginatedJobs, createJob, getJobById, updateJob, deleteJob } from "../api/jobsApi";
+import {getAllJobs, getPaginatedJobs, createJob, getJobById, updateJob, deleteJob, pinJob, unpinJob } from "../api/jobsApi";
 
 export function useGetPaginatedJobs(urlPageNumber, technologyFilter) {
   const [jobs, setJobs] = useState([]);
@@ -280,6 +280,50 @@ export function useDeleteJob() {
   };
   return {
     submitDelJob,
+    error,
+  };
+}
+
+
+export function usePinJob() {
+  const [error, setError] = useState(null);
+
+  const submitPinJob = async (id) => {
+    try {
+      setError(null);
+
+      const response = await pinJob(id);
+      if (response.isError === true) {
+        setError(response.message);
+      }
+      return response;
+    } catch (err) {
+      setError(err);
+    }
+  };
+  return {
+    submitPinJob,
+    error,
+  };
+}
+export function useUnpinJob() {
+  const [error, setError] = useState(null);
+
+  const submitUnpinJob = async (id) => {
+    try {
+      setError(null);
+
+      const response = await unpinJob(id);
+      if (response.isError === true) {
+        setError(response.message);
+      }
+      return response;
+    } catch (err) {
+      setError(err);
+    }
+  };
+  return {
+    submitUnpinJob,
     error,
   };
 }

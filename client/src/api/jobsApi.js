@@ -38,3 +38,11 @@ export const updateJob = async (jobData, id) => {
 export const deleteJob = async (id) => {
   return await request.del(`${BASE_URL}/delete/${id}`);
 };
+
+export const pinJob = async(id) => {
+  return await request.post(`${BASE_URL}/pin/${id}`);
+}
+
+export const unpinJob = async(id) => {
+  return await request.post(`${BASE_URL}/unpin/${id}`);
+}
