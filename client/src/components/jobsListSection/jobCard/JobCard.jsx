@@ -1,35 +1,53 @@
 /* eslint-disable react/prop-types */
 import styles from "./JobCard.module.css";
 import { Link } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { usePinJob, useUnpinJob } from "../../../apiHooks/useJobs";
 import { AuthContext } from "../../../contexts/AuthContext";
 
 export default function JobCard({ job }) {
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [displayError, setDisplayError] = useState(null);
 
   const { _id: currentUserId } = useContext(AuthContext);
-  const { submitPinJob } = usePinJob();
-  const { submitUnpinJob } = useUnpinJob();
+  const { submitPinJob, error: pinError } = usePinJob();
+  const { submitUnpinJob, error: unpinError } = useUnpinJob();
 
   const [pinned, setPinned] = useState(
     job.pinnedByEmployees &&
       job.pinnedByEmployees.some((empId) => empId === currentUserId)
   );
 
-  const togglePinStatus = async (id) => {
-    if (!pinned) {
-      const response = await submitPinJob(id);
+  useEffect(() => {
+    if (pinError) {
+      setDisplayError(pinError);
 
-      if (!response.isError) {
-        setPinned(true);
-      }
+    } else if (unpinError) {
+      setDisplayError(unpinError);
+
     } else {
-      const response = await submitUnpinJob(id);
+      setDisplayError(null);
+    }
+  }, [pinError, unpinError]);
 
-      if (!response.isError) {
-        setPinned(false);
+  
+  const togglePinStatus = async (id) => {
+    try {
+      if (!pinned) {
+        const response = await submitPinJob(id);
+
+        if (!response.isError) {
+          setPinned(true);
+        }
+      } else {
+        const response = await submitUnpinJob(id);
+
+        if (!response.isError) {
+          setPinned(false);
+        }
       }
+    } catch (err) {
+      setDisplayError(err);
     }
   };
 
@@ -49,6 +67,8 @@ export default function JobCard({ job }) {
   return (
     <>
       <article className={styles.jobCard}>
+        {displayError && <div className="error-message">{displayError}</div>}
+
         <div className={styles.pinButtonContainer}>
           <button
             className={`${styles.pinButton} ${pinned ? styles.pinned : ""}`}
