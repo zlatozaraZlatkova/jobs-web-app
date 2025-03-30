@@ -13,8 +13,8 @@ const jobSchema = new Schema(
       type: String,
       required: true,
       lowercase: true,
-      enum: ["html", "css","javascript","react","angular","vue","next.js","typescript",
-      "java",".net","php","python","ruby","go","node.js"],
+      enum: ["html", "css", "javascript", "react", "angular", "vue", "next.js", "typescript",
+        "java", ".net", "php", "python", "ruby", "go", "node.js"],
     },
     type: {
       type: String,
@@ -50,11 +50,17 @@ const jobSchema = new Schema(
       required: true,
       ref: "Company",
     },
+    pinnedByEmployees: {
+      type: [Types.ObjectId],
+      required: true,
+      ref: "EmployeeProfile",
+      default: [],
+    },
     ownerId: {
       type: Types.ObjectId,
       required: true,
       ref: "User",
-    },
+    }
   },
   { timestamps: true }
 );

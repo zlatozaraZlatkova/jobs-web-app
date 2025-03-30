@@ -1,22 +1,23 @@
 const Job = require("../models/Job");
 const Company = require("../models/Company");
 const EmployerProfile = require("../models/EmployerProfile");
+const EmployeeProfile = require("../models/EmployeeProfile");
 
 async function getAll(skip = 0, limit = 3, technology = null) {
   const query = {};
-  
+
   if (technology) {
     query.technologies = technology;
   }
 
   const paginatedJobs = await Job.find(query)
-    .sort({ date: -1, _id: 1 }) 
+    .sort({ date: -1, _id: 1 })
     .skip(skip)
     .limit(limit);
-    
- 
+
+
   const totalJobs = await Job.countDocuments(query);
-  
+
   return { paginatedJobs, totalJobs };
 }
 
@@ -61,8 +62,6 @@ async function updateItem(id, item) {
   );
 }
 
-
-
 async function deleteById(jobId, userId) {
   await Company.findOneAndUpdate(
     { ownerId: userId },
@@ -78,7 +77,6 @@ async function deleteById(jobId, userId) {
 
   await Job.findByIdAndDelete(jobId);
 }
-
 
 async function getSearchItem(title, type, location, salary, skip = 0, limit = 10) {
   const query = {};
@@ -99,12 +97,42 @@ async function getSearchItem(title, type, location, salary, skip = 0, limit = 10
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit);
-  
-  const totalJobs = await Job.countDocuments();  
+
+  const totalJobs = await Job.countDocuments();
 
   return { paginatedJobs, totalJobs }
-    
+
 }
+
+async function pinItem(jobId, userId) {
+
+  await EmployeeProfile.findOneAndUpdate(
+    { ownerId: userId },
+    { $push: { pinnedJobList: jobId } },
+    { new: true }
+  );
+
+  await Job.findByIdAndUpdate(
+    jobId,
+    { $push: { pinnedByEmployees: userId } },
+    { new: true }
+  );
+
+}
+
+async function unpinItem(jobId, userId) {
+  await EmployeeProfile.findOneAndUpdate(
+    { ownerId: userId },
+    { $pull: { pinnedJobList: jobId } },
+    { new: true });
+
+console.log("userId", userId)
+
+  await Job.findByIdAndUpdate(jobId,
+    { $pull: { pinnedByEmployees: userId  } },
+    { new: true })
+}
+
 
 
 
@@ -117,5 +145,7 @@ module.exports = {
   getJobById,
   deleteById,
   getSearchItem,
-  getJobsList
+  getJobsList,
+  pinItem,
+  unpinItem
 }

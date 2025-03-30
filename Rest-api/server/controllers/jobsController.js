@@ -6,7 +6,7 @@ const { loadItem } = require("../middlewares/preload");
 const { hasUser, checkUserRole, isOwner } = require("../middlewares/guards");
 const { paginationMiddleware } = require("../middlewares/paginationMiddleware");
 const { formatPaginatedResponse } = require("../util/formatPaginatedResponse");
-const { getAll, getCompanyByUserId, createItem, updateItem, deleteById, getSearchItem, getJobsList } = require("../services/jobsService");
+const { getAll, getCompanyByUserId, createItem, updateItem, deleteById, getSearchItem, getJobsList, pinItem, unpinItem } = require("../services/jobsService");
 
 // @route GET /api/jobs/search?title=Java
 // @route GET /api/jobs/search?title=React&type=Full-time&location=Brooklyn&salary=70
@@ -173,5 +173,72 @@ router.delete("/delete/:id", loadItem("Job"), isOwner(),
       next(error);
     }
   })
+
+
+  router.post("/pin/:id", hasUser(), loadItem("Job"),
+    async (req, res, next) => {
+      try {
+        const userId = req.user._id;
+        const jobId = req.params.id;
+        const job = req.item;
+  
+        if (job.ownerId.toString() == userId.toString()) {
+          throw new Error("You cannot pin your own job.");
+        }
+  
+        if (job.pinnedByEmployees.map((j) => j.toString()).includes(userId.toString()) == true) {
+          throw new Error("This job is already pinned.");
+        }
+  
+        if (job.ownerId._id.toString() !== req.user._id.toString() && 
+          job.pinnedByEmployees.some(user => user._id.equals(req.user._id)) == false) {
+          await pinItem(jobId, userId);
+
+          return res.status(200).json({ message: "Pinned!" });
+        }
+  
+      } catch (error) {
+        next(error);
+      }
+  
+    })
+  
+  
+  router.post("/unpin/:id", hasUser(), loadItem("Job"),
+    async (req, res, next) => {
+  
+      try {
+        const userId = req.user._id;
+        const jobId = req.params.id;
+        const job = req.item;
+
+
+        if (job.ownerId.toString() == userId.toString()) {
+          throw new Error("You cannot unpin your own job.");
+        }
+        
+        if (job.pinnedByEmployees.some(user => user._id.equals(req.user._id)) == false) {
+          throw new Error("Job has not been pinned yet.");
+        }
+  
+        if (job.ownerId._id.toString() !== req.user._id.toString() && job.pinnedByEmployees.some(user => user._id.equals(req.user._id)) == true) {
+  
+          await unpinItem(jobId, userId);
+  
+          return res.status(200).json({ message: "Unpinned!" });
+        }
+  
+  
+      } catch (error) {
+        next(error);
+      }
+  
+    })
+  
+
+
+
+
+
 
 module.exports = router;

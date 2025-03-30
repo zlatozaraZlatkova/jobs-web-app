@@ -103,6 +103,12 @@ const employeeProfileSchema = new Schema(
       ref: "Job",
       default: []
     },
+    pinnedJobList: {
+      type: [Types.ObjectId],
+      required: true,
+      ref: "Job",
+      default: [],
+    },
     ownerId: {
       type: Types.ObjectId,
       required: true,
