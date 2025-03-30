@@ -9,9 +9,12 @@ export default function JobCard({ job }) {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [displayError, setDisplayError] = useState(null);
 
-  const { _id: currentUserId } = useContext(AuthContext);
+  const { _id: currentUserId, role } = useContext(AuthContext);
   const { submitPinJob, error: pinError } = usePinJob();
   const { submitUnpinJob, error: unpinError } = useUnpinJob();
+
+
+  const isEmployee = role === "employee";
 
   const [pinned, setPinned] = useState(
     job.pinnedByEmployees &&
@@ -68,15 +71,15 @@ export default function JobCard({ job }) {
     <>
       <article className={styles.jobCard}>
         {displayError && <div className="error-message">{displayError}</div>}
-
-        <div className={styles.pinButtonContainer}>
+        {isEmployee &&
+        (<div className={styles.pinButtonContainer}>
           <button
             className={`${styles.pinButton} ${pinned ? styles.pinned : ""}`}
             onClick={handlePinClick}
           >
             <i className={pinned ? "fas fa-bookmark" : "far fa-bookmark"}></i>
           </button>
-        </div>
+        </div>)}
 
         <div className={styles.jobCardContent}>
           <div className={styles.jobCardHeader}>

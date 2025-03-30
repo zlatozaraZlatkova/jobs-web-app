@@ -1,17 +1,16 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./AdminDashboard.module.css";
+import styles from "./DashboardEmployer.module.css";
 
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext.js";
 import { useGetAdminProfile } from "../../apiHooks/useEmployer.js";
-import { useDeleteJob } from "../../apiHooks/useJobs";
+import { useDeleteJob } from "../../apiHooks/useJobs.js";
 import { capitalizeName } from "../../utils/stringUtils.js";
 
 import CreateCompanyProfile from "../employer/CreateCompanyProfile.jsx";
 
-export default function AdminDashboard() {
+export default function DashboardEmployer() {
   const { _id } = useContext(AuthContext);
   const navigate = useNavigate();
 

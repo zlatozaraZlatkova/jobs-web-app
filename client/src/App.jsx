@@ -10,16 +10,16 @@ import RegisterPage from "./components/pages/RegisterPage";
 import LoginPage from "./components/pages/LoginPage";
 import MainLayout from "./components/mainLayout/MainLayout";
 import CreateProfilePage from "./components/pages/CreateProfilePage";
-import DetailsProfilePage from "./components/pages/DetailsProfilePage";
 import EmployeesPage from "./components/pages/EmployeesPage";
 import JobsPage from "./components/pages/JobsPage";
 import JobDetailsPage from "./components/pages/JobDetailsPage";
 import NotFoundPage from "./components/pages/NotFoundPage";
 import CreateJob from "./components/createJob/CreateJob";
 import EditJob from "./components/editJob/EditJob";
-import AdminDashboard from "./components/adminDashboard/AdminDashboar";
 import EditCompanyProfile from "./components/employer/EditCompanyProfile";
 import CVPage from "./components/pages/CVPage";
+import DashboardEmployee from "./components/dashboardEmployee/DashboardEmployee";
+import DashboardEmployer from "./components/dashboardEmployer/DashboarEmployer";
 
 
 
@@ -57,12 +57,12 @@ function App() {
             <Route path="/jobs/update/:id" element={<EditJob />} />
 
         
-            <Route path="/profile" element={<DetailsProfilePage />} />
+            <Route path="/profile" element={<DashboardEmployee />} />
             <Route path="/profile/create" element={<CreateProfilePage />} />
             <Route path="/profile/catalog" element={<EmployeesPage />} />
             <Route path="/profile/catalog/:id" element={<CVPage />} />
 
-            <Route path="/company/profile" element={<AdminDashboard/>}/>
+            <Route path="/company/profile" element={<DashboardEmployer/>}/>
             <Route path="/company/profile/update/:id" element={<EditCompanyProfile />} />
             
             <Route path="/register" element={<RegisterPage />} />

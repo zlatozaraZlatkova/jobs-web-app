@@ -1238,3 +1238,147 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+
+/* Profile Employee Dashboard */
+
+.profile-dashboard-header {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  padding: 0 1.5rem;
+}
+
+.profile-tab-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+
+.profile-tab-button {
+  background: none;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+.profile-tab-button:hover {
+  color: var(--primary-color);
+}
+
+.activeTab {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.profile-dashboard-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.profile-summary-card {
+  background-color: var(--bg-primary);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+.profile-summary-value {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+
+.profile-table-container {
+  overflow-x: auto;
+}
+
+.profile-date-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.profile-date-table th {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  text-align: left;
+  padding: 0.75rem 1rem;
+}
+
+.profile-date-table td {
+  padding: 0.75rem 1rem;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.profile-table-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.profile-action-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: none;
+  cursor: pointer;
+ 
+}
+
+.profile-action-button:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.empty-state {
+  text-align: center;
+  padding-top: 2rem;
+  color: var(--text-secondary);
+ 
+}
+
+.empty-state p {
+  margin-bottom: 1.5rem;
+}
+
+
+
+@media (max-width: 768px) {
+  .profile-dashboard-header {
+    padding: 0 1rem;
+  }
+
+  .profile-dashboard-content {
+    padding: 0 1rem;
+  }
+
+  .profile-tab-nav {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 0.5rem;
+  }
+
+  .profile-tab-button {
+    padding: 0.75rem 1rem;
+  }
+
+}
+
+@media (max-width: 576px) {
+
+  .profile-date-table th,
+  .profile-date-table td {
+    padding: 0.5rem;
+  }
+}

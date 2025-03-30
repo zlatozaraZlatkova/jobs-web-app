@@ -23,6 +23,10 @@ async function getUserById(id) {
   return EmployeeProfile.findOne({ ownerId: id }).populate("ownerId", [
     "name",
     "avatar",
+  ]).populate("pinnedJobList", [
+    "title",
+    "techStack",
+    "location"
   ]);
 }
 

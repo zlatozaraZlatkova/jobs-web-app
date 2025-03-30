@@ -76,13 +76,14 @@ export default function Navigation() {
               <>
                 {isEmployee ? (
                   <>
-                    <li><Link to="/profile">Profile</Link></li>
                     <li><Link to="/profile/create">Create CV</Link></li>
+                    <li><Link to="/profile">Dashboard</Link></li>
+
                   </>
                 ) : (
                   <>
                     <li><Link to="/jobs/create">Add Job</Link></li>
-                    <li><Link to="/company/profile">Daschboard</Link></li>
+                    <li><Link to="/company/profile">Dashboard</Link></li>
                   </>
                 )}
 

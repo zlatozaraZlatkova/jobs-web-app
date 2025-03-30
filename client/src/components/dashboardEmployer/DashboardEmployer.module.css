@@ -283,14 +283,14 @@
   }
   
   /* Empty States */
-  .emptyState {
+  .empty-state {
     text-align: center;
     padding-top: 2rem;
     color: var(--text-secondary);
    
   }
   
-  .emptyState p {
+  .empty-state p {
     margin-bottom: 1.5rem;
   }
   

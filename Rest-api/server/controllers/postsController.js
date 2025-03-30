@@ -3,7 +3,7 @@ const { body } = require("express-validator");
 const validateRequest = require("../middlewares/validateBodyRequest");
 
 const { loadItem } = require("../middlewares/preload");
-const { hasUser, isOwner } = require("../middlewares/guards");
+const { hasUser, isOwner, checkUserRole } = require("../middlewares/guards");
 const { paginationMiddleware } = require("../middlewares/paginationMiddleware");
 const { formatPaginatedResponse } = require("../util/formatPaginatedResponse");
 
@@ -190,7 +190,7 @@ router.delete("/comment/:id/:commentId", hasUser(), loadItem("Post"),
 
   })
 
-router.post("/like/:id", hasUser(), loadItem("Post"),
+router.post("/like/:id", hasUser(), checkUserRole("employee"), loadItem("Post"),
   async (req, res, next) => {
     try {
       const userId = req.user._id;
@@ -220,7 +220,7 @@ router.post("/like/:id", hasUser(), loadItem("Post"),
   })
 
 
-router.post("/unlike/:id", hasUser(), loadItem("Post"),
+router.post("/unlike/:id", hasUser(), checkUserRole("employee"), loadItem("Post"),
   async (req, res, next) => {
 
     try {
