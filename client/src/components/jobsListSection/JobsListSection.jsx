@@ -13,6 +13,17 @@ export default function JobsListSection({ isHomePage = false, urlPageNumber, set
  
   const { jobs, isLoading, totalPages, error } = useGetPaginatedJobs(urlPageNumber, technologyFilter);
 
+  const [updateJobList, setUpdatedJobList] = useState([]);
+
+  useEffect(() => {
+    if (jobs && jobs.length > 0) {
+      setUpdatedJobList(jobs);
+    }
+  }, [jobs]);
+
+  const handleSearchResults = (searchResults) => {
+    setUpdatedJobList(searchResults);
+  };
 
   useEffect(() => {
     if (error) {
@@ -51,7 +62,8 @@ export default function JobsListSection({ isHomePage = false, urlPageNumber, set
           ) : (
             <div className={styles.searchbar}>
               <h2 className={styles.sectionTitle}>Find your next Position</h2>
-              {!isHomePage && <SearchBar />}
+              {!isHomePage && 
+              <SearchBar onSearchComplete={handleSearchResults} />}
             </div>
           )}
 
@@ -60,9 +72,9 @@ export default function JobsListSection({ isHomePage = false, urlPageNumber, set
               <div>Loading open positions...</div>
             ) : (
               <>
-                {jobs && jobs.length > 0 ? (
+                {updateJobList && updateJobList.length > 0 ?  (
                   <>
-                    {jobs.map((job) => (
+                    {updateJobList.map((job) => (
                       <JobCard key={job._id} job={job} />
                     ))}
                   </>

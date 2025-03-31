@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {getAllJobs, getPaginatedJobs, createJob, getJobById, updateJob, deleteJob, pinJob, unpinJob } from "../api/jobsApi";
+import {getAllJobs, getPaginatedJobs, createJob, getJobById, updateJob, deleteJob, pinJob, unpinJob, searchJobs } from "../api/jobsApi";
 import { useGetEmployeeProfile } from "./useEmployee";
 
 export function useGetPaginatedJobs(urlPageNumber, technologyFilter) {
@@ -355,4 +355,29 @@ export function useCanPinJobs(isEmployee) {
     canPinJobs, 
     error
   };
+}
+
+export function useSearchJobs() {
+  const [error, setError] = useState(null);
+ 
+    const submitSearch = async (searchParams) => {
+      try {
+        setError(null);
+  
+        const response = await searchJobs(searchParams);
+        if (response.isError === true) {
+          setError(response.message);
+        }
+        return response;
+  
+      } catch (err) {
+        setError(err);
+      }
+    };
+  
+
+  return{
+    submitSearch,
+    error
+  }
 }

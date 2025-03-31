@@ -52,3 +52,23 @@ export const unpinJob = async(id) => {
     credentials: "include",
   });
 }
+
+export const searchJobs = async (searchParams = {}) => {
+  let url = `${BASE_URL}/search`;
+  const queryParams = new URLSearchParams();
+
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (value) {
+      queryParams.append(key, value);
+    }
+  });
+
+  const queryString = queryParams.toString();
+
+  if (queryString) {
+    url = `${url}?${queryString}`;
+  }
+
+  
+  return await request.get(url);
+}
