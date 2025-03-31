@@ -36,13 +36,19 @@ export const updateJob = async (jobData, id) => {
 };
 
 export const deleteJob = async (id) => {
-  return await request.del(`${BASE_URL}/delete/${id}`);
+  return await request.del(`${BASE_URL}/delete/${id}`, null, {
+    credentials: "include",
+  });
 };
 
 export const pinJob = async(id) => {
-  return await request.post(`${BASE_URL}/pin/${id}`);
+  return await request.post(`${BASE_URL}/pin/${id}`, null, {
+    credentials: "include",
+  });
 }
 
 export const unpinJob = async(id) => {
-  return await request.post(`${BASE_URL}/unpin/${id}`);
+  return await request.post(`${BASE_URL}/unpin/${id}`, null, {
+    credentials: "include",
+  });
 }

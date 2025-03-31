@@ -9,7 +9,9 @@ export const createCompanyProfile = async (companyData) => {
 };
 
 export const getProfileById = async () => {
-  return await request.get(`${BASE_URL}/employer`);
+  return await request.get(`${BASE_URL}/employer`, null, {
+    credentials: "include",
+  });
 };
 
 export const editProfile = async (companyId, companyData) => {

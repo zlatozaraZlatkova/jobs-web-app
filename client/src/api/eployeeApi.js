@@ -14,7 +14,9 @@ export const getPaginatedEmployees = async (currentPage, limit = 3) => {
 export const getEmployeeProfileById = async (id) => {
   const url = `${BASE_URL}/catalog/${id}`;
 
-  return await request.get(url);
+  return await request.get(url, null, {
+    credentials: "include",
+  });
 };
 
 export const createEmployeeProfile = async (profileData) => {
@@ -36,15 +38,21 @@ export const addEmployeeEducation = async (educationData) => {
 };
 
 export const deleteEmployeeExperience = async (id) => {
-  return await request.del(`${BASE_URL}/experience/${id}`);
+  return await request.del(`${BASE_URL}/experience/${id}`, null, {
+    credentials: "include",
+  });
 };
 
 export const deleteEmployeeEducation = async (id) => {
-  return await request.del(`${BASE_URL}/education/${id}`);
+  return await request.del(`${BASE_URL}/education/${id}`, null, {
+    credentials: "include",
+  });
 };
 
 export const getGitHubRepo = async (username) => {
-  return await request.get(`${BASE_URL}/github/${username}`);
+  return await request.get(`${BASE_URL}/github/${username}`, null, {
+    credentials: "include",
+  });
 };
 
 export const editEmployeeProfile = async (profileData) => {
@@ -54,5 +62,7 @@ export const editEmployeeProfile = async (profileData) => {
 };
 
 export const deleteEmployeeProfile = async () => {
-  return await request.del(`${BASE_URL}/delete`);
+  return await request.del(`${BASE_URL}/delete`, null, {
+    credentials: "include",
+  });
 };
