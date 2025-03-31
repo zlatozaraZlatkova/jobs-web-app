@@ -2,7 +2,8 @@
 import styles from "./JobCard.module.css";
 import { Link } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
-import { usePinJob, useUnpinJob } from "../../../apiHooks/useJobs";
+import { usePinJob, useUnpinJob, useCanPinJobs } from "../../../apiHooks/useJobs";
+
 import { AuthContext } from "../../../contexts/AuthContext";
 
 export default function JobCard({ job }) {
@@ -10,11 +11,13 @@ export default function JobCard({ job }) {
   const [displayError, setDisplayError] = useState(null);
 
   const { _id: currentUserId, role } = useContext(AuthContext);
+  const isEmployee = role === "employee";
+  const canPinJobs = useCanPinJobs(isEmployee);
+  const userCanPin = canPinJobs && canPinJobs.canPinJobs === true;
+  //console.log("can user pin a job:", canPinJobs);
+
   const { submitPinJob, error: pinError } = usePinJob();
   const { submitUnpinJob, error: unpinError } = useUnpinJob();
-
-
-  const isEmployee = role === "employee";
 
   const [pinned, setPinned] = useState(
     job.pinnedByEmployees &&
@@ -24,16 +27,13 @@ export default function JobCard({ job }) {
   useEffect(() => {
     if (pinError) {
       setDisplayError(pinError);
-
     } else if (unpinError) {
       setDisplayError(unpinError);
-
     } else {
       setDisplayError(null);
     }
   }, [pinError, unpinError]);
 
-  
   const togglePinStatus = async (id) => {
     try {
       if (!pinned) {
@@ -71,15 +71,16 @@ export default function JobCard({ job }) {
     <>
       <article className={styles.jobCard}>
         {displayError && <div className="error-message">{displayError}</div>}
-        {isEmployee &&
-        (<div className={styles.pinButtonContainer}>
-          <button
-            className={`${styles.pinButton} ${pinned ? styles.pinned : ""}`}
-            onClick={handlePinClick}
-          >
-            <i className={pinned ? "fas fa-bookmark" : "far fa-bookmark"}></i>
-          </button>
-        </div>)}
+        {isEmployee && userCanPin && (
+          <div className={styles.pinButtonContainer}>
+            <button
+              className={`${styles.pinButton} ${pinned ? styles.pinned : ""}`}
+              onClick={handlePinClick}
+            >
+              <i className={pinned ? "fas fa-bookmark" : "far fa-bookmark"}></i>
+            </button>
+          </div>
+        )}
 
         <div className={styles.jobCardContent}>
           <div className={styles.jobCardHeader}>

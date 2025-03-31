@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {getAllJobs, getPaginatedJobs, createJob, getJobById, updateJob, deleteJob, pinJob, unpinJob } from "../api/jobsApi";
+import { useGetEmployeeProfile } from "./useEmployee";
 
 export function useGetPaginatedJobs(urlPageNumber, technologyFilter) {
   const [jobs, setJobs] = useState([]);
@@ -325,5 +326,33 @@ export function useUnpinJob() {
   return {
     submitUnpinJob,
     error,
+  };
+}
+
+
+export function useCanPinJobs(isEmployee) {
+  const { employee: profileData, error } = useGetEmployeeProfile();
+  const [canPinJobs, setCanPinJobs] = useState(false);
+
+  useEffect(() => {
+    const checkCanPinJobs = async () => {
+      if (!isEmployee) {
+        setCanPinJobs(false);
+        return;
+      }
+      
+      if (profileData && !profileData.isError) {
+        setCanPinJobs(true);
+      } else {
+        setCanPinJobs(false);
+      }
+    };
+    
+    checkCanPinJobs();
+  }, [isEmployee, profileData]);
+
+  return { 
+    canPinJobs, 
+    error
   };
 }
