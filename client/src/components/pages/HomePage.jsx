@@ -2,22 +2,27 @@ import SearchBar from "../searchBar/SearchBar";
 import CategoriesJobSection from "../categoriesJobSection/CategoriesJobSection";
 import JobsListSection from "../jobsListSection/JobsListSection";
 import TrustedCompaniesSection from "../trustedCompaniesSection/TrustedCompaniesSection";
+
+import { useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { SearchContext } from "../../contexts/SearchContext";
 import { useFeaturedJobs } from "../../apiHooks/useJobs";
 
 export default function HomePage() {
-  const navigate = useNavigate();
   const { jobs, isLoading } = useFeaturedJobs();
   const featuredJobs = jobs && jobs.length > 0 ? jobs.slice(0, 3) : [];
 
-  
-  const handleSearchAndNavigate = (results) => {
-    const itemsToStore = results.data?.items || results;
-    console.log("Search resut:", itemsToStore)
+  const navigate = useNavigate();
+  const { setSearchContextResults, resetContextSearch } = useContext(SearchContext);
 
+  const handleSearchAndNavigate = (results) => {
+    setSearchContextResults(results);
     navigate("/jobs");
   };
 
+  useEffect(() => {
+    resetContextSearch();
+  }, []);
 
 
   return (

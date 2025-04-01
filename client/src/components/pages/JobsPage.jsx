@@ -3,23 +3,31 @@ import Pagination from "../pagination/Pagination";
 import SearchBar from "../searchBar/SearchBar";
 import styles from "../jobsListSection/JobsListSection.module.css";
 
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { usePaginationWithURL } from "../../apiHooks/usePaginationWithURL";
 import { useGetPaginatedJobs } from "../../apiHooks/useJobs";
-
+import { SearchContext } from "../../contexts/SearchContext";
 
 export default function JobsPage() {
   const sectionRef = useRef(null);
+
   const { urlPageNumber, setUrlPageNumber, technologyFilter } = usePaginationWithURL();
+  
   const { jobs, isLoading, totalPages, error } = useGetPaginatedJobs(urlPageNumber, technologyFilter);
   const [displayError, setDisplayError] = useState(null);
+
+  const { searchContextResults } = useContext(SearchContext);
+
   const [updateJobList, setUpdatedJobList] = useState([]);
 
   useEffect(() => {
-    if (jobs && jobs.length > 0) {
+    if (searchContextResults) {
+      setUpdatedJobList(searchContextResults);
+
+    } else if (jobs && jobs.length > 0) {
       setUpdatedJobList(jobs);
     }
-  }, [jobs]);
+  }, [jobs, searchContextResults]);
 
   const handleLocalSearch = (searchResults) => {
     setUpdatedJobList(searchResults);
