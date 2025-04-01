@@ -1382,3 +1382,8 @@ textarea {
     padding: 0.5rem;
   }
 }
+
+.featured-jobs-section {
+  background-color: var(--section-bg);
+  padding: 4rem 2rem;
+}

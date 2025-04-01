@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "../../apiHooks/useForm";
 import { useSearchJobs } from "../../apiHooks/useJobs";
 
-export default function SearchBar({ onSearchComplete }) {
+export default function SearchBar({ onSearch }) {
   const [displayError, setDisplayError] = useState(null);
   const { submitSearch, error } = useSearchJobs();
   
@@ -15,24 +15,25 @@ export default function SearchBar({ onSearchComplete }) {
   }, [error]);
 
   const initialValues = {
-    position: "",
+    title: "",
     location: "",
-    salary: "",
+    type: "",
   };
 
   const handleFormSubmit = async (formData) => {
     try {
       setDisplayError(null);
+      
       const searchParams = {
-        title: formData.title,
-        location: formData.location,
-        type: formData.type,
+        title: formData.title || "",
+        location: formData.location || "",
+        type: formData.type || "",
       };
       const result = await submitSearch(searchParams);
       console.log("Submit search params:", result);
 
       if (result && result.data && result.data.items) {
-        onSearchComplete(result.data.items);
+        onSearch(result.data.items);
       }
 
     } catch (err) {

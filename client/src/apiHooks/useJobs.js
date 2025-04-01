@@ -116,57 +116,56 @@ export function useGetCategoriesJob() {
   const [frontendTechnologies, setFrontendTechnologies] = useState([]);
   const [backendTechnologies, setBackendTechnologies] = useState([]);
   const [erros, setErros] = useState(null);
-  
-    useEffect(() => {
-  
-      const fetchAllJobs = async () => {
-        try {
-          setIsLoading(true);
-          setErros(null);
-  
-          const reasponse = await getAllJobs();
 
-          if(reasponse.isError === true) {
-            setErros(reasponse.message);
-          }
-          
-          if (reasponse.length === 0) {
-            setJobs([]);
-            setFrontendTechnologies([]);
-            setBackendTechnologies([]);
-            return;
-          }
-  
-  
-          setJobs(reasponse);
-         
-          const frontend = reasponse.filter(job => job.technologies === "frontend");
-          const backend = reasponse.filter(job => job.technologies === "backend");
-  
-          setFrontendTechnologies(frontend);
-          setBackendTechnologies(backend);
-  
-  
-        } catch (err) {
+  useEffect(() => {
+    const fetchAllJobs = async () => {
+      try {
+        setIsLoading(true);
+        setErros(null);
+
+        const reasponse = await getAllJobs();
+
+        if (reasponse.isError === true) {
+          setErros(reasponse.message);
+        }
+
+        if (reasponse.length === 0) {
           setJobs([]);
           setFrontendTechnologies([]);
           setBackendTechnologies([]);
-  
-        } finally {
-          setIsLoading(false);
+          return;
         }
-      };
-  
-      fetchAllJobs();
-    }, []);
-  
+
+        setJobs(reasponse);
+
+        const frontend = reasponse.filter(
+          (job) => job.technologies === "frontend"
+        );
+        const backend = reasponse.filter(
+          (job) => job.technologies === "backend"
+        );
+
+        setFrontendTechnologies(frontend);
+        setBackendTechnologies(backend);
+      } catch (err) {
+        setJobs([]);
+        setFrontendTechnologies([]);
+        setBackendTechnologies([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAllJobs();
+  }, []);
+
   return {
     isLoading,
     jobs,
     frontendTechnologies,
     backendTechnologies,
-    erros
-  }
+    erros,
+  };
 }
 
 export function useCreateJob() {
@@ -285,7 +284,6 @@ export function useDeleteJob() {
   };
 }
 
-
 export function usePinJob() {
   const [error, setError] = useState(null);
 
@@ -329,7 +327,6 @@ export function useUnpinJob() {
   };
 }
 
-
 export function useCanPinJobs(isEmployee) {
   const { employee: profileData, error } = useGetEmployeeProfile();
   const [canPinJobs, setCanPinJobs] = useState(false);
@@ -340,44 +337,73 @@ export function useCanPinJobs(isEmployee) {
         setCanPinJobs(false);
         return;
       }
-      
+
       if (profileData && !profileData.isError) {
         setCanPinJobs(true);
       } else {
         setCanPinJobs(false);
       }
     };
-    
+
     checkCanPinJobs();
   }, [isEmployee, profileData]);
 
-  return { 
-    canPinJobs, 
-    error
+  return {
+    canPinJobs,
+    error,
   };
 }
 
 export function useSearchJobs() {
   const [error, setError] = useState(null);
- 
-    const submitSearch = async (searchParams) => {
+
+  const submitSearch = async (searchParams) => {
+    try {
+      setError(null);
+
+      const response = await searchJobs(searchParams);
+      if (response.isError === true) {
+        setError(response.message);
+      }
+      return response;
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  return {
+    submitSearch,
+    error,
+  };
+}
+
+export function useFeaturedJobs() {
+  const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchFeaturedJobs = async () => {
+      setIsLoading(true);
+
       try {
         setError(null);
-  
-        const response = await searchJobs(searchParams);
+        const response = await getAllJobs();
         if (response.isError === true) {
           setError(response.message);
+          setJobs([]);
+          return;
         }
-        return response;
-  
+        setJobs(response);
       } catch (err) {
         setError(err);
+      } finally {
+        setIsLoading(false);
       }
     };
-  
 
-  return{
-    submitSearch,
-    error
-  }
+    fetchFeaturedJobs();
+  }, []);
+
+  return { jobs, isLoading, error };
 }
