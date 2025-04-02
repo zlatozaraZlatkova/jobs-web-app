@@ -23,7 +23,7 @@ async function start() {
 
   app.use(rateLimit({
     windowMs: 15 * 60 * 1000, 
-    max: 100,
+    max: 100000,
     legacyHeaders: false, 
     standardHeaders: true,  
     message: 'Too many requests from this IP, please try again later', 

@@ -20,7 +20,7 @@ import EditJob from "./components/editJob/EditJob";
 import EditCompanyProfile from "./components/employer/EditCompanyProfile";
 import CVPage from "./components/pages/CVPage";
 import DashboardEmployee from "./components/dashboardEmployee/DashboardEmployee";
-import DashboardEmployer from "./components/dashboardEmployer/DashboarEmployer";
+import DashboardEmployer from "./components/dashboardEmployer/DashboardEmployer";
 
 
 

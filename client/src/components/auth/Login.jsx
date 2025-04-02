@@ -39,20 +39,10 @@ export default function Login() {
 
   const validateForm = (formValues) => {
     const regexEmail =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
 
-    if (!formValues.email && !formValues.password) {
-      setFormErrors("Email and password are required");
-      return false;
-    }
-
-    if (!formValues.email) {
+    if (!formValues.email || formValues.email.trim() === "") {
       setFormErrors("Email is required");
-      return false;
-    }
-
-    if (!formValues.password) {
-      setFormErrors("Password is required");
       return false;
     }
 
@@ -61,6 +51,12 @@ export default function Login() {
       return false;
     }
 
+    if (!formValues.password) {
+      setFormErrors("Password is required");
+      return false;
+    }
+
+ 
     setFormErrors(null);
     return true;
   };
@@ -93,10 +89,10 @@ export default function Login() {
   return (
     <>
       <section className="container-profile">
-      {formErrors && <div className="error-message">{formErrors}</div>}
-          {!formErrors && serverError && (
-            <div className="error-message">{serverError}</div>
-          )}
+        {formErrors && <div className="error-message">{formErrors}</div>}
+        {!formErrors && serverError && (
+          <div className="error-message">{serverError}</div>
+        )}
 
         <div className="login-container">
           <h3 className="lead">

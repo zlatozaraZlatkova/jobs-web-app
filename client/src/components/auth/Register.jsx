@@ -33,26 +33,23 @@ export default function Register() {
       };
     }
   }, [formErrors]);
-  
+
   const validateForm = (formValues) => {
     const regexEmail =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
 
+   
     if (!formValues.name && !formValues.email && !formValues.password && !formValues.rePassword) {
       setFormErrors("All fields are requered");
       return false;
     }
 
-    if (!formValues.email) {
+    if (!formValues.email || formValues.email.trim() === "") {
       setFormErrors("Email is required");
       return false;
     }
 
-    if (!formValues.password) {
-      setFormErrors("Password is required");
-      return false;
-    }
-
+  
     if (!regexEmail.test(formValues.email)) {
       setFormErrors("Please enter a valid email address");
       return false;
@@ -62,6 +59,12 @@ export default function Register() {
       setFormErrors("Name must be at least 2 characters");
       return false;
     }
+
+    if (!formValues.password) {
+      setFormErrors("Password is required");
+      return false;
+    }
+
 
     if (formValues.password && formValues.password.lenght < 8) {
       setFormErrors("Password must be at least 8 characters");
@@ -108,18 +111,18 @@ export default function Register() {
     }
   };
 
-  const {formValues, changeHandler, submitHandler, roleChangeHandler, resetForm } = useForm(initialValues, handlerFormSumbit);
+  const { formValues, changeHandler, submitHandler, roleChangeHandler, resetForm } = useForm(initialValues, handlerFormSumbit);
 
   return (
     <>
       <section className="container-profile">
-      {formErrors && <div className="error-message">{formErrors}</div>}
-          {!formErrors && serverError && (
-            <div className="error-message">{serverError}</div>
-          )}
+        {formErrors && <div className="error-message">{formErrors}</div>}
+        {!formErrors && serverError && (
+          <div className="error-message">{serverError}</div>
+        )}
 
         <div className="register-container">
-      
+
           <h3 className="lead">
             <i className="fas fa-user" /> Create Your Account
           </h3>
