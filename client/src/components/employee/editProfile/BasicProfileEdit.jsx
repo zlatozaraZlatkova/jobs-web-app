@@ -6,8 +6,36 @@ import { useForm } from "../../../apiHooks/useForm";
 import { useEditEmployeeProfile } from "../../../apiHooks/useEmployee";
 
 export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, refreshData }) {
-  const [displayError, setDisplayError] = useState(null);
   const { isSubmitting, editBasicProfile, error } = useEditEmployeeProfile();
+  const [serverError, setServerError] = useState(null);
+  const [formErrors, setFormErrors] = useState(null);
+
+  
+  useEffect(() => {
+    if (error) {
+      setServerError(error);
+      const timer = setTimeout(() => {
+        setServerError(null);
+      }, 10000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (formErrors) {
+      const timer = setTimeout(() => {
+        setFormErrors(null);
+      }, 10000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [formErrors]);
+
 
   const initialValues = {
     company: "",
@@ -20,15 +48,76 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
     skills: "",
   };
 
-  useEffect(() => {
-    if (error) {
-      setDisplayError(error);
+  const validateForm = (formValues) => {
+ 
+    if (!formValues.company && !formValues.location && 
+      !formValues.status && !formValues.githubUsername && 
+      !formValues.skills && !formValues.bio
+      ) {
+      setFormErrors("All fields are required");
+      return false;
     }
-  }, [error]);
+
+    if (!formValues.company) {
+      setFormErrors("Company name is required");
+      return false;
+    }
+    if (formValues.company.length < 5) {
+      setFormErrors("Company name must be at least 5 characters");
+      return false;
+    }
+
+    if (!formValues.location) {
+      setFormErrors("Location is required");
+      return false;
+    }
+
+    if (formValues.location.length < 5) {
+      setFormErrors("Location must be at least 5 characters");
+      return false;
+    }
+
+    if (!formValues.status) {
+      setFormErrors("Status is required");
+      return false;
+    }
+
+    if (!formValues.githubUsername) {
+      setFormErrors("GitHub username is required");
+      return false;
+    }
+
+    if (formValues.skills.trim() === '') {
+      setFormErrors("Tech skills are required");
+      return false;
+    }
+
+    if (!formValues.bio) {
+      setFormErrors("Short bio is required");
+      return false;
+    }
+
+    if (formValues.bio.length < 5) {
+      setFormErrors("Short bio must be at least 5 characters");
+      return false;
+    }
+
+    setFormErrors(null);
+    return true;
+  };
+
+
 
   const handleFormSubmit = async (formData) => {
+    setServerError(null);
+    setFormErrors(null);
+
+    if (!validateForm(formData)) {
+      return;
+    }
+
     try {
-      setDisplayError(null);
+      console.log("Data from Input", formData)
 
       const profileData = {
         company: formData.company,
@@ -55,11 +144,11 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
       onClose();
 
     } catch (err) {
-      setDisplayError(err.message);
+      setServerError(err.message);
     }
   };
 
-  const { formValues, setFormValues, changeHander, sumbitHandler, resetForm } =
+  const { formValues, setFormValues, changeHandler, submitHandler, resetForm } =
     useForm(initialValues, handleFormSubmit);
 
 
@@ -112,25 +201,30 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
           ×
         </button>
       </div>
-      {displayError && <div className="error-message">{displayError}</div>}
-      <form onSubmit={sumbitHandler} className={styles.form}>
+      
+      {formErrors && <div className="error-message">{formErrors}</div>}
+          {!formErrors && serverError && (
+            <div className="error-message">{serverError}</div>
+          )}
+
+      <form onSubmit={submitHandler} className={styles.form}>
         <div className={styles.formGroup}>
           <label>Company</label>
           <input
             type="text"
             name="company"
             value={formValues.company}
-            onChange={changeHander}
+            onChange={changeHandler}
             required
           />
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="website">Website</label>
           <input
-            type="url"
+            type="text"
             name="website"
             value={formValues.website}
-            onChange={changeHander}
+            onChange={changeHandler}
           />
         </div>
 
@@ -140,7 +234,7 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
             type="text"
             name="location"
             value={formValues.location}
-            onChange={changeHander}
+            onChange={changeHandler}
             required
           />
         </div>
@@ -150,7 +244,7 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
             type="text"
             name="status"
             value={formValues.status}
-            onChange={changeHander}
+            onChange={changeHandler}
             required
           />
         </div>
@@ -160,7 +254,7 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
             type="url"
             name="linkedin"
             value={formValues.linkedin}
-            onChange={changeHander}
+            onChange={changeHandler}
           />
         </div>
         <div className={styles.formGroup}>
@@ -169,7 +263,7 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
             type="text"
             name="githubUsername"
             value={formValues.githubUsername}
-            onChange={changeHander}
+            onChange={changeHandler}
             required
           />
         </div>
@@ -180,7 +274,7 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
             id="bio"
             name="bio"
             value={formValues.bio}
-            onChange={changeHander}
+            onChange={changeHandler}
             rows="4"
             required
           />
@@ -192,7 +286,7 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
             type="text"
             name="skills"
             value={formValues.skills}
-            onChange={changeHander}
+            onChange={changeHandler}
             required
           />
         </div>

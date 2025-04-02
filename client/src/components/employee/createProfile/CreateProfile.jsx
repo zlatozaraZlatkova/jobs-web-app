@@ -5,14 +5,37 @@ import { useProfileApi } from "../../../apiHooks/useEmployee";
 
 
 export default function CreateProfile({ onComplete }) {
-  const [displayError, setDisplayError] = useState(null);
   const { submitProfile, isSubmittingProfile, error } = useProfileApi();
 
+  const [serverError, setServerError] = useState(null);
+  const [formErrors, setFormErrors] = useState(null);
+
+  
   useEffect(() => {
     if (error) {
-      setDisplayError(error);
+      setServerError(error);
+      const timer = setTimeout(() => {
+        setServerError(null);
+      }, 10000);
+
+      return () => {
+        clearTimeout(timer);
+      };
     }
   }, [error]);
+
+  useEffect(() => {
+    if (formErrors) {
+      const timer = setTimeout(() => {
+        setFormErrors(null);
+      }, 10000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [formErrors]);
+
 
   const initialValues = {
     fullName: "",
@@ -26,11 +49,87 @@ export default function CreateProfile({ onComplete }) {
     bio: "",
   };
 
-  const handleFormSubmit = async (formData) => {
-    try {
-      setDisplayError(null);
-      console.log("Submitting basic profile data:", formData);
 
+  const validateForm = (formValues) => {
+ 
+    if (!formValues.fullName && !formValues.company &&
+       !formValues.location && !formValues.status &&
+       !formValues.githubUsername && !formValues.skills &&
+       !formValues.bio
+      ) {
+      setFormErrors("All fields are required");
+      return false;
+    }
+
+    if (!formValues.fullName) {
+      setFormErrors("Full name is required");
+      return false;
+    }
+    if (formValues.fullName.length < 5) {
+      setFormErrors("Full name must be at least 5 characters");
+      return false;
+    }
+
+    if (!formValues.company) {
+      setFormErrors("Company name is required");
+      return false;
+    }
+    if (formValues.company.length < 5) {
+      setFormErrors("Company name must be at least 5 characters");
+      return false;
+    }
+
+    if (!formValues.location) {
+      setFormErrors("Location is required");
+      return false;
+    }
+
+    if (formValues.location.length < 5) {
+      setFormErrors("Location must be at least 5 characters");
+      return false;
+    }
+
+    if (!formValues.status) {
+      setFormErrors("Status is required");
+      return false;
+    }
+
+    if (!formValues.githubUsername) {
+      setFormErrors("GitHub username is required");
+      return false;
+    }
+
+    if (!formValues.skills) {
+      setFormErrors("Tech skills are required");
+      return false;
+    }
+
+    if (!formValues.bio) {
+      setFormErrors("Short bio is required");
+      return false;
+    }
+
+    if (formValues.bio.length < 5) {
+      setFormErrors("Short bio must be at least 5 characters");
+      return false;
+    }
+
+
+    setFormErrors(null);
+    return true;
+  };
+
+
+
+  const handleFormSubmit = async (formData) => {
+    setServerError(null);
+    setFormErrors(null);
+
+    if (!validateForm(formData)) {
+      return;
+    }
+
+    try {
       const basicProfileInputData = {
         fullName: formData.fullName,
         company: formData.company,
@@ -44,16 +143,14 @@ export default function CreateProfile({ onComplete }) {
       }
 
       const basicProfile = submitProfile(basicProfileInputData);
-      
-      console.log("Response basic profile data:", basicProfile);
+      //console.log("Response basic profile data:", basicProfile);
 
       if (basicProfile && onComplete) {
         onComplete();
       }
 
     } catch (err) {
-      console.log("Error message:", err.message);
-      setDisplayError(err.message);
+      setServerError(err.message);
 
     }
   }
@@ -69,7 +166,11 @@ export default function CreateProfile({ onComplete }) {
     <>
       <div className="form-card">
         <h1 className="form-title">Create Your Professional Profile</h1>
-        {displayError && <div className="error-message">{displayError}</div>}
+      
+        {formErrors && <div className="error-message">{formErrors}</div>}
+          {!formErrors && serverError && (
+            <div className="error-message">{serverError}</div>
+          )}
         <form onSubmit={submitHandler}>
           <div className="form-grid">
             <div className="form-group">
@@ -96,11 +197,11 @@ export default function CreateProfile({ onComplete }) {
             <div className="form-group">
               <label>Website</label>
               <input
-                type="url"
+                type="text"
                 name="website"
                 value={formValues.website}
                 onChange={changeHandler}
-                placeholder="www.example.com"
+                placeholder="www.example.com" 
               />
 
             </div>
@@ -133,7 +234,7 @@ export default function CreateProfile({ onComplete }) {
                 name="linkedinProfile"
                 value={formValues.linkedinProfile}
                 onChange={changeHandler}
-                placeholder="www.linkedin.com/in/username"
+                placeholder="https://www.linkedin.com/in/username"
               />
             </div>
             <div className="form-group">

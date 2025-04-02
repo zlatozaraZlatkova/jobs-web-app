@@ -8,7 +8,36 @@ export default function AddEducation({ onBack, onComplete }) {
   const { employee, refreshData, isLoading } = useGetEmployeeProfile();
   const { submitEducation, isSubmittingEducation, error } = useEducationApi();
   const { submitDelEduc } = useDeleteEducation();
-  const [displayError, setDisplayError] = useState(null);
+  const [serverError, setServerError] = useState(null);
+  const [formErrors, setFormErrors] = useState(null);
+
+  
+  useEffect(() => {
+    if (error) {
+      setServerError(error);
+      const timer = setTimeout(() => {
+        setServerError(null);
+      }, 10000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (formErrors) {
+      const timer = setTimeout(() => {
+        setFormErrors(null);
+      }, 10000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [formErrors]);
+
+
 
   const initialValues = {
     school: "",
@@ -20,17 +49,80 @@ export default function AddEducation({ onBack, onComplete }) {
     description: "",
   };
 
-  useEffect(() => {
-    if (error) {
-      setDisplayError(error);
+  const validateForm = (formValues) => {
+
+    if (!formValues.school && !formValues.degree && !formValues.fieldOfStudy &&
+      !formValues.from && !formValues.to && ! formValues.description
+    ) {
+      setFormErrors("All fields are required");
+      return false;
     }
-  }, [error]);
+
+    if (!formValues.school) {
+      setFormErrors("School is required");
+      return false;
+    }
+    if (formValues.school.length < 5) {
+      setFormErrors("School name must be at least 5 characters");
+      return false;
+    }
+    if (!formValues.degree) {
+      setFormErrors("Degree is required");
+      return false;
+    }
+    if (formValues.degree.length < 5) {
+      setFormErrors("Degree must be at least 5 characters");
+      return false;
+    }
+    if (!formValues.fieldOfStudy) {
+      setFormErrors("Field of study is required");
+      return false;
+    }
+    if (formValues.fieldOfStudy.length < 5) {
+      setFormErrors("Field of study must be at least 5 characters");
+      return false;
+    }
+
+    if (!formValues.description) {
+      setFormErrors("Description is required");
+      return false;
+    }
+    if (formValues.description.length < 5) {
+      setFormErrors("Description must be at least 5 characters");
+      return false;
+    }
+
+    if (!formValues.current) {
+     
+      if (!formValues.to) {
+        setFormErrors("End date is required when not current");
+        return false;
+      }
+
+      if (formValues.to < formValues.from) {
+        setFormErrors("End date cannot be earlier than start date");
+        return false;
+      }
+      
+    }
+
+    setFormErrors(null);
+    return true;
+  };
+
+
 
   const handleFormSubmit = async (formData) => {
     const today = new Date().toISOString().split('T')[0];
-    try {
-      setDisplayError(null);
+    setServerError(null);
+    setFormErrors(null);
 
+    if (!validateForm(formData)) {
+      return;
+    }
+
+    try {
+   
       const educationInputData = {
         school: formData.school,
         degree: formData.degree,
@@ -42,14 +134,14 @@ export default function AddEducation({ onBack, onComplete }) {
       };
 
       const newEducation = await submitEducation(educationInputData);
-      console.log("Response education data", newEducation);
+      //console.log("Response education data", newEducation);
 
       if (newEducation) {
         refreshData();
         resetForm();
       }
     } catch (err) {
-      setDisplayError(err.message || "Failed to save education");
+      setServerError(err.message || "Failed to save education");
     }
   };
 
@@ -60,7 +152,7 @@ export default function AddEducation({ onBack, onComplete }) {
 
   const handleContinue = () => {
     if (!employee?.education || employee.education.length === 0) {
-      setDisplayError("Please add at least one education before continuing");
+      setServerError("Please add at least one education before continuing");
       return;
     }
 
@@ -74,7 +166,7 @@ export default function AddEducation({ onBack, onComplete }) {
       refreshData();
 
     } catch (error) {
-      setDisplayError(error.message || "Failed to delete education");
+      setServerError(error.message || "Failed to delete education");
     }
   }
 
@@ -86,7 +178,12 @@ export default function AddEducation({ onBack, onComplete }) {
       {/* Education Form */}
       <div className="form-card">
         <h1 className="form-title">Add Your Education</h1>
-        {displayError && <div className="error-message">{displayError}</div>}
+        
+        {formErrors && <div className="error-message">{formErrors}</div>}
+          {!formErrors && serverError && (
+            <div className="error-message">{serverError}</div>
+          )}
+          
         <form onSubmit={submitHandler}>
           <div className="form-group">
             <label className="required">School</label>

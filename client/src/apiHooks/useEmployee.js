@@ -342,7 +342,7 @@ export function useGetGitHubProfile(username) {
         setIsLoading(true);
         setError(null);
         const response = await getGitHubRepo(username);
-        console.log("Response data after fetching", response);
+        console.log("Response github data after fetching", response);
         if (!response) {
           setprofileRepo(null);
           return;
