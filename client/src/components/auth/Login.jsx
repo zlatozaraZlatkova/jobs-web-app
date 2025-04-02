@@ -28,7 +28,7 @@ export default function Login() {
     }
   };
 
-  const {  formValues, changeHander, sumbitHandler, resetForm } = useForm(
+  const {  formValues, changeHandler, submitHandler, resetForm } = useForm(
     initialValues,
     handleFormSubmit
   );
@@ -42,7 +42,7 @@ export default function Login() {
             <i className="fas fa-user" /> Sign Into Your Account
           </h3>
 
-          <form className="form" onSubmit={sumbitHandler}>
+          <form className="form" onSubmit={submitHandler}>
             <div className="form-group">
               <input
                 autoComplete="username"
@@ -50,7 +50,7 @@ export default function Login() {
                 placeholder="Email Address"
                 name="email"
                 value={formValues.email}
-                onChange={changeHander}
+                onChange={changeHandler}
                 required
               />
             </div>
@@ -61,7 +61,7 @@ export default function Login() {
                 placeholder="Password"
                 name="password"
                 value={formValues.password}
-                onChange={changeHander}
+                onChange={changeHandler}
                 required
               />
             </div>

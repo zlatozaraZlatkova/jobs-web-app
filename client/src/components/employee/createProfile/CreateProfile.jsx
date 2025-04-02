@@ -58,7 +58,7 @@ export default function CreateProfile({ onComplete }) {
     }
   }
 
-  const { formValues, changeHander, sumbitHandler, resetForm } = useForm(initialValues, handleFormSubmit);
+  const { formValues, changeHandler, submitHandler, resetForm } = useForm(initialValues, handleFormSubmit);
 
   const clickCancelHandle = () => {
     resetForm();
@@ -70,7 +70,7 @@ export default function CreateProfile({ onComplete }) {
       <div className="form-card">
         <h1 className="form-title">Create Your Professional Profile</h1>
         {displayError && <div className="error-message">{displayError}</div>}
-        <form onSubmit={sumbitHandler}>
+        <form onSubmit={submitHandler}>
           <div className="form-grid">
             <div className="form-group">
               <label className="required">Full Name</label>
@@ -78,7 +78,7 @@ export default function CreateProfile({ onComplete }) {
                 type="text"
                 name="fullName"
                 value={formValues.fullName}
-                onChange={changeHander}
+                onChange={changeHandler}
                 placeholder="e.g. John Doe"
               />
 
@@ -89,7 +89,7 @@ export default function CreateProfile({ onComplete }) {
                 type="text"
                 name="company"
                 value={formValues.company}
-                onChange={changeHander}
+                onChange={changeHandler}
                 placeholder="e.g. Tech Solutions Inc."
               />
             </div>
@@ -99,7 +99,7 @@ export default function CreateProfile({ onComplete }) {
                 type="url"
                 name="website"
                 value={formValues.website}
-                onChange={changeHander}
+                onChange={changeHandler}
                 placeholder="www.example.com"
               />
 
@@ -110,7 +110,7 @@ export default function CreateProfile({ onComplete }) {
                 type="text"
                 name="location"
                 value={formValues.location}
-                onChange={changeHander}
+                onChange={changeHandler}
                 placeholder="e.g. London, UK"
               />
 
@@ -121,7 +121,7 @@ export default function CreateProfile({ onComplete }) {
                 type="text"
                 name="status"
                 value={formValues.status}
-                onChange={changeHander}
+                onChange={changeHandler}
                 placeholder="e.g. Looking for opportunities"
               />
 
@@ -132,7 +132,7 @@ export default function CreateProfile({ onComplete }) {
                 type="url"
                 name="linkedinProfile"
                 value={formValues.linkedinProfile}
-                onChange={changeHander}
+                onChange={changeHandler}
                 placeholder="www.linkedin.com/in/username"
               />
             </div>
@@ -142,7 +142,7 @@ export default function CreateProfile({ onComplete }) {
                 type="text"
                 name="githubUsername"
                 value={formValues.githubUsername}
-                onChange={changeHander}
+                onChange={changeHandler}
                 placeholder="username"
               />
 
@@ -153,7 +153,7 @@ export default function CreateProfile({ onComplete }) {
                 type="text"
                 name="skills"
                 value={formValues.skills}
-                onChange={changeHander}
+                onChange={changeHandler}
                 placeholder="eg. HTML, CSS, JavaScript, React"
               />
 
@@ -163,7 +163,7 @@ export default function CreateProfile({ onComplete }) {
               <textarea
                 name="bio"
                 value={formValues.bio}
-                onChange={changeHander}
+                onChange={changeHandler}
                 placeholder="Tell us about yourself..."
               />
             </div>

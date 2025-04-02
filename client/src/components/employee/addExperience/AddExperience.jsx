@@ -57,7 +57,7 @@ export default function AddExperience({ onBack, onComplete }) {
     }
   };
 
-  const { formValues, changeHander, sumbitHandler, resetForm } = useForm(
+  const { formValues, changeHandler, submitHandler, resetForm } = useForm(
     initialValues,
     handleFormSubmit
   );
@@ -89,14 +89,14 @@ export default function AddExperience({ onBack, onComplete }) {
       <div className="form-card">
         <h1 className="form-title">Add Your Experience</h1>
         {displayError && <div className="error-message">{displayError}</div>}
-        <form onSubmit={sumbitHandler}>
+        <form onSubmit={submitHandler}>
           <div className="form-group">
             <label className="required">Title</label>
             <input
               type="text"
               name="title"
               value={formValues.title}
-              onChange={changeHander}
+              onChange={changeHandler}
               placeholder="e.g. Senior Frontend Developer"
               required
             />
@@ -108,7 +108,7 @@ export default function AddExperience({ onBack, onComplete }) {
               type="text"
               name="company"
               value={formValues.company}
-              onChange={changeHander}
+              onChange={changeHandler}
               placeholder="e.g. Oracle"
               required
             />
@@ -119,7 +119,7 @@ export default function AddExperience({ onBack, onComplete }) {
               type="text"
               name="location"
               value={formValues.location}
-              onChange={changeHander}
+              onChange={changeHandler}
               placeholder="e.g. London"
             />
           </div>
@@ -129,7 +129,7 @@ export default function AddExperience({ onBack, onComplete }) {
               type="date"
               name="from"
               value={formValues.from}
-              onChange={changeHander}
+              onChange={changeHandler}
               required
             />
           </div>
@@ -139,7 +139,7 @@ export default function AddExperience({ onBack, onComplete }) {
               type="date"
               name="to"
               value={formValues.to}
-              onChange={changeHander}
+              onChange={changeHandler}
               disabled={formValues.current}
             />
             <div className="checkbox-group">
@@ -148,7 +148,7 @@ export default function AddExperience({ onBack, onComplete }) {
                 id="current"
                 name="current"
                 checked={formValues.current}
-                onChange={changeHander}
+                onChange={changeHandler}
               />
               <label htmlFor="current">I am currently working here</label>
             </div>
@@ -158,7 +158,7 @@ export default function AddExperience({ onBack, onComplete }) {
             <textarea
               name="description"
               value={formValues.description}
-              onChange={changeHander}
+              onChange={changeHandler}
               placeholder="Describe your roles and responsibilities..."
             />
           </div>

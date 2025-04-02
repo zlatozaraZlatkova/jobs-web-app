@@ -53,7 +53,7 @@ export default function AddEducation({ onBack, onComplete }) {
     }
   };
 
-  const { formValues, changeHander, sumbitHandler, resetForm } = useForm(
+  const { formValues, changeHandler, submitHandler, resetForm } = useForm(
     initialValues,
     handleFormSubmit
   );
@@ -87,14 +87,14 @@ export default function AddEducation({ onBack, onComplete }) {
       <div className="form-card">
         <h1 className="form-title">Add Your Education</h1>
         {displayError && <div className="error-message">{displayError}</div>}
-        <form onSubmit={sumbitHandler}>
+        <form onSubmit={submitHandler}>
           <div className="form-group">
             <label className="required">School</label>
             <input
               type="text"
               name="school"
               value={formValues.school}
-              onChange={changeHander}
+              onChange={changeHandler}
               placeholder="e.g. SoftUni"
               required
             />
@@ -105,7 +105,7 @@ export default function AddEducation({ onBack, onComplete }) {
               type="text"
               name="degree"
               value={formValues.degree}
-              onChange={changeHander}
+              onChange={changeHandler}
               placeholder="e.g. Professional"
               required
             />
@@ -116,7 +116,7 @@ export default function AddEducation({ onBack, onComplete }) {
               type="text"
               name="fieldOfStudy"
               value={formValues.fieldOfStudy}
-              onChange={changeHander}
+              onChange={changeHandler}
               placeholder="e.g. JS Web Developer"
               required
             />
@@ -127,7 +127,7 @@ export default function AddEducation({ onBack, onComplete }) {
               type="date"
               name="from"
               value={formValues.from}
-              onChange={changeHander}
+              onChange={changeHandler}
               required
             />
           </div>
@@ -137,7 +137,7 @@ export default function AddEducation({ onBack, onComplete }) {
               type="date"
               name="to"
               value={formValues.to}
-              onChange={changeHander}
+              onChange={changeHandler}
               disabled={formValues.current}
             />
             <div className="checkbox-group">
@@ -146,7 +146,7 @@ export default function AddEducation({ onBack, onComplete }) {
                 id="current"
                 name="current"
                 checked={formValues.current}
-                onChange={changeHander}
+                onChange={changeHandler}
               />
               <label htmlFor="current">I am currently study here</label>
             </div>
@@ -156,7 +156,7 @@ export default function AddEducation({ onBack, onComplete }) {
             <textarea
               name="description"
               value={formValues.description}
-              onChange={changeHander}
+              onChange={changeHandler}
               placeholder="Describe your course, achievements, and relevant projects..."
             />
           </div>

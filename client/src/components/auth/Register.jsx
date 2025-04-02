@@ -42,7 +42,7 @@ export default function Register() {
 
   };
 
-  const { formValues, changeHander, sumbitHandler, roleChangeHandler, resetForm } = useForm(initialValues, handlerFormSumbit);
+  const { formValues, changeHandler, submitHandler, roleChangeHandler, resetForm } = useForm(initialValues, handlerFormSumbit);
 
 
   return (
@@ -58,14 +58,14 @@ export default function Register() {
             <div className="alert alert-danger">{passwordError}</div>
           )}
 
-          <form className="form" onSubmit={sumbitHandler}>
+          <form className="form" onSubmit={submitHandler}>
             <div className="form-group">
               <input
                 type="text"
                 placeholder="Name"
                 name="name"
                 value={formValues.name}
-                onChange={changeHander}
+                onChange={changeHandler}
                 required
               />
             </div>
@@ -76,7 +76,7 @@ export default function Register() {
                 placeholder="Email Address"
                 name="email"
                 value={formValues.email}
-                onChange={changeHander}
+                onChange={changeHandler}
                 required
               />
             </div>
@@ -87,7 +87,7 @@ export default function Register() {
                 placeholder="Password"
                 name="password"
                 value={formValues.password}
-                onChange={changeHander}
+                onChange={changeHandler}
                 minLength="8"
                 required
               />
@@ -99,7 +99,7 @@ export default function Register() {
                 placeholder="Confirm Password"
                 name="rePassword"
                 value={formValues.rePassword}
-                onChange={changeHander}
+                onChange={changeHandler}
                 minLength="8"
                 required
               />

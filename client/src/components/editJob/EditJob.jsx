@@ -53,7 +53,7 @@ export default function EditJob() {
     }
   };
 
-  const { formValues, setFormValues, changeHander, sumbitHandler, resetForm } = useForm(
+  const { formValues, setFormValues, changeHandler, submitHandler, resetForm } = useForm(
     initialValues,
     handleFormSubmit
   );
@@ -83,7 +83,7 @@ export default function EditJob() {
       <div className={styles.container}>
         <div className={styles.formCard}>
           {displayError && <div className="error-message">{displayError}</div>}
-          <form onSubmit={sumbitHandler}>
+          <form onSubmit={submitHandler}>
             <h2 className={styles.formTitle}>Edit Job</h2>
 
             <div className={styles.formGroup}>
@@ -100,7 +100,7 @@ export default function EditJob() {
                 minLength="5"
                 maxLength="150"
                 value={formValues.title}
-                onChange={changeHander}
+                onChange={changeHandler}
               />
               <small className={styles.formHint}>
                 Must be 5-150 characters
@@ -117,7 +117,7 @@ export default function EditJob() {
                 className={styles.formSelect}
                 required
                 value={formValues.techStack}
-                onChange={changeHander}
+                onChange={changeHandler}
               >
                 <option value="html">HTML</option>
                 <option value="css">CSS</option>
@@ -147,7 +147,7 @@ export default function EditJob() {
                 className={styles.formSelect}
                 required
                 value={formValues.type}
-                onChange={changeHander}
+                onChange={changeHandler}
               >
                 <option value="full-time">Full-Time</option>
                 <option value="part-time">Part-Time</option>
@@ -165,7 +165,7 @@ export default function EditJob() {
                 className={styles.formSelect}
                 required
                 value={formValues.technologies}
-                onChange={changeHander}
+                onChange={changeHandler}
               >
                 <option value="frontend">Frontend</option>
                 <option value="backend">Backend</option>
@@ -186,7 +186,7 @@ export default function EditJob() {
                 minLength="5"
                 maxLength="3000"
                 value={formValues.description}
-                onChange={changeHander}
+                onChange={changeHandler}
               ></textarea>
               <small className={styles.formHint}>
                 Must be 5-3000 characters
@@ -205,7 +205,7 @@ export default function EditJob() {
                 placeholder="e.g. San Francisco, CA or Remote"
                 required
                 value={formValues.location}
-                onChange={changeHander}
+                onChange={changeHandler}
               />
             </div>
 
@@ -219,7 +219,7 @@ export default function EditJob() {
                 className={styles.formSelect}
                 required
                 value={formValues.salary}
-                onChange={changeHander}
+                onChange={changeHandler}
               >
                 <option value="Under $50K">Under $50K</option>
                 <option value="$50K - 60K">$50K - $60K</option>

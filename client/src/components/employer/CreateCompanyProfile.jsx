@@ -45,7 +45,7 @@ export default function CreateCompanyProfile() {
     }
   };
 
-  const { formValues, changeHander, sumbitHandler, resetForm } = useForm(initialValues, handleFormSubmit);
+  const { formValues, changeHandler, submitHandler, resetForm } = useForm(initialValues, handleFormSubmit);
 
   const clickCancelHandle = () => {
     resetForm();
@@ -53,7 +53,7 @@ export default function CreateCompanyProfile() {
 
   return (
     <>
-      <form onSubmit={sumbitHandler}>
+      <form onSubmit={submitHandler}>
         {/* Company Information */}
         {displayError && <div className="error-message">{displayError}</div>}
         <div className="form-section">
@@ -64,7 +64,7 @@ export default function CreateCompanyProfile() {
               type="text"
               name="companyName"
               value={formValues.companyName}
-              onChange={changeHander}
+              onChange={changeHandler}
               placeholder="e.g. Dolor Cloud"
               required
             />
@@ -75,7 +75,7 @@ export default function CreateCompanyProfile() {
             <textarea
               name="description"
               value={formValues.description}
-              onChange={changeHander}
+              onChange={changeHandler}
               placeholder="Describe your company, its mission, and key offerings..."
               required
             />
@@ -95,7 +95,7 @@ export default function CreateCompanyProfile() {
                 type="email"
                 name="contactEmail"
                 value={formValues.contactEmail}
-                onChange={changeHander}
+                onChange={changeHandler}
                 placeholder="e.g. contact@company.com"
                 required
               />
@@ -106,7 +106,7 @@ export default function CreateCompanyProfile() {
                 type="tel"
                 name="contactPhone"
                 value={formValues.contactPhone}
-                onChange={changeHander}
+                onChange={changeHandler}
                 placeholder="e.g. 555-555-5555"
                 required
               />

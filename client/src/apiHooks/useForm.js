@@ -3,7 +3,7 @@ import { useState } from "react";
 export function useForm(initialValues, submitCallback) {
   const [formValues, setFormValues] = useState(initialValues);
 
-  const changeHander = (e) => {
+  const changeHandler = (e) => {
     const { name, type, checked, value } = e.target;
 
     setFormValues((formValues) => ({
@@ -19,7 +19,7 @@ export function useForm(initialValues, submitCallback) {
     }));
   };
 
-  const sumbitHandler = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
 
     submitCallback(formValues);
@@ -32,8 +32,8 @@ export function useForm(initialValues, submitCallback) {
   return {
     formValues,
     setFormValues,
-    changeHander,
-    sumbitHandler,
+    changeHandler,
+    submitHandler,
     roleChangeHandler,
     resetForm
   };

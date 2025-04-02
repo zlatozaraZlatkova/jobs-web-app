@@ -46,7 +46,7 @@ export default function EditCompanyProfile() {
         }
     };
 
-    const { formValues, setFormValues, changeHander, sumbitHandler, resetForm } =
+    const { formValues, setFormValues, changeHandler, submitHandler, resetForm } =
         useForm(initialValues, handleFormSubmit);
 
     useEffect(() => {
@@ -71,7 +71,7 @@ export default function EditCompanyProfile() {
                     <div className="formCard">
                         {displayError && <div className="error-message">{displayError}</div>}
 
-                        <form onSubmit={sumbitHandler}>
+                        <form onSubmit={submitHandler}>
                             {/* Company Information */}
                             {displayError && (
                                 <div className="error-message">{displayError}</div>
@@ -84,7 +84,7 @@ export default function EditCompanyProfile() {
                                         type="text"
                                         name="companyName"
                                         value={formValues.companyName}
-                                        onChange={changeHander}
+                                        onChange={changeHandler}
                                         placeholder="e.g. Dolor Cloud"
                                         required
                                     />
@@ -97,7 +97,7 @@ export default function EditCompanyProfile() {
                                     <textarea
                                         name="description"
                                         value={formValues.description}
-                                        onChange={changeHander}
+                                        onChange={changeHandler}
                                         placeholder="Describe your company, its mission, and key offerings..."
                                         required
                                     />
@@ -117,7 +117,7 @@ export default function EditCompanyProfile() {
                                             type="email"
                                             name="contactEmail"
                                             value={formValues.contactEmail}
-                                            onChange={changeHander}
+                                            onChange={changeHandler}
                                             placeholder="e.g. contact@company.com"
                                             required
                                         />
@@ -128,7 +128,7 @@ export default function EditCompanyProfile() {
                                             type="tel"
                                             name="contactPhone"
                                             value={formValues.contactPhone}
-                                            onChange={changeHander}
+                                            onChange={changeHandler}
                                             placeholder="e.g. 555-555-5555"
                                             required
                                         />
