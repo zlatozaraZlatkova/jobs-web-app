@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,21 +19,28 @@ export default function DashboardEmployer() {
   const { submitDelJob } = useDeleteJob();
 
   const [activeTab, setActiveTab] = useState("overview");
-  const [displayError, setDisplayError] = useState(null);
+  const [serverError, setServerError] = useState(null);
 
   const isProfileOwner = profileData?.ownerId?._id === _id;
-  console.log("_id from AuthContext:", _id);
-  console.log("isProfile owner:", isProfileOwner);
-  console.log("profile data", profileData);
+  // console.log("_id from AuthContext:", _id);
+  //console.log("isProfile owner:", isProfileOwner);
+  // console.log("profile data", profileData);
 
   const hasCompleteProfile =
     profileData && profileData.ownerId && profileData.companyId;
 
-  useEffect(() => {
-    if (error) {
-      setDisplayError(error);
-    }
-  }, [error]);
+    useEffect(() => {
+      if (error) {
+        setServerError(error);
+        const timer = setTimeout(() => {
+          setServerError(null);
+        }, 10000);
+  
+        return () => {
+          clearTimeout(timer);
+        };
+      }
+    }, [error]);
 
   const onEditClickHander = (id) => {
     navigate(`/jobs/update/${id}`);
@@ -45,7 +53,7 @@ export default function DashboardEmployer() {
       refreshData();
 
     } catch (error) {
-      setDisplayError(error);
+      setServerError(error);
     }
   };
 
@@ -55,7 +63,7 @@ export default function DashboardEmployer() {
 
   return (
     <section className={styles.dashboardSection}>
-      {displayError && <div className="error-message">{displayError}</div>}
+      {serverError && <div className="error-message">{serverError}</div>}
       
       {hasCompleteProfile ? (
         <div className={styles.adminDashboard}>

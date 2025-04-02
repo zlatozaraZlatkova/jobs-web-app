@@ -6,8 +6,36 @@ import styles from "./CreateJob.module.css";
 
 export default function CreateJob() {
   const navigate = useNavigate();
-  const [displayError, setDisplayError] = useState(null);
+  const [serverError, setServerError] = useState(null);
+  const [formErrors, setFormErrors] = useState(null);
   const { isSubmittingJob, submitJob, error } = useCreateJob();
+
+
+  useEffect(() => {
+    if (error) {
+      setServerError(error);
+      const timer = setTimeout(() => {
+        setServerError(null);
+      }, 10000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (formErrors) {
+      const timer = setTimeout(() => {
+        setFormErrors(null);
+      }, 10000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [formErrors]);
+
 
   const initialValues = {
     title: "",
@@ -19,19 +47,59 @@ export default function CreateJob() {
     salary: "Under $50K",
   };
 
-    useEffect(() => {
-      if (error) {
-        setDisplayError(error);
-      }
-    }, [error]);
+  const validateForm = (formValues) => {
+
+    if (!formValues.title && !formValues.description && !formValues.location) {
+      setFormErrors("All fields are required");
+      return false;
+    }
+
+    if (!formValues.title) {
+      setFormErrors("Position is required");
+      return false;
+    }
+    if (formValues.title.length < 5) {
+      setFormErrors("Position must be at least 5 characters");
+      return false;
+    }
+
+    if (!formValues.description) {
+      setFormErrors("Description is required");
+      return false;
+    }
+    if (formValues.description.length < 5) {
+      setFormErrors("Description must be at least 5 characters");
+      return false;
+    }
+
+    if (!formValues.location) {
+      setFormErrors("Location is required");
+      return false;
+    }
+    if (formValues.location.length < 2) {
+      setFormErrors("Location must be at least 2 characters");
+      return false;
+    }
+
+
+    setFormErrors(null);
+    return true;
+  };
+
 
   const handleFormSubmit = async (formData) => {
+    setServerError(null);
+    setFormErrors(null);
+
+    if (!validateForm(formData)) {
+      return;
+    }
+
     try {
-      setDisplayError(null);
 
       const jobData = {
         title: formData.title,
-        techStack: formData.techStack, 
+        techStack: formData.techStack,
         type: formData.type,
         technologies: formData.technologies,
         description: formData.description,
@@ -40,11 +108,15 @@ export default function CreateJob() {
       };
 
       const newJob = await submitJob(jobData);
-      //console.log("Response job data:", newJob);
+      console.log("Response job data:", newJob);
 
-      navigate(`/jobs/${newJob._id}`);
+      if (newJob && !error) {
+        navigate(`/jobs/${newJob._id}`);
+      }
+
+
     } catch (err) {
-      setDisplayError(err.message);
+      setServerError(err.message);
       resetForm();
     }
   };
@@ -58,14 +130,20 @@ export default function CreateJob() {
   return (
     <section className={styles.formSection}>
       <div className={styles.container}>
+
         <div className={styles.formCard}>
-        {displayError && <div className="error-message">{displayError}</div>}
+        {formErrors && <div className="error-message">{formErrors}</div>}
+          {!formErrors && serverError && (
+            <div className="error-message">{serverError}</div>
+          )}
+         
+
           <form onSubmit={submitHandler}>
             <h2 className={styles.formTitle}>Add Job</h2>
 
             <div className={styles.formGroup}>
               <label htmlFor="title" className={styles.formLabel}>
-                Job Title*
+                Job Position*
               </label>
               <input
                 type="text"
@@ -181,9 +259,14 @@ export default function CreateJob() {
                 className={styles.formInput}
                 placeholder="e.g. San Francisco, CA or Remote"
                 required
+                minLength="2"
+                maxLength="30"
                 value={formValues.location}
                 onChange={changeHandler}
               />
+              <small className={styles.formHint}>
+                Must be 2-30 characters
+              </small>
             </div>
 
             <div className={styles.formGroup}>
