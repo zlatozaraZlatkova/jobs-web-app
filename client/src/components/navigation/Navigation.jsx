@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import styles from "./Navigation.module.css";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogout } from "../../apiHooks/useAuth";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -11,18 +11,36 @@ export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [serverError, setServerError] = useState(null);
 
-  const { isAuthenticated, email, role } = useContext(AuthContext);
-  const { logoutHandler } = useLogout();
+  const { isAuthenticated, role } = useContext(AuthContext);
+  const { logoutHandler, error } = useLogout();
   const isEmployee = role === "employee";
+
+    useEffect(() => {
+      if (error) {
+        setServerError(error);
+        const timer = setTimeout(() => {
+          setServerError(null);
+        }, 3000);
+  
+        return () => {
+          clearTimeout(timer);
+        };
+      }
+    }, [error]);
 
   const handleLogout = async () => {
     try {
+      setServerError(null);
+
       const success = await logoutHandler();
-      navigate("/");
+
+      if(success && !error) {
+        navigate("/");
+      }
+    
 
     } catch (err) {
-      console.log("Logout failed:", err);
-      setServerError("Failed to logout. Please try again.");
+      setServerError(err.message || "Failed to logout. Please try again.");
     }
   };
 

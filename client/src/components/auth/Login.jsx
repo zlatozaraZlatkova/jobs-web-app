@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable no-unused-vars */
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../apiHooks/useAuth";
 import { useForm } from "../../apiHooks/useForm";
@@ -6,29 +7,85 @@ import { useForm } from "../../apiHooks/useForm";
 export default function Login() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState(null);
-  const { isLoading, loginHandler } = useLogin();
+  const [formErrors, setFormErrors] = useState(null);
+  const { isLoading, loginHandler, error } = useLogin();
+
+  useEffect(() => {
+    if (error) {
+      setServerError(error);
+      const timer = setTimeout(() => {
+        setServerError(null);
+      }, 3000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (formErrors) {
+      const timer = setTimeout(() => {
+        setFormErrors(null);
+      }, 3000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [formErrors]);
 
   const initialValues = { email: "", password: "" };
 
+  const validateForm = (formValues) => {
+    const regexEmail =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    if (!formValues.email && !formValues.password) {
+      setFormErrors("Email and password are required");
+      return false;
+    }
+
+    if (!formValues.email) {
+      setFormErrors("Email is required");
+      return false;
+    }
+
+    if (!formValues.password) {
+      setFormErrors("Password is required");
+      return false;
+    }
+
+    if (!regexEmail.test(formValues.email)) {
+      setFormErrors("Please enter a valid email address");
+      return false;
+    }
+
+    setFormErrors(null);
+    return true;
+  };
+
   const handleFormSubmit = async (formData) => {
+    setServerError(null);
+    setFormErrors(null);
+
+    if (!validateForm(formData)) {
+      return;
+    }
+
     try {
       const { email, password } = formData;
       const result = await loginHandler(email, password);
-      console.log("Submitting user data:", result);
 
-      navigate("/");
-
+      if (result && !error) {
+        navigate("/");
+      }
     } catch (err) {
-      console.log("Error user login data", err);
-
-      const errMsg = "Invalid email or password. Please try again.";
-      setServerError(errMsg);
-      
-      resetForm();
+      setServerError(err.message);
     }
   };
 
-  const {  formValues, changeHandler, submitHandler, resetForm } = useForm(
+  const { formValues, changeHandler, submitHandler } = useForm(
     initialValues,
     handleFormSubmit
   );
@@ -36,13 +93,16 @@ export default function Login() {
   return (
     <>
       <section className="container-profile">
-      {serverError && <div className="error-message">{serverError}</div>}
+      {formErrors && <div className="error-message">{formErrors}</div>}
+          {!formErrors && serverError && (
+            <div className="error-message">{serverError}</div>
+          )}
+
         <div className="login-container">
           <h3 className="lead">
             <i className="fas fa-user" /> Sign Into Your Account
           </h3>
-
-          <form className="form" onSubmit={submitHandler}>
+          <form className="form" onSubmit={submitHandler} noValidate>
             <div className="form-group">
               <input
                 autoComplete="username"
@@ -51,7 +111,6 @@ export default function Login() {
                 name="email"
                 value={formValues.email}
                 onChange={changeHandler}
-                required
               />
             </div>
             <div className="form-group">
@@ -62,7 +121,6 @@ export default function Login() {
                 name="password"
                 value={formValues.password}
                 onChange={changeHandler}
-                required
               />
             </div>
             <button

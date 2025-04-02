@@ -1,63 +1,128 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../../apiHooks/useForm";
 import { useRegister } from "../../apiHooks/useAuth";
 
-
 export default function Register() {
   const navigate = useNavigate();
-  const [passwordError, setPasswordError] = useState(null);
   const [serverError, setServerError] = useState(null);
+  const [formErrors, setFormErrors] = useState(null);
+  const { isLoading, registerHandler, error } = useRegister();
 
-  const { isLoading, registerHandler } = useRegister();
+  useEffect(() => {
+    if (error) {
+      setServerError(error);
+      const timer = setTimeout(() => {
+        setServerError(null);
+      }, 3000);
 
-  const initialValues = { name: "", email: "", password: "", rePassword: "", role: "employee" };
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [error]);
 
-  const handlerFormSumbit = async (formData) => {
-    const { name, email, password, rePassword, role } = formData;
-    
-    try {
-      if (password !== rePassword) {
-        setPasswordError("Passwords do not match! Please try again.");
-        return;
-      }
+  useEffect(() => {
+    if (formErrors) {
+      const timer = setTimeout(() => {
+        setFormErrors(null);
+      }, 3000);
 
-      setPasswordError(null);
-      const userData = await registerHandler(name, email, password, role);
-      console.log("Submitting user data:", userData);
-
-      navigate("/");
-
-
-    } catch (err) {
-      console.log("Error register user", err);
-      const errMsg = "Invalid email or password. Please try again.";
-      setServerError(errMsg);
-      
-      resetForm();
-
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [formErrors]);
   
+  const validateForm = (formValues) => {
+    const regexEmail =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    if (!formValues.name && !formValues.email && !formValues.password && !formValues.rePassword) {
+      setFormErrors("All fields are requered");
+      return false;
     }
 
+    if (!formValues.email) {
+      setFormErrors("Email is required");
+      return false;
+    }
 
+    if (!formValues.password) {
+      setFormErrors("Password is required");
+      return false;
+    }
+
+    if (!regexEmail.test(formValues.email)) {
+      setFormErrors("Please enter a valid email address");
+      return false;
+    }
+
+    if (formValues.name && formValues.name.lenght < 2) {
+      setFormErrors("Name must be at least 2 characters");
+      return false;
+    }
+
+    if (formValues.password && formValues.password.lenght < 8) {
+      setFormErrors("Password must be at least 8 characters");
+      return false;
+    }
+
+    if (formValues.password !== formValues.rePassword) {
+      setFormErrors("Passwords do not match! Please try again.");
+      return;
+    }
+
+    setFormErrors(null);
+    return true;
   };
 
-  const { formValues, changeHandler, submitHandler, roleChangeHandler, resetForm } = useForm(initialValues, handlerFormSumbit);
+  const initialValues = {
+    name: "",
+    email: "",
+    password: "",
+    rePassword: "",
+    role: "employee",
+  };
 
+  const handlerFormSumbit = async (formData) => {
+    const { name, email, password, role } = formData;
+
+    setServerError(null);
+    setFormErrors(null);
+
+    if (!validateForm(formData)) {
+      return;
+    }
+
+    try {
+      const userData = await registerHandler(name, email, password, role);
+      //console.log("Submitting user data:", userData);
+
+      if (userData && !error) {
+        navigate("/");
+      }
+    } catch (err) {
+      setServerError(err.message);
+      resetForm();
+    }
+  };
+
+  const {formValues, changeHandler, submitHandler, roleChangeHandler, resetForm } = useForm(initialValues, handlerFormSumbit);
 
   return (
     <>
       <section className="container-profile">
-      {serverError && <div className="error-message">{serverError}</div>}
+      {formErrors && <div className="error-message">{formErrors}</div>}
+          {!formErrors && serverError && (
+            <div className="error-message">{serverError}</div>
+          )}
 
         <div className="register-container">
+      
           <h3 className="lead">
             <i className="fas fa-user" /> Create Your Account
           </h3>
-          {passwordError && (
-            <div className="alert alert-danger">{passwordError}</div>
-          )}
-
           <form className="form" onSubmit={submitHandler}>
             <div className="form-group">
               <input
@@ -66,7 +131,7 @@ export default function Register() {
                 name="name"
                 value={formValues.name}
                 onChange={changeHandler}
-                required
+                minLength="2"
               />
             </div>
             <div className="form-group">
@@ -77,7 +142,6 @@ export default function Register() {
                 name="email"
                 value={formValues.email}
                 onChange={changeHandler}
-                required
               />
             </div>
             <div className="form-group">
@@ -89,7 +153,6 @@ export default function Register() {
                 value={formValues.password}
                 onChange={changeHandler}
                 minLength="8"
-                required
               />
             </div>
             <div className="form-group">
@@ -101,7 +164,6 @@ export default function Register() {
                 value={formValues.rePassword}
                 onChange={changeHandler}
                 minLength="8"
-                required
               />
             </div>
             <div className="form-group">
@@ -134,7 +196,8 @@ export default function Register() {
             <button
               type="submit"
               className="btn btn-primary w-full"
-              disabled={isLoading}>
+              disabled={isLoading}
+            >
               {isLoading ? "Registering..." : "Register"}
             </button>
           </form>

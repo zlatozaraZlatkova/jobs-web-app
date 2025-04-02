@@ -5,14 +5,21 @@ import { AuthContext } from "../contexts/AuthContext";
 
 
 export function useLogin() {
-  const { changeAuthState} = useContext(AuthContext);
+  const { changeAuthState } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const loginHandler = async (email, password) => {
     try {
       setIsLoading(true);
+      setError(null);
 
       const result = await login(email, password);
+
+      if (result.isError === true) {
+        setError(result.message);
+        return false;
+      }
 
       changeAuthState({
         _id: result._id,
@@ -23,9 +30,8 @@ export function useLogin() {
       return true;
 
     } catch (err) {
-      console.error("Error user login:", err);
-      throw err;
-
+      setError(err.message);
+      return false;
     } finally {
       setIsLoading(false);
     }
@@ -35,6 +41,7 @@ export function useLogin() {
     changeAuthState,
     isLoading,
     loginHandler,
+    error
   };
 }
 
@@ -42,26 +49,33 @@ export function useLogin() {
 export function useRegister() {
   const { changeAuthState } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
-  
-  const registerHandler = async(name, email, password, role) => {
+  const [error, setError] = useState(null);
+
+  const registerHandler = async (name, email, password, role) => {
 
     try {
       setIsLoading(true);
-      
+      setError(null);
+
       const result = await register(name, email, password, role);
-      console.log("Registration successful:", result);
-      
+      //console.log("Registration successful:", result);
+
+      if (result.isError === true) {
+        setError(result.message);
+        return false;
+      }
+
       changeAuthState({
         _id: result._id,
         email: result.email,
         role: result.role
       });
-      
+
       return result;
 
     } catch (err) {
-      console.error("Registration error:", err);
-      throw err;
+      setError(err.message);
+      return false;
 
     } finally {
       setIsLoading(false);
@@ -71,7 +85,8 @@ export function useRegister() {
   return {
     changeAuthState,
     isLoading,
-    registerHandler
+    registerHandler,
+    error
   };
 }
 
@@ -79,21 +94,28 @@ export function useRegister() {
 export function useLogout() {
   const { changeAuthState } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const logoutHandler = async () => {
     try {
       setIsLoading(true);
+      setError(null);
 
-      await logout();
-    
-      changeAuthState({});  
-      
+      const response = await logout();
+
+      if (response.isError === true) {
+        setError(response.message);
+        return false;
+      }
+
+      changeAuthState({});
+
       return true;
 
     } catch (err) {
-      console.error("Error user logout:", err);
-      throw err;
-      
+      setError(err.message);
+      return false;
+
     } finally {
       setIsLoading(false);
     }
@@ -101,15 +123,16 @@ export function useLogout() {
 
   return {
     isLoading,
-    logoutHandler
+    logoutHandler,
+    error
   };
 }
 
 export function useInitializeAuth(changeAuthState) {
 
   useEffect(() => {
-    let isMounted = true; 
-    
+    let isMounted = true;
+
     const fetchCurrentUser = async () => {
       try {
         const validateToken = await verifyToken();

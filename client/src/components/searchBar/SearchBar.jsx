@@ -5,27 +5,35 @@ import { useForm } from "../../apiHooks/useForm";
 import { useSearchJobs } from "../../apiHooks/useJobs";
 
 export default function SearchBar({ onSearch }) {
-  const [displayError, setDisplayError] = useState(null);
+  const [serverError, setServerError] = useState(null);
   const [formErrors, setFormErrors] = useState(null);
 
   const { submitSearch, error } = useSearchJobs();
 
   useEffect(() => {
     if (error) {
-      setDisplayError(error);
-    }
-   
-    if (formErrors) {
+      setServerError(error);
       const timer = setTimeout(() => {
-        setFormErrors(null);
-      }, 1000);
-      
+        setServerError(null);
+      }, 3000);
+
       return () => {
         clearTimeout(timer);
       };
     }
+  }, [error]);
 
-  }, [error, formErrors]);
+  useEffect(() => {
+    if (formErrors) {
+      const timer = setTimeout(() => {
+        setFormErrors(null);
+      }, 3000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [formErrors]);
 
   const initialValues = {
     title: "",
@@ -39,7 +47,7 @@ export default function SearchBar({ onSearch }) {
       return false;
     }
 
-    if (formValues.title && formValues.title > 5) {
+    if (formValues.title && formValues.title < 5) {
       setFormErrors("Position must be at least 5 characters");
       return false;
     }
@@ -57,7 +65,7 @@ export default function SearchBar({ onSearch }) {
   };
 
   const handleFormSubmit = async (formData) => {
-    setDisplayError(null);
+    setServerError(null);
     setFormErrors(null);
 
     if (!validateForm(formData)) {
@@ -77,7 +85,7 @@ export default function SearchBar({ onSearch }) {
         onSearch(result.data.items);
       }
     } catch (err) {
-      setDisplayError(err);
+      setServerError(err);
     }
   };
 
@@ -91,7 +99,7 @@ export default function SearchBar({ onSearch }) {
      {formErrors ? (
         <div className="error-message">{formErrors}</div>
       ) : (
-        displayError && <div className="error-message">{displayError}</div>
+        serverError && <div className="error-message">{serverError}</div>
       )}
 
       <form onSubmit={submitHandler} className={styles.searchContainer}>
