@@ -43,7 +43,7 @@ router.get("/list/:id",
         }
     });
 
-router.get("/profile/employer", hasUser(), checkUserRole("employer"),
+router.get("/profile", hasUser(), checkUserRole("employer"),
     async (req, res, next) => {
         try {
             const employerProfile = await getUserById(req.user._id);

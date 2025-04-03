@@ -9,7 +9,7 @@ export const createCompanyProfile = async (companyData) => {
 };
 
 export const getProfileById = async () => {
-  return await request.get(`${BASE_URL}/employer`, null, {
+  return await request.get(`${BASE_URL}`, null, {
     credentials: "include",
   });
 };

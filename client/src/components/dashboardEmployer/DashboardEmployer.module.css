@@ -1,6 +1,7 @@
 
 .dashboardSection {
   background-color: var(--section-bg);
+  padding: 6rem 0;
 }
 
   .adminDashboard {

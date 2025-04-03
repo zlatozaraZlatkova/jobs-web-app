@@ -1,14 +1,17 @@
 async function requester(method, url, data, fetchOptions = {}) {
-  const options = { ...fetchOptions };
+  const options = { 
+    ...fetchOptions,
+    headers: {
+      ...(fetchOptions.headers || {}),
+      ...(data ? { "Content-Type": "application/json" } : {})
+    }
+  };
 
   if (method !== "GET") {
     options.method = method;
   }
 
   if (data) {
-    options.headers = {
-      "Content-Type": "application/json",
-    };
     options.body = JSON.stringify(data);
   }
 

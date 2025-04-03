@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext} from "../contexts/AuthContext";
+
 import {
   getEmployeeProfileById,
   getPaginatedEmployees,
@@ -85,6 +87,7 @@ export function useGetPaginatedEmployeeProfile(urlPageNumber) {
 }
 
 export function useGetEmployeeProfile() {
+  const { role } = useContext(AuthContext);
   const [employee, setEmployee] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -96,6 +99,13 @@ export function useGetEmployeeProfile() {
 
   useEffect(() => {
     const fetchProfileData = async () => {
+      if (role !== 'employee') {
+        setEmployee(null);
+        setError(null);
+        setIsLoading(false);
+        return;
+      }
+
       try {
         setIsLoading(true);
         setError(null);
@@ -117,7 +127,7 @@ export function useGetEmployeeProfile() {
     };
 
     fetchProfileData();
-  }, [refreshKey]);
+  }, [refreshKey, role]);
 
   return {
     employee,
