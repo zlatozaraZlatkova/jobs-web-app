@@ -1,8 +1,6 @@
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
-import { useState } from "react";
-import { AuthContext } from "./contexts/AuthContext";
+import { AuthContextProvider } from "./contexts/AuthContextProvider";
 import { SearchContextProvider } from "./contexts/SearchContextProvider";
-import { useInitializeAuth } from "./apiHooks/useAuth";
 
 import "./styles/index.css";
 
@@ -25,28 +23,9 @@ import DashboardEmployer from "./components/dashboardEmployer/DashboardEmployer"
 
 
 function App() {
-  const [authState, setAuthState] = useState({});
-
-
-  const changeAuthState = (state) => {
-    setAuthState(state)
-
-  }
   
-  useInitializeAuth(changeAuthState);
-
-  const contextData = {
-    email: authState.email,
-    _id: authState._id,
-    role: authState.role, 
-    isAuthenticated: !!authState.email,
-    changeAuthState
-
-  }
-
-
   return (
-    <AuthContext.Provider value={contextData}>
+    <AuthContextProvider>
      <SearchContextProvider >
 
       <BrowserRouter>
@@ -78,7 +57,7 @@ function App() {
       </BrowserRouter>
 
       </SearchContextProvider>
-    </AuthContext.Provider>
+    </AuthContextProvider>
   );
 }
 
