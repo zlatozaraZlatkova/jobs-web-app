@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { AuthContext } from "./contexts/AuthContext";
-import { SearchContext } from "./contexts/SearchContext";
+import { SearchContextProvider } from "./contexts/SearchContextProvider";
 import { useInitializeAuth } from "./apiHooks/useAuth";
 
 import "./styles/index.css";
@@ -24,15 +24,9 @@ import DashboardEmployer from "./components/dashboardEmployer/DashboardEmployer"
 
 
 
-
 function App() {
   const [authState, setAuthState] = useState({});
-  const [searchContextResults, setSearchContextResults] = useState(null);
 
-  const resetContextSearch = () => {
-    setSearchContextResults(null);
-  };
- 
 
   const changeAuthState = (state) => {
     setAuthState(state)
@@ -53,7 +47,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={contextData}>
-     <SearchContext.Provider value={{ searchContextResults, setSearchContextResults, resetContextSearch }}>
+     <SearchContextProvider >
 
       <BrowserRouter>
         <MainLayout>
@@ -83,7 +77,7 @@ function App() {
         </MainLayout>
       </BrowserRouter>
 
-      </SearchContext.Provider>
+      </SearchContextProvider>
     </AuthContext.Provider>
   );
 }
