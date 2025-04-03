@@ -1,4 +1,4 @@
-# SoftUni Final Project - Full-Stack MERN Job Board Platform
+# MERN Job Board Platform
 
 
 <details open>
@@ -21,7 +21,7 @@ This application is a modern job board platform designed to seamlessly connect e
 - **User Authentication** - Secure sign-up and login for both employers and job seekers.
 - **Job Postings** - Employers can create, manage, and update job listings.
 - **User Profiles** - Job seekers can build and maintain professional profiles.
-- **Forum** - Users can create, edit, and delete posts to share career updates, industry insights, and professional achievements. The interactive social features include post liking/dislike and commenting functionality, enabling community engagement, discussions, and professional networking.
+- **Job Bookmarking** – Users can mark or remove job listings they are interested in, making job searching more organized.
 - **Search** - Easily find job listings or candidates using various search criteria.
 - **GitHub Integration** - Automatically fetches and displays public GitHub profile information to highlight candidates' coding contributions and activity.
 
@@ -45,10 +45,8 @@ Developed as part of a university final project, this platform enhances the recr
 <summary><h5>1.2.2. Employees Features</h5></summary>
 
 - Create, Read, Update, and Delete professional profiles
-- Create, Read, Update, and Delete posts
-- Like and Unlike posts
-- Comment on posts
 - Browse job listings
+- Pin and Unpin jobs
 - Search and filter jobs by various criteria
 - GitHub portfolio integration
 </details>
@@ -58,11 +56,7 @@ Developed as part of a university final project, this platform enhances the recr
 
 - Create, Read, Update, and Delete company profile
 - Create, Read, Update, and Delete job listings
-- Create, Read, Update, and Delete posts
-- Like and Unlike posts
-- Comment on posts
 - Browse employee profiles
-- Search candidate profiles
 </details>
 
 <details open>
@@ -79,7 +73,7 @@ Developed as part of a university final project, this platform enhances the recr
 
   | Role | Description |
   |------|-------------|
-  | Common Features (All Users) | • CRUD operations on their own posts<br>• Add comments to any post<br>• Like and unlike any post |
+  | Common Features (Employeе) | • Pin and unpin job postings |
   | Employee | • Access to view and apply to job postings<br> • CRUD operations on their profile and view company information<br> • Cannot post jobs|
   | Employer | • Full access to CRUD operations for job postings<br> • View applicant profiles<br> • CRUD operations on their profile<br> • Cannot apply to jobs or create employee profiles |
 
@@ -100,16 +94,10 @@ Developed as part of a university final project, this platform enhances the recr
 - Pagination:
   - **Request Parameters:**
     - `page` (optional): Page number, defaults to 1
-    - `limit` (optional): Items per page, defaults to 10  
+    - `limit` (optional): Items per page, defaults to 3 
   
 - The Search provides flexible search capabilities across the platform with support for single and multiple field searches, along with pagination for result sets.  
     - **Common Search Fields**
-      - **Employee Search Parameters**
-        | Parameter  | Type   | Description                     | Example                        |
-        | ---------- | ------ | ------------------------------- | ------------------------------ |
-        | skills     | array  | Required skills or competencies | `?skills=JavaScript,React`     |
-        | experience | string | Work experience                 | `?experience=Senior`           |
-        | education  | string | Required education level        | `?education=Bachelor%20Degree` |
     
       - **Job Search Parameters** 
         | Parameter | Type   | Description                | Example                    |
@@ -117,7 +105,7 @@ Developed as part of a university final project, this platform enhances the recr
         | title     | string | Job title or position name | `?title=Software Engineer` |
         | type      | string | Employment type            | `?type=Full-time`          |
         | location  | string | Job location               | `?location=New York`       |
-        | salary    | number | Minimum salary             | `?salary=70000`            |
+
 
 </details>
 </details>
@@ -135,10 +123,18 @@ Developed as part of a university final project, this platform enhances the recr
 <details open>
 <summary><h3>2. Project Architecture</h3></summary>
 
-<details>
+<details open>
 <summary><h4>2.1. Structure Overview</h4></summary>
 
-This Node.js backend application follows a modular architecture with clear separation of concerns:
+2.1.1. This React frontend application follows a modular structure for maintainability and scalability:
+- components/ – Reusable UI components such as buttons, forms, and navigation bars.
+- pages/ – Contains different views/pages of the application (e.g., Home, Dashboard, Profile).
+- hooks/ – Custom React hooks for state management and API interactions
+- services/ – Handles API requests and external service integrations.
+- context/ – Manages global state using React Context API.
+- routes/ – Defines application routes using React Router.
+
+2.1.2. This Node.js backend application follows a modular architecture with clear separation of concerns:
 
 - config/ - Contains configuration files for database and routes
 - controllers/ - Handles HTTP requests and response logic
@@ -148,7 +144,7 @@ This Node.js backend application follows a modular architecture with clear separ
 - util/ - Utility functions and helpers
 </details>
 
-<details open>
+<details>
 <summary><h4>2.2. Directory Structure</h4></summary>
   
 ```
@@ -157,159 +153,162 @@ Devjobs web app/
 ├── assets/
 │    images/
 │       └── relationship-models-dev-jobs.png
-├── client/
-│   └── public/
-│   |    │             
-│   └── src/
-│   |    ├── components/
-│   |    │   ├── mainLayout/
-│   |    │   |    └──  MainLayout.jsx 
-|   |    |   |
-│   |    │   ├── pages/
-│   |    │   |   ├── CreateCompanyProfilePage.jsx 
-│   |    │   |   ├── CreateProfilePage.jsx 
-│   |    │   |   ├── HomePage.jsx 
-│   |    │   |   ├── LoginPage.jsx 
-│   |    │   |   ├── RegisterPage.jsx 
-|   |    |   | 
-│   |    │   ├── auth/
-│   |    │   │    ├── Login.jsx
-│   |    │   │    └── Register.jsx
-│   |    │   │
-│   |    │   ├── employee/
-|   │    │   ├── addEducation/
-|   │    │   |    └── AddEducation.jsx
-│   |    │   │
-|   │    │   ├── addExperience/
-|   │    │   |    └── AddExperience.jsx
-│   |    │   │
-|   │    │   ├── createProfile/
-|   │    │   |    └── CreateProfile.jsx
-│   |    │   │
-|   │    │   ├── detailsProfile/
-|   │    │   |   ├── BasicProfileCard.jsx
-|   │    │   |   ├── EducationCard.jsx
-|   │    │   |   ├── ExperienceCard.jsx
-|   │    │   |   ├── GitHubRepo.jsx
-|   │    │   |   └── ProfileCard.module.css
-│   |    │   │
-|   │    │   └── editProfile/
-|   │    │   |   ├── BasicProfileEdit.jsx
-|   │    │   |   ├── EducationEdit.jsx
-|   │    │   |   ├── ExperienceEdit.jsx
-|   │    │   |   └── EditProfile.module.css
-│   |    │   │
-│   |    │   │
-│   |    │   ├── employer/
-│   |    │   │   ├── CreateProfile.jsx
-│   |    │   │
-│   |    │   │
-│   |    │   ├── FeaturedJobSection/
-│   |    │   │   ├── FeaturedJobSection.jsx
-│   |    │   │   ├── FeaturedJobSection.module.css
-│   |    │   │   └── jobCard/
-│   |    │   │       ├── JobCard.jsx
-│   |    │   │       └── JobCard.module.css
-│   |    │   │
-│   |    │   ├── footer/
-│   |    │   │   ├── Footer.jsx
-│   |    │   │   └── Footer.module.css
-│   |    │   │
-│   |    │   ├── navigation/
-│   |    │   │   ├── Navigation.jsx
-│   |    │   │   └── Navigation.module.css
-│   |    │   │
-│   |    │   ├── searchBar/
-│   |    │   │   ├── SearchBar.jsx
-│   |    │   │   └── SearchBar.module.css
-│   |    │   │
-│   |    │   └── trustedCompaniesSection/
-│   |    │       ├── TrustedCompaniesSection.jsx
-│   |    │       ├── TrustedCompaniesSection.module.css
-│   |    │       └── companyLogo/
-│   |    │           ├── CompanyLogo.jsx
-│   |    │           └── CompanyLogo.module.css
-│   |    │
-│   └── utils/
-|   |    ├── formatDate.js
-|   |    ├── stringUtils.js        
-│   |    
-│   |    
-│   |    
-│   |    
-│   └── styles/
-|       |    ├── base/
-|       |    │   ├── globals.css        
-|       |    │   ├── typography.css     
-|       |    │   └── utilities.css               
-|       |    └── index.css
-|       |
-│       ├── App.jsx
-|       ├── main.jsx              
-|       |  
-│       ├── eslint.config.js
-│       ├── .gitignore
-│       ├── index.html
-│       ├── package.json
-│       ├── package-lock.json
-│       └── vite.config.js
+├── client/ 
+│   ├── public/
+│   ├── src/
+│   │    ├── components/
+│   │    │   ├── mainLayout/
+│   │    │   │    └── MainLayout.jsx 
+│   │    │   ├── pages/
+│   │    │   │   ├── CreateProfilePage.jsx 
+│   │    │   │   ├── CVPage.jsx 
+│   │    │   │   ├── EmployeesPage.jsx 
+│   │    │   │   ├── HomePage.jsx 
+│   │    │   │   ├── JobDetailsPage.jsx 
+│   │    │   │   ├── JobsPage.jsx 
+│   │    │   │   ├── LoginPage.jsx 
+│   │    │   │   ├── RegisterPage.jsx 
+│   │    │   │   └── NotFoundPage.jsx 
+│   │    │   ├── auth/
+│   │    │   │    ├── Login.jsx
+│   │    │   │    └── Register.jsx
+│   │    │   ├── contexts/
+│   │    │   │   ├── AuthContext.js
+│   │    │   │   ├── AuthContextProvider.jsx
+│   │    │   │   ├── SearchContext.js
+│   │    │   │   └── SearchContextProvider.jsx
+│   │    │   ├── categoriesJobSection/
+│   │    │   │   ├── CategoriesJobSection.jsx
+│   │    │   │   ├── CategoriesJobSection.module.css
+│   │    │   │   └── categoryCard/
+│   │    │   │       ├── CategoryCard.jsx
+│   │    │   │       └── JCategoryCard.module.css
+│   │    │   ├── createJob/
+│   │    │   │   ├── CreateJob.jsx
+│   │    │   │   └── CreateJob.module.css
+│   │    │   ├── editJob/
+│   │    │   │   └── editJob.jsx
+│   │    │   ├── jobDetails/
+│   │    │   │   └── jobDetails.jsx
+│   │    │   ├── jobsListSection/
+│   │    │   │   ├── JobsListSection.jsx
+│   │    │   │   ├── JobListSection.module.css
+│   │    │   │   └── jobCard/
+│   │    │   │       ├── JobCard.jsx
+│   │    │   │       └── JobCard.module.css
+│   │    │   ├── dashboardEmployer/
+│   │    │   │   ├── DashboardEmployer.jsx
+│   │    │   │   └── DashboardEmployer.module.css
+│   │    │   ├── employer/
+│   │    │   │   ├── CreateCompanyProfile.jsx
+│   │    │   │   └── EditCompanyProfile.module.css
+│   │    │   ├── dashboardEmployee/
+│   │    │   │   └── DashboardEmploee.jsx
+│   │    │   ├── employee/
+│   │    │   ├── addEducation/
+│   │    │   │    └── AddEducation.jsx
+│   │    │   ├── addExperience/
+│   │    │   │    └── AddExperience.jsx
+│   │    │   ├── createProfile/
+│   │    │   │    └── CreateProfile.jsx
+│   │    │   ├── detailsProfile/
+│   │    │   │   ├── BasicProfileCard.jsx
+│   │    │   │   ├── EducationCard.jsx
+│   │    │   │   ├── ExperienceCard.jsx
+│   │    │   │   ├── GitHubRepo.jsx
+│   │    │   │   └── ProfileCard.module.css
+│   │    │   ├── editProfile/
+│   │    │   │   ├── BasicProfileEdit.jsx
+│   │    │   │   └── EditProfile.module.css
+│   │    │   ├── footer/
+│   │    │   │   ├── Footer.jsx
+│   │    │   │   └── Footer.module.css
+│   │    │   ├── navigation/
+│   │    │   │   ├── Navigation.jsx
+│   │    │   │   └── Navigation.module.css
+│   │    │   ├── pagination/
+│   │    │   │    ├── Pagination.jsx 
+│   │    │   │    └── Pagintion.module.css
+│   │    │   ├── scrollToTop/
+│   │    │   │    └── ScrollToTop.jsx
+│   │    │   ├── searchBar/
+│   │    │   │   ├── SearchBar.jsx
+│   │    │   │   └── SearchBar.module.css
+│   │    │   └── trustedCompaniesSection/
+│   │    │       ├── TrustedCompaniesSection.jsx
+│   │    │       ├── TrustedCompaniesSection.module.css
+│   │    │       └── companyLogo/
+│   │    │           ├── CompanyLogo.jsx
+│   │    │           └── CompanyLogo.module.css
+│   │    ├── utils/
+│   │    │   ├── formatDate.js
+│   │    │   └── stringUtils.js
+│   │    └── styles/
+│   │        ├── base/
+│   │        │   ├── globals.css
+│   │        │   ├── typography.css
+│   │        │   └── utilities.css
+│   │        └── index.css
+│   ├── App.jsx
+│   ├── main.jsx
+│   ├── eslint.config.js
+│   ├── .gitignore
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   └── vite.config.js
 |
-├── Rest-api/
-|   └── server/
-│    ├── config/
-│    │   ├── cors.js
-│    │   ├── database.js
-│    │   └── routes.js
-│    │
-│    ├── controllers/
-│    │   ├── authController.js
-│    │   ├── defaultController.js
-│    │   ├── employeeProfileController.js
-│    │   ├── employerProfileController.js
-│    │   ├── jobsController.js
-│    │   ├── postsController.js
-│    │   └── usersController.js
-│    │
-│    ├── middlewares/
-│    │   ├── errorHandler.js
-│    │   ├── guards.js
-│    │   ├── paginationMiddleware.js
-│    │   ├── preload.js
-│    │   ├── session.js
-│    │   └── validateBodyRequest.js
-│    │
-│    ├── models/
-│    │   ├── Company.js
-│    │   ├── EmployeeProfile.js
-│    │   ├── EmployerProfile.js
-│    │   ├── Job.js
-│    │   ├── Post.js
-│    │   └── User.js
-│    │
-│    ├── services/
-│    │   ├── authService.js
-│    │   ├── employeeProfileService.js
-│    │   ├── employerProfileService.js
-│    │   ├── githubService.js
-│    │   ├── jobsService.js
-│    │   └── postService.js
-│    │
-│    └── util/
-│    │   ├── errorParser.js
-│    │   └── formatPaginatedResponse.js
-│       
+├── Rest-api/ 
+├── server/ 
+│   ├── config/
+│   │   ├── cors.js
+│   │   ├── database.js
+│   │   └── routes.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── defaultController.js
+│   │   ├── employeeProfileController.js
+│   │   ├── employerProfileController.js
+│   │   ├── jobsController.js
+│   │   ├── postsController.js
+│   │   └── usersController.js
+│   ├── middlewares/
+│   │   ├── errorHandler.js
+│   │   ├── guards.js
+│   │   ├── paginationMiddleware.js
+│   │   ├── preload.js
+│   │   ├── session.js
+│   │   └── validateBodyRequest.js
+│   ├── models/
+│   │   ├── Company.js
+│   │   ├── EmployeeProfile.js
+│   │   ├── EmployerProfile.js
+│   │   ├── Job.js
+│   │   ├── Post.js
+│   │   └── User.js
+│   ├── services/
+│   │   ├── authService.js
+│   │   ├── employeeProfileService.js
+│   │   ├── employerProfileService.js
+│   │   ├── githubService.js
+│   │   ├── jobsService.js
+│   │   └── postService.js
+│   ├── util/
+│   │   ├── errorParser.js
+│   │   └── formatPaginatedResponse.js
+│   ├── index.js
+│   ├── package.json
+│   └── package-lock.json
 │
 ├── .gitignore
-├── package-lock.json
 ├── package.json
-└── server.js
-
+└── package-lock.json
 ```
 </details>
 
 </details>
 
-<details open>
+<details>
 <summary><h3>3. Database Schema</h3></summary>
 
 <details>
@@ -500,11 +499,10 @@ Required: `id=[string]`
 <summary><h5>5.4.1. Main Dependencies</h5></summary>
   
   - **Client**
-    - `axios`: HTTP client for API requests
-    - `dotenv`: Environment variables management
     - `react`: JavaScript library for creating user interfaces
-    - `react-dom`: serves as the entry point to the DOM and server renderers for React
+    - `react-dom`: Serves as the entry point to the DOM and server renderers for React
     - `react-icons`: Provides popular icon sets as React components
+    - `react-modal`: Library for creating accessible and customizable modal dialogs.
     - `react-router-dom`: Enables routing and navigation in React applications
    
   
