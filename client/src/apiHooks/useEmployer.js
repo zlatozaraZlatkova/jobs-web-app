@@ -44,27 +44,36 @@ export function useGetAdminProfile() {
   }
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchProfileData = async () => {
-      try {
+      if (isMounted) {
         setIsLoading(true);
         setError(null);
-
+      }
+      try {
         const response = await getProfileById();
 
-        if (response.isError === true) {
-          setError(response.message);
-        }
+        if (isMounted) {
+          if (response.isError === true) {
+            setError(response.message);
+          } else {
+            setProfileData(response);
+          }
 
-        setProfileData(response);
+          setIsLoading(false);
+        }
       } catch (err) {
         setError(null);
         setProfileData(null);
-      } finally {
         setIsLoading(false);
       }
     };
 
     fetchProfileData();
+    return () => {
+      isMounted = false;
+    };
   }, [refreshKey]);
 
   return {
@@ -116,9 +125,11 @@ export function useFetchingInitialData(id) {
     }
 
     async function fetchCompanyData() {
-      try {
+      if (isMounted) {
         setError(null);
+      }
 
+      try {
         const response = await getProfileById(id);
 
         if (isMounted) {
@@ -155,10 +166,12 @@ export function useGetCompanyList() {
   useEffect(() => {
     let isMounted = true;
     const fetchCompaniesData = async () => {
-      try {
+      if (isMounted) {
         setError(null);
-
+      }
+      try {
         const response = await getCompanyList();
+
         if (isMounted) {
           if (response.isError === true) {
             setError(response.message);

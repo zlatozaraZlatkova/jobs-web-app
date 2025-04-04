@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { AuthContext} from "../contexts/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 import {
   getEmployeeProfileById,
@@ -34,38 +34,33 @@ export function useGetPaginatedEmployeeProfile(urlPageNumber) {
     let isMounted = true;
 
     const fetchEmployees = async () => {
-      try {
+      if (isMounted) {
         setIsLoading(true);
         setError(null);
+      }
 
+      try {
         const response = await getPaginatedEmployees(currentPage);
 
-        if (!isMounted) {
-          return;
-        }
-
-        if (response.isError === true) {
-          setError(response.message);
-          setEmployees([]);
-          return;
-        }
-
-        //the response structure is { success, data: { items: [] } }
-        if (!response.data || !Array.isArray(response.data.items)) {
-          setEmployees([]);
-          return;
-        }
-
-        setEmployees(response.data.items);
-
-        setTotalPages(response.data.pagination.totalPages);
-      } catch (err) {
-        if (!isMounted) {
-          setError(err);
-          return;
-        }
-      } finally {
         if (isMounted) {
+          if (response.isError === true) {
+            setError(response.message);
+            setEmployees([]);
+          }
+
+          //the response structure is { success, data: { items: [] } }
+          else if (!response.data || !Array.isArray(response.data.items)) {
+            setEmployees([]);
+          } else {
+            setEmployees(response.data.items);
+
+            setTotalPages(response.data.pagination.totalPages);
+          }
+          setIsLoading(false);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError(err);
           setIsLoading(false);
         }
       }
@@ -98,35 +93,49 @@ export function useGetEmployeeProfile() {
   }
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchProfileData = async () => {
-      if (role !== 'employee') {
-        setEmployee(null);
-        setError(null);
-        setIsLoading(false);
+      if (role !== "employee") {
+        if (isMounted) {
+          setEmployee(null);
+          setError(null);
+          setIsLoading(false);
+        }
         return;
       }
 
       try {
-        setIsLoading(true);
-        setError(null);
+        if (isMounted) {
+          setIsLoading(true);
+          setError(null);
+        }
 
         const response = await getEmployeeProfile();
 
-        if (response.isError === true) {
-          setError(response.message);
-          setEmployee(null);
+        if (isMounted) {
+          if (response.isError === true) {
+            setError(response.message);
+            setEmployee(null);
+          } else {
+            setEmployee(response);
+          }
+          setIsLoading(false);
         }
-
-        setEmployee(response);
       } catch (err) {
-        setError(err.message);
-        setEmployee(null);
-      } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setError(err.message);
+          setEmployee(null);
+          setIsLoading(false);
+        }
       }
     };
 
     fetchProfileData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [refreshKey, role]);
 
   return {
@@ -308,31 +317,40 @@ export function useGetEmployeeProfileById(id) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchData = async () => {
-      try {
+      if (isMounted) {
         setIsLoading(true);
         setError(null);
+      }
 
+      try {
         const response = await getEmployeeProfileById(id);
 
-        if (!response) {
-          setEmployee(null);
-          return;
-        }
+        if (isMounted) {
+          if (!response) {
+            setEmployee(null);
+          } else if (response.isError === true) {
+            setError(response.message);
+          } else {
+            setEmployee(response);
+          }
 
-        if (response.isError === true) {
-          setError(response.message);
+          setIsLoading(false);
         }
-
-        setEmployee(response);
       } catch (err) {
-        setError(err);
-      } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setError(err);
+          setIsLoading(false);
+        }
       }
     };
 
     fetchData();
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
   return {
@@ -346,29 +364,40 @@ export function useGetGitHubProfile(username) {
   const [profileRepo, setprofileRepo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
   useEffect(() => {
+    let isMounted = true;
+
     const fetchData = async () => {
-      try {
+      if (isMounted) {
         setIsLoading(true);
         setError(null);
+      }
+
+      try {
         const response = await getGitHubRepo(username);
-        console.log("Response github data after fetching", response);
-        if (!response) {
-          setprofileRepo(null);
-          return;
+        if (isMounted) {
+          if (!response) {
+            setprofileRepo(null);
+          } else if (response.isError === true) {
+            setError(response.message);
+          } else {
+            setprofileRepo(response);
+          }
+          setIsLoading(false);
         }
-        if (response.isError === true) {
-          setError(response.message);
-        }
-        setprofileRepo(response);
       } catch (err) {
-        setError(err);
-      } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setError(err);
+          setIsLoading(false);
+        }
       }
     };
 
     fetchData();
+    return () => {
+      isMounted = false;
+    };
   }, [username]);
 
   return {
