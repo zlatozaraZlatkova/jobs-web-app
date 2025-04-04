@@ -1,10 +1,20 @@
 const { Schema, model, Types } = require("mongoose");
 
+const URL_REGEX = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+
 const companySchema = new Schema(
+  
   {
     companyName: {
       type: String,
       required: true,
+    },
+    companyLogo: {
+      type: String,
+      validator: (value) => URL_REGEX.text(value),
+      message: (props) => {
+        return `${props.value} is not a valid URL`;
+      },
     },
     description: {
       type: String,

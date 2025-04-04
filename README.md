@@ -238,8 +238,7 @@ Devjobs web app/
 │   │    │       ├── TrustedCompaniesSection.jsx
 │   │    │       ├── TrustedCompaniesSection.module.css
 │   │    │       └── companyLogo/
-│   │    │           ├── CompanyLogo.jsx
-│   │    │           └── CompanyLogo.module.css
+│   │    │           └── CompanyLogo.jsx
 │   │    ├── utils/
 │   │    │   ├── formatDate.js
 │   │    │   └── stringUtils.js

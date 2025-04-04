@@ -25,11 +25,13 @@
   gap: 4rem;
   flex-wrap: wrap;
   margin: 0 auto;
+  padding: 2rem;
 }
 
 .trustedLogoGrid img {
-  height: 60px;
-  width: 60px;
+  height: 120px;
+  width: 120px;
+  border: none;
 }
 
 @media (max-width: 1024px) {
@@ -60,5 +62,39 @@
 
   .trustedLogoGrid {
     gap: 2rem 1.5rem;
+  }
+}
+
+
+.companyLogo {
+  width: 120px;
+  height: 120px;
+  background-color: var(--text-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+}
+
+.companyLogo:hover {
+  background-color: var(--primary-color);
+}
+
+.logoLink {
+  color: var(--white-color);
+}
+
+@media (max-width: 768px) {
+  .companyLogo {
+    height: 32px;
+    width: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .companyLogo {
+    height: 25px;
+    width: 25px;
   }
 }

@@ -38,6 +38,7 @@ export default function CreateCompanyProfile() {
 
   const initialValues = {
     companyName: "",
+    companyLogo: "",
     description: "",
     contactEmail: "",
     contactPhone: "",
@@ -99,16 +100,18 @@ export default function CreateCompanyProfile() {
     }
 
     try {
+      console.log("provided form data", formData)
 
       const companyData = {
         companyName: formData.companyName,
+        companyLogo: formData.companyLogo,
         description: formData.description,
         contactEmail: formData.contactEmail,
         contactPhone: formData.contactPhone,
       };
 
       const newCompany = await submitCompanyProfile(companyData);
-      //console.log("Response company data:", newCompany);
+      console.log("Response company data:", newCompany);
 
       navigate("/");
     } catch (err) {
@@ -122,6 +125,8 @@ export default function CreateCompanyProfile() {
   const clickCancelHandle = () => {
     resetForm();
   };
+
+
 
   return (
     <>
@@ -148,6 +153,22 @@ export default function CreateCompanyProfile() {
               maxLength="30"
             />
             <p className="input-hint">This name will be displayed publicly</p>
+          </div>
+          <div className="form-group">
+            <label className="required">Company Logo</label>
+            <input
+              type="text"
+              name="companyLogo"
+              value={formValues.companyLogo}
+              // onChange={changeHandler}
+              onChange={(e) => {
+                console.log("Logo input changed:", e.target.value);
+                changeHandler(e);
+              }}
+              placeholder="https://example.com/logo.png"
+              required
+            />
+            <p className="input-hint">Enter the URL of your company logo image</p>
           </div>
           <div className="form-group">
             <label className="required">Description</label>

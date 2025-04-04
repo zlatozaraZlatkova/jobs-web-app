@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createCompanyProfile, editProfile, getProfileById } from "../api/employerApi";
+import { createCompanyProfile, editProfile, getProfileById, getCompanyList} from "../api/employerApi";
 
 export function useCreateCompanyProfile() {
   const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
@@ -17,18 +17,16 @@ export function useCreateCompanyProfile() {
       }
 
       return response;
-
     } catch (err) {
       setError(err.message);
       setIsSubmittingProfile(false);
-      
     }
   };
 
   return {
     isSubmittingProfile,
     submitCompanyProfile,
-    error
+    error,
   };
 }
 
@@ -36,7 +34,7 @@ export function useGetAdminProfile() {
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
- 
+
   const [refreshKey, setRefreshKey] = useState(0);
 
   function refreshData() {
@@ -53,17 +51,14 @@ export function useGetAdminProfile() {
 
         const response = await getProfileById();
 
-        if(response.isError === true) {
+        if (response.isError === true) {
           setError(response.message);
         }
 
         setProfileData(response);
-       
-
       } catch (err) {
         setError(null);
         setProfileData(null);
-
       } finally {
         setIsLoading(false);
       }
@@ -76,7 +71,7 @@ export function useGetAdminProfile() {
     profileData,
     isLoading,
     refreshData,
-    error
+    error,
   };
 }
 
@@ -95,7 +90,6 @@ export function useEditCompanyProfile() {
         setError(response.message);
       }
       return response;
-
     } catch (err) {
       setError(err.message);
     } finally {
@@ -103,10 +97,10 @@ export function useEditCompanyProfile() {
     }
   };
 
-  return { 
-    isSubmitting, 
+  return {
+    isSubmitting,
     editCompany,
-    error 
+    error,
   };
 }
 
@@ -115,33 +109,78 @@ export function useFetchingInitialData(id) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchCompanyData() {
-      if (!id) {
-        return;
-      }
+    let isMounted = true;
 
+    if (!id) {
+      return;
+    }
+
+    async function fetchCompanyData() {
       try {
         setError(null);
 
         const response = await getProfileById(id);
-        
-        if (response.isError === true) {
-          setError(response.message);
-        }
 
-        setInitialCompanyData(response);
-        
+        if (isMounted) {
+          if (response.isError === true) {
+            setError(response.message);
+          }
+
+          setInitialCompanyData(response);
+        }
       } catch (err) {
-        setError(err.message);
-        setInitialCompanyData(null);
+        if (isMounted) {
+          setError(err.message);
+          setInitialCompanyData(null);
+        }
       }
     }
 
     fetchCompanyData();
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
-  return { 
+  return {
     initialCompanyData,
-    error
-   };
+    error,
+  };
+}
+
+export function useGetCompanyList() {
+  const [companies, setCompanies] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchCompaniesData = async () => {
+      try {
+        setError(null);
+
+        const response = await getCompanyList();
+        if (isMounted) {
+          if (response.isError === true) {
+            setError(response.message);
+          }
+
+          setCompanies(response);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError(err.message);
+        }
+      }
+    };
+
+    fetchCompaniesData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  return {
+    companies,
+    error,
+  };
 }

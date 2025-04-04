@@ -75,10 +75,11 @@ router.post("/profile/create", hasUser(), checkUserRole("employer"),
 
         try {
             const userId = req.user._id;
-            const { companyName, description, contactEmail, contactPhone } = req.body;
+            const { companyName, companyLogo, description, contactEmail, contactPhone } = req.body;
             
             const company = {
                 companyName,
+                companyLogo,
                 description,
                 contactEmail,
                 contactPhone,
@@ -112,7 +113,7 @@ router.put("/profile/update/:id", hasUser(), checkUserRole("employer"),
         try {
             const companyProfileId = req.params.id;
 
-            const companyData = { companyName, description, contactEmail, contactPhone } = req.body;
+            const companyData = { companyName, companyLogo, description, contactEmail, contactPhone } = req.body;
 
             const updateCompanyData = await updateItem(companyProfileId, companyData);
 

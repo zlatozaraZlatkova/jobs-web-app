@@ -40,6 +40,7 @@ export default function EditCompanyProfile() {
 
   const initialValues = {
     companyName: "",
+    companyLogo: "",
     description: "",
     contactEmail: "",
     contactPhone: "",
@@ -103,6 +104,7 @@ export default function EditCompanyProfile() {
 
       const companyData = {
         companyName: formData.companyName,
+        companyLogo: formData.companyLogo,
         description: formData.description,
         contactEmail: formData.contactEmail,
         contactPhone: formData.contactPhone,
@@ -125,6 +127,7 @@ export default function EditCompanyProfile() {
     if (initialCompanyData) {
       setFormValues({
         companyName: initialCompanyData.companyId.companyName || "",
+        companyLogo: initialCompanyData.companyId.companyLogo || "",
         description: initialCompanyData.companyId.description || "",
         contactEmail: initialCompanyData.companyId.contactEmail || "",
         contactPhone: initialCompanyData.companyId.contactPhone || "",
@@ -166,6 +169,17 @@ export default function EditCompanyProfile() {
                   <p className="input-hint">
                     This name will be displayed publicly
                   </p>
+                </div>
+                <div className="form-group">
+                  <label className="required">Company Logo</label>
+                  <input
+                    type="text"
+                    name="companyLogo"
+                    value={formValues.companyLogo}
+                    onChange={changeHandler}
+                    placeholder="https://example.com/logo.png"
+                  />
+                  <p className="input-hint">Enter the URL of your company logo image</p>
                 </div>
                 <div className="form-group">
                   <label className="required">Description</label>

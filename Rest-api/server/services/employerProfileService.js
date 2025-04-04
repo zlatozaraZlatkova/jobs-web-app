@@ -16,6 +16,7 @@ async function getUserById(userId) {
   return EmployerProfile.findOne({ ownerId: userId })
     .populate("companyId", [
       "companyName",
+      "companyLogo",
       "contactEmail",
       "contactPhone",
       "description",
