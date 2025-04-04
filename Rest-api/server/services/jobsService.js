@@ -11,7 +11,7 @@ async function getAll(skip = 0, limit = 3, technology = null) {
   }
 
   const paginatedJobs = await Job.find(query)
-    .sort({ date: -1, _id: 1 })
+    .sort({ createdAt: -1, _id: 1 })
     .skip(skip)
     .limit(limit);
 
@@ -22,7 +22,9 @@ async function getAll(skip = 0, limit = 3, technology = null) {
 }
 
 async function getJobsList() {
-  return Job.find({}).sort({ date: -1 });
+
+  return await Job.find({}).sort({ createdAt: -1 });
+
 }
 
 async function getJobById(jobId) {
@@ -78,7 +80,7 @@ async function deleteById(jobId, userId) {
   await Job.findByIdAndDelete(jobId);
 }
 
-async function getSearchItem(title, type, location, salary, skip = 0, limit = 10) {
+async function getSearchItem(title, type, location, salary, skip = 0, limit = 3) {
   const query = {};
 
   if (title) {
@@ -126,10 +128,10 @@ async function unpinItem(jobId, userId) {
     { $pull: { pinnedJobList: jobId } },
     { new: true });
 
-console.log("userId", userId)
+  console.log("userId", userId)
 
   await Job.findByIdAndUpdate(jobId,
-    { $pull: { pinnedByEmployees: userId  } },
+    { $pull: { pinnedByEmployees: userId } },
     { new: true })
 }
 

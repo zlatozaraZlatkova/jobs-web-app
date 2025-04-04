@@ -1,7 +1,7 @@
 const EmployerProfile = require("../models/EmployerProfile");
 const Company = require("../models/Company");
 
-async function getAll(startIndex = 0, limit = 10) {
+async function getAll(startIndex = 0, limit = 3) {
   const paginatedCompanies = await Company.find({})
     .sort({ date: -1 })
     .skip(startIndex)

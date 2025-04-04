@@ -1,10 +1,10 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 
-async function getAll(startIndex = 0, limit = 10) {
+async function getAll(startIndex = 0, limit = 3) {
 
   const paginatedPosts = await Post.find({})
-    .sort({ date: -1 })
+    .sort({ createdAt: -1 })
     .skip(startIndex)
     .limit(limit)
 

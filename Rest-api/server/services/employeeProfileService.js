@@ -2,7 +2,7 @@ const EmployeeProfile = require("../models/EmployeeProfile");
 
 async function getAllProfiles(skip = 0, limit = 3) {
   const paginatedProfiles = await EmployeeProfile.find({})
-    .sort({ date: -1, _id: 1 })
+    .sort({createdAt: -1, _id: 1 })
     .skip(skip)
     .limit(limit)
     .populate("ownerId", [
@@ -62,7 +62,7 @@ async function deleteProfileExpOrEduc(userId, arrayName, paramsId) {
   );
 }
 
-async function getSearchEmployee(skills, experience, education, skip = 0,limit = 10) {
+async function getSearchEmployee(skills, experience, education, skip = 0,limit = 3) {
   const query = {};
 
   if (skills) {
