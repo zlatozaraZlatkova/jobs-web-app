@@ -7,5 +7,6 @@ export const AuthContext = createContext({
     role: "",
     isAuthenticated: false,
     changeAuthState: (authState = {}) => null,
+    logoutAuthState: () => {}
 });
 

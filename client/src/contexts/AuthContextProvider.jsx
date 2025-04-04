@@ -6,11 +6,30 @@ import { useInitializeAuth } from "../apiHooks/useAuth";
 export const AuthContextProvider = ({ children }) => {
   const [authState, setAuthState] = useState({});
 
+  const logoutAuthState = () => {
+    setAuthState({
+      email: "",
+      _id: "",
+      role: ""
+    });
+  };
+
+
   const changeAuthState = (state) => {
-    setAuthState(state);
+    if (state === null) {
+      setAuthState({
+        email: "",
+        _id: "",
+        role: "",
+      });
+    } else{
+      setAuthState(state);
+    }
+    
   };
 
   useInitializeAuth(changeAuthState);
+
 
   const contextData = {
     email: authState.email,
@@ -18,6 +37,7 @@ export const AuthContextProvider = ({ children }) => {
     role: authState.role,
     isAuthenticated: !!authState.email,
     changeAuthState,
+    logoutAuthState
   };
 
   return (

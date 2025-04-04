@@ -11,7 +11,7 @@ export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [serverError, setServerError] = useState(null);
 
-  const { isAuthenticated, role } = useContext(AuthContext);
+  const { isAuthenticated, role, logoutAuthState  } = useContext(AuthContext);
   const { logoutHandler, error } = useLogout();
   const isEmployee = role === "employee";
 
@@ -31,14 +31,11 @@ export default function Navigation() {
   const handleLogout = async () => {
     try {
       setServerError(null);
-
       const success = await logoutHandler();
-
       if(success && !error) {
+        logoutAuthState();
         navigate("/");
       }
-    
-
     } catch (err) {
       setServerError(err.message || "Failed to logout. Please try again.");
     }
