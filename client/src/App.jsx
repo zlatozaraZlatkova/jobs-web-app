@@ -24,6 +24,7 @@ import ProtectedRoute from "./guards/ProtectedRoute";
 import RequireEmployerOwnership from "./guards/RequireEmployerOwnership";
 import RequireEmployerRole from "./guards/RequireEmployerRole";
 import RequireEmployeeRole from "./guards/RequireEmployeeRole";
+import RequireCompanyOwnership from "./guards/RequireCompanyOwnership";
 
 function App() {
   return (
@@ -44,8 +45,11 @@ function App() {
                 <Route path="/jobs/create" element={<CreateJob />} />
               </Route>
               <Route element={<RequireEmployerOwnership />}>
-                <Route path="/company/profile/update/:id" element={<EditCompanyProfile />}/>
                 <Route path="/jobs/update/:id" element={<EditJob />} />
+              </Route>
+
+              <Route element={<RequireCompanyOwnership/>}>
+              <Route path="/company/profile/update/:id" element={<EditCompanyProfile />}/>
               </Route>
               
               <Route element={<RequireEmployeeRole />}>
