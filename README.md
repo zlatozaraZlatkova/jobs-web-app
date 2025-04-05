@@ -37,7 +37,7 @@ Developed as part of a university final project, this platform enhances the recr
 
 - User registration and authentication (Employee/Employer roles)
 - Profile creation and management (Employee/Employer)
-- GitHub profile integration for developers
+- GitHub profile integration for developers (Employee role)
 - Avatar/profile picture support using Gravatar (Employee/Employer)
 </details>
 
@@ -54,7 +54,7 @@ Developed as part of a university final project, this platform enhances the recr
 <details>
 <summary><h5>1.2.3. Employer Features<h5></summary>
 
-- Create, Read, Update, and Delete company profile
+- Create, Read, Update company profile
 - Create, Read, Update, and Delete job listings
 - Browse employee profiles
 </details>
@@ -110,7 +110,7 @@ Developed as part of a university final project, this platform enhances the recr
 </details>
 </details>
 
-<details>
+<details open>
 <summary><h4>1.3. Technical Stack (MERN)</h4></summary>
 
 - MongoDB: NoSQL database for flexible data storage
@@ -127,21 +127,22 @@ Developed as part of a university final project, this platform enhances the recr
 <summary><h4>2.1. Structure Overview</h4></summary>
 
 2.1.1. This React frontend application follows a modular structure for maintainability and scalability:
-- components/ – Reusable UI components such as buttons, forms, and navigation bars.
-- pages/ – Contains different views/pages of the application (e.g., Home, Dashboard, Profile).
-- hooks/ – Custom React hooks for state management and API interactions
-- services/ – Handles API requests and external service integrations.
-- context/ – Manages global state using React Context API.
-- routes/ – Defines application routes using React Router.
+- **components/** – Reusable UI components such as forms, and navigation bars.
+- **pages/** – Contains different views/pages of the application (e.g., Home, Dashboard, Profile).
+- **hooks/** – Custom React hooks for state management and API interactions
+- **services/** – Handles API requests and external service integrations.
+- **contexts/** – Manages global state using React Context API.
+- **guards/** – Implements route protection and access control mechanisms to restrict unauthorized access to specific routes based on user authentication status and permissions.
+- **utils/** - Utility functions and helpers.
 
 2.1.2. This Node.js backend application follows a modular architecture with clear separation of concerns:
 
-- config/ - Contains configuration files for database and routes
-- controllers/ - Handles HTTP requests and response logic
-- middlewares/ - Contains middleware functions for authentication, session management, and request preprocessing
-- models/ - Defines data models and schema
-- services/ - Contains business logic and external service integrations
-- util/ - Utility functions and helpers
+- **config**/ - Contains configuration files for database and routes.
+- **controllers/** - Handles HTTP requests and response logic.
+- **middlewares/** - Contains middleware functions for authentication, session management, and request preprocessing.
+- **models/** - Defines data models and schema.
+- **services/** - Contains business logic and external service integrations.
+- **utils/** - Utility functions and helpers.
 </details>
 
 <details>
@@ -172,11 +173,6 @@ Devjobs web app/
 │   │    │   ├── auth/
 │   │    │   │    ├── Login.jsx
 │   │    │   │    └── Register.jsx
-│   │    │   ├── contexts/
-│   │    │   │   ├── AuthContext.js
-│   │    │   │   ├── AuthContextProvider.jsx
-│   │    │   │   ├── SearchContext.js
-│   │    │   │   └── SearchContextProvider.jsx
 │   │    │   ├── categoriesJobSection/
 │   │    │   │   ├── CategoriesJobSection.jsx
 │   │    │   │   ├── CategoriesJobSection.module.css
@@ -239,9 +235,25 @@ Devjobs web app/
 │   │    │       ├── TrustedCompaniesSection.module.css
 │   │    │       └── companyLogo/
 │   │    │           └── CompanyLogo.jsx
+│   │    ├── contexts/
+│   │    │   │   ├── AuthContext.js
+│   │    │   │   ├── AuthContextProvider.jsx
+│   │    │   │   ├── SearchContext.js
+│   │    │   └── └── SearchContextProvider.jsx
+│   │    │   
+│   │    ├── guards/
+│   │    │   │   ├── ProtectedRoute.jsx
+│   │    │   │   ├── PublicRoute.jsx
+│   │    │   │   ├── RequireCompanyOwnership.jsx
+│   │    │   │   ├── RequireEmployerRole.jsx
+│   │    │   │   ├── RequireEmployeeRole.jsx
+│   │    │   └── └── RequireEmployerOwnership.jsx
+│   │    │  
 │   │    ├── utils/
+│   │    │   ├── createPageURLParams.js
 │   │    │   ├── formatDate.js
 │   │    │   └── stringUtils.js
+│   │    │   
 │   │    └── styles/
 │   │        ├── base/
 │   │        │   ├── globals.css
@@ -500,7 +512,6 @@ Required: `id=[string]`
   - **Client**
     - `react`: JavaScript library for creating user interfaces
     - `react-dom`: Serves as the entry point to the DOM and server renderers for React
-    - `react-icons`: Provides popular icon sets as React components
     - `react-modal`: Library for creating accessible and customizable modal dialogs.
     - `react-router-dom`: Enables routing and navigation in React applications
    
@@ -601,12 +612,18 @@ All API requests from the frontend are automatically proxied to the backend serv
 
 <details open>
 <summary><h4>7.1. Validation and Error Types</h4></summary>
-
-- Global Error Handling
-- Pre-request validation with express-validator middleware
-- Model-level Mongoose schema validation
-- Consistent error response format
-- Production-safe error messages for users
+ 
+ 1. Client
+   - Form validation error display and handling
+   - API error response parsing and presentation
+   - User-friendly error messages for production
+   
+ 2. Server
+  - Global Error Handling
+  - Pre-request validation with express-validator middleware
+  - Model-level Mongoose schema validation
+  - Consistent error response format
+  - Production-safe error messages for users
 </details>
 </details>
 

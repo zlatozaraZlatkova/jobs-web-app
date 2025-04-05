@@ -96,6 +96,7 @@ html {
 
 img {
   width: 100%;
+  border: none;
 }
 
 .round-img {
