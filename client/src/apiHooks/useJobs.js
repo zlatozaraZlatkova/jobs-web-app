@@ -297,7 +297,7 @@ export function useDeleteJob() {
       }
       return response;
     } catch (err) {
-      setError(err);
+      setError(err)
     }
   };
   return {

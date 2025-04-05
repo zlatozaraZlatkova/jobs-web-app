@@ -20,7 +20,17 @@ export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = f
 
   useEffect(() => {
     if (error) {
-      setDisplayError(error);
+      let errorMessage;
+      
+      if (error.message) {
+        errorMessage = error.message;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      } else {
+        errorMessage = "BSONError: input must be a 24 character hex string";
+      }
+      
+      setDisplayError(errorMessage);
     }
   }, [error]);
 
@@ -123,7 +133,7 @@ export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = f
               Delete
             </button>
           </>
-        ) : !isCVPage && !isProfileOwner && isAuthenticated ? (
+        ) : !isCVPage && !isProfileOwner ? (
           <button
             className={styles.editProfileBtn}
             type="button"

@@ -11,13 +11,24 @@ export default function JobDetailsPage() {
   const { currentJob, isLoading, error } = useGetJobDetails(id);
   const [displayError, setDisplayError] = useState(null);
 
-
-
   useEffect(() => {
     if (error) {
-      setDisplayError(error);
+      let errorMessage;
+      
+      if (error.message) {
+        errorMessage = error.message;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      } else {
+        errorMessage = "BSONError: input must be a 24 character hex string";
+      }
+      
+      setDisplayError(errorMessage);
     }
+
   }, [error]);
+
+
 
   const onEditClickHandler = (id) => {
     navigate(`/jobs/update/${id}`);
