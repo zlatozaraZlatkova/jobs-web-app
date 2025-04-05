@@ -20,8 +20,10 @@ import CVPage from "./components/pages/CVPage";
 import DashboardEmployee from "./components/dashboardEmployee/DashboardEmployee";
 import DashboardEmployer from "./components/dashboardEmployer/DashboardEmployer";
 
-
+import ProtectedRoute from "./guards/ProtectedRoute";
 import RequireEmployerOwnership from "./guards/RequireEmployerOwnership";
+import RequireEmployerRole from "./guards/RequireEmployerRole";
+import RequireEmployeeRole from "./guards/RequireEmployeeRole";
 
 function App() {
   return (
@@ -37,21 +39,22 @@ function App() {
               <Route path="/jobs/:id" element={<JobDetailsPage />} />
               <Route path="/profile/catalog" element={<EmployeesPage />} />
              
-          
+              <Route element={<RequireEmployerRole />}>
                 <Route path="/company/profile" element={<DashboardEmployer />}/>
                 <Route path="/jobs/create" element={<CreateJob />} />
-          
+              </Route>
               <Route element={<RequireEmployerOwnership />}>
                 <Route path="/company/profile/update/:id" element={<EditCompanyProfile />}/>
                 <Route path="/jobs/update/:id" element={<EditJob />} />
               </Route>
-             
+              
+              <Route element={<RequireEmployeeRole />}>
                 <Route path="/profile" element={<DashboardEmployee />} />
                 <Route path="/profile/create" element={<CreateProfilePage />} />
-             
-             
+              </Route>
+              <Route element={<ProtectedRoute />}>
                 <Route path="/profile/catalog/:id" element={<CVPage />} />
-           
+              </Route>
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="*" element={<NotFoundPage />} />
