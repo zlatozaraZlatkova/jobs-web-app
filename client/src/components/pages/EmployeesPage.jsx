@@ -11,7 +11,6 @@ export default function EmployeesPage() {
   const { urlPageNumber, setUrlPageNumber } = usePaginationWithURL();
 
   const { employees, isLoading, totalPages, error } = useGetPaginatedEmployeeProfile(urlPageNumber);
-  console.log("Response profile data", employees);
 
 
   useEffect(() => {

@@ -1,16 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useGetEmployeeProfile } from "../../apiHooks/useEmployee";
 import BasicProfileCard from "../employee/detailsProfile/BasicProfileCard";
 import EducationCard from "../employee/detailsProfile/EducationCard";
 import ExperienceCard from "../employee/detailsProfile/ExperienceCard";
 import GitHubRepo from "../employee/detailsProfile/GitHubRepo";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function DashboardEmployee() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
   const [displayError, setDisplayError] = useState(null);
   const { employee, isLoading, error, refreshData } = useGetEmployeeProfile();
+
+  const { isAuthenticated, role } = useContext(AuthContext);
+  console.log("Logged in User is", role,  "and is authenticated", isAuthenticated);
+
 
   useEffect(() => {
     if (error) {

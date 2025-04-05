@@ -1,5 +1,5 @@
 async function requester(method, url, data, fetchOptions = {}) {
-  const options = { 
+  const options = {
     ...fetchOptions,
     headers: {
       ...(fetchOptions.headers || {}),
@@ -21,12 +21,22 @@ async function requester(method, url, data, fetchOptions = {}) {
     if (!response.ok) {
       try {
         const responseData = await response.json();
+        
+        if (response.status === 401) {
+          return {};
+        }
+
         return {
           isError: true,
           message: responseData.message || `HTTP error: ${response.status}`,
           status: response.status
         };
+
       } catch (jsonError) {
+        if (response.status === 401) {
+          return {};
+        }
+
         return {
           isError: true,
           message: `HTTP error: ${response.status} ${response.statusText}`,

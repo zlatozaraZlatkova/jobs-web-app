@@ -4,28 +4,37 @@ import { AuthContext } from "./AuthContext";
 import { useInitializeAuth } from "../apiHooks/useAuth";
 
 export const AuthContextProvider = ({ children }) => {
-  const [authState, setAuthState] = useState({});
+  const [authState, setAuthState] = useState({
+    email: "",
+    _id: "",
+    role: "",
+    isLoading: true
+  });
 
   const logoutAuthState = () => {
     setAuthState({
       email: "",
       _id: "",
-      role: ""
+      role: "",
+      isLoading: false
     });
   };
 
 
   const changeAuthState = (state) => {
-    if (state === null) {
+    if (!state || Object.keys(state).length === 0) {
       setAuthState({
         email: "",
         _id: "",
         role: "",
+        isLoading: false
       });
-    } else{
-      setAuthState(state);
+    } else {
+      setAuthState({
+        ...state,
+        isLoading: false
+      });
     }
-    
   };
 
   useInitializeAuth(changeAuthState);
@@ -37,7 +46,8 @@ export const AuthContextProvider = ({ children }) => {
     role: authState.role,
     isAuthenticated: !!authState.email,
     changeAuthState,
-    logoutAuthState
+    logoutAuthState,
+    isLoading: authState.isLoading,
   };
 
   return (

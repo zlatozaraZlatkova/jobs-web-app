@@ -137,8 +137,13 @@ export function useInitializeAuth(changeAuthState) {
       try {
         const validateToken = await verifyToken();
 
-        if (isMounted) {
+        if (validateToken && validateToken._id && isMounted) {
+          console.log("Authentication successful:", validateToken);
           changeAuthState(validateToken);
+
+        } else if (isMounted) {
+          console.log("Invalid token response:", validateToken);
+          changeAuthState({});
         }
       } catch (error) {
         console.error('Failed to fetch user data:', error);

@@ -21,41 +21,43 @@ import DashboardEmployee from "./components/dashboardEmployee/DashboardEmployee"
 import DashboardEmployer from "./components/dashboardEmployer/DashboardEmployer";
 
 
+import RequireEmployerOwnership from "./guards/RequireEmployerOwnership";
 
 function App() {
-  
   return (
     <AuthContextProvider>
-     <SearchContextProvider >
-
-      <BrowserRouter>
-        <MainLayout>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/home" element={<Navigate to="/" replace />} />
-
-            <Route path="/jobs" element={<JobsPage />} />
-            <Route path="/jobs/:id" element={<JobDetailsPage />} />
-            <Route path="/jobs/create" element={<CreateJob />} />
-            <Route path="/jobs/update/:id" element={<EditJob />} />
-
-        
-            <Route path="/profile" element={<DashboardEmployee />} />
-            <Route path="/profile/create" element={<CreateProfilePage />} />
-            <Route path="/profile/catalog" element={<EmployeesPage />} />
-            <Route path="/profile/catalog/:id" element={<CVPage />} />
-
-            <Route path="/company/profile" element={<DashboardEmployer/>}/>
-            <Route path="/company/profile/update/:id" element={<EditCompanyProfile />} />
-            
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </MainLayout>
-      </BrowserRouter>
-
+      <SearchContextProvider>
+        <BrowserRouter>
+          <MainLayout>
+            <Routes>
+             
+              <Route path="/" element={<HomePage />} />
+              <Route path="/home" element={<Navigate to="/" replace />} />
+              <Route path="/jobs" element={<JobsPage />} />
+              <Route path="/jobs/:id" element={<JobDetailsPage />} />
+              <Route path="/profile/catalog" element={<EmployeesPage />} />
+             
+          
+                <Route path="/company/profile" element={<DashboardEmployer />}/>
+                <Route path="/jobs/create" element={<CreateJob />} />
+          
+              <Route element={<RequireEmployerOwnership />}>
+                <Route path="/company/profile/update/:id" element={<EditCompanyProfile />}/>
+                <Route path="/jobs/update/:id" element={<EditJob />} />
+              </Route>
+             
+                <Route path="/profile" element={<DashboardEmployee />} />
+                <Route path="/profile/create" element={<CreateProfilePage />} />
+             
+             
+                <Route path="/profile/catalog/:id" element={<CVPage />} />
+           
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </MainLayout>
+        </BrowserRouter>
       </SearchContextProvider>
     </AuthContextProvider>
   );

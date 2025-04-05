@@ -5,6 +5,7 @@ export const AuthContext = createContext({
     email: "",
     _id: "", 
     role: "",
+    isLoading: true,
     isAuthenticated: false,
     changeAuthState: (authState = {}) => null,
     logoutAuthState: () => {}

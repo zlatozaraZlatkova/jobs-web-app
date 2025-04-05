@@ -12,8 +12,11 @@ import { capitalizeName } from "../../utils/stringUtils.js";
 import CreateCompanyProfile from "../employer/CreateCompanyProfile.jsx";
 
 export default function DashboardEmployer() {
-  const { _id } = useContext(AuthContext);
+  const { _id, isAuthenticated, role} = useContext(AuthContext);
   const navigate = useNavigate();
+
+  console.log("Logged in User is", role,  "and is authenticated", isAuthenticated);
+
 
   const { profileData, isLoading, refreshData, error } = useGetAdminProfile();
   const { submitDelJob } = useDeleteJob();
@@ -31,11 +34,6 @@ export default function DashboardEmployer() {
     profileData.companyId &&
     profileData.companyId._id
   );
-
-  console.log("profile data", profileData);
-  console.log("_id from AuthContext:", _id);
-  console.log("isProfile owner:", isProfileOwner);
-  console.log("has complete profile", hasCompleteProfile);
 
 
   useEffect(() => {

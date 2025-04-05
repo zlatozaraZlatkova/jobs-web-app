@@ -14,9 +14,9 @@ export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = f
 
   const { submitDelProfile, error } = useDeleteEmployeeProfile();
 
-  const { _id } = useContext(AuthContext);
-  const isProfileOwner = employee?.ownerId?._id === _id;
-  console.log("isProfileOwner:", isProfileOwner);
+  const { _id, isAuthenticated } = useContext(AuthContext);
+  
+  const isProfileOwner = isAuthenticated && _id && employee?.ownerId?._id === _id;
 
   useEffect(() => {
     if (error) {
@@ -46,7 +46,6 @@ export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = f
   };
 
   const handleDeleteProfile = async () => {
-    console.log("on delete click hander");
     try {
       await submitDelProfile();
 
@@ -124,7 +123,7 @@ export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = f
               Delete
             </button>
           </>
-        ) : !isCVPage && !isProfileOwner ? (
+        ) : !isCVPage && !isProfileOwner && isAuthenticated ? (
           <button
             className={styles.editProfileBtn}
             type="button"
