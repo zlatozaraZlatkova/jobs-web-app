@@ -432,7 +432,7 @@ Required: `id=[string]`
 <details open>
 <summary><h4>4.6. API Postman documentation</h4></summary>
 
-- Source: [LINK POSTMAN API](https://documenter.postman.com/preview/28859516-1a8f94a3-e470-42fd-af26-47f0bd7815b3?environment=&versionTag=latest&apiName=CURRENT&version=latest&documentationLayout=classic-double-column&documentationTheme=light&logo=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&logoDark=https%3A%2F%2Fres.cloudinary.com%2Fpostman%2Fimage%2Fupload%2Ft_team_logo%2Fv1%2Fteam%2Fanonymous_team&right-sidebar=303030&top-bar=FFFFFF&highlight=FF6C37&right-sidebar-dark=303030&top-bar-dark=212121&highlight-dark=FF6C37)
+- Source: [LINK POSTMAN API](https://documenter.getpostman.com/view/28859516/2sB2cUBiYD)
 </details>
 </details>
 
