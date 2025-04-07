@@ -228,7 +228,7 @@ export default function EditCompanyProfile() {
               <div className="button-group">
                 <button
                   type="button"
-                  className="button-secondary"
+                  className="button button-secondary"
                   onClick={clickCancelHandle}
                 >
                   Cancel

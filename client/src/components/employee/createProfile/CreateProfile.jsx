@@ -137,7 +137,7 @@ export default function CreateProfile({ onComplete }) {
         location: formData.location,
         status: formData.status,
         githubUsername: formData.githubUsername,
-        linkedinProfile: formData.linkedinProfile,
+        linkedin: formData.linkedin,
         skills: formData.skills,
         bio: formData.bio,
       }
@@ -185,7 +185,7 @@ export default function CreateProfile({ onComplete }) {
 
             </div>
             <div className="form-group">
-              <label>Company</label>
+              <label className="required">Company</label>
               <input
                 type="text"
                 name="company"
@@ -231,14 +231,14 @@ export default function CreateProfile({ onComplete }) {
               <label>LinkedIn Profile</label>
               <input
                 type="url"
-                name="linkedinProfile"
-                value={formValues.linkedinProfile}
+                name="linkedin"
+                value={formValues.linkedin}
                 onChange={changeHandler}
                 placeholder="https://www.linkedin.com/in/username"
               />
             </div>
             <div className="form-group">
-              <label>GitHub Profile</label>
+              <label className="required">GitHub Profile</label>
               <input
                 type="text"
                 name="githubUsername"
@@ -260,7 +260,7 @@ export default function CreateProfile({ onComplete }) {
 
             </div>
             <div className="form-group form-grid-full">
-              <label>Bio</label>
+              <label className="required">Bio</label>
               <textarea
                 name="bio"
                 value={formValues.bio}

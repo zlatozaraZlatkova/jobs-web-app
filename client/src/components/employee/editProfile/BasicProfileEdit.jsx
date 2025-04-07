@@ -209,7 +209,7 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
 
       <form onSubmit={submitHandler} className={styles.form}>
         <div className={styles.formGroup}>
-          <label>Company</label>
+          <label className="required">Company</label>
           <input
             type="text"
             name="company"
@@ -219,7 +219,7 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="website">Website</label>
+          <label className="required" htmlFor="website">Website</label>
           <input
             type="text"
             name="website"
@@ -229,7 +229,7 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="location">Location</label>
+          <label className="required" htmlFor="location">Location</label>
           <input
             type="text"
             name="location"
@@ -249,16 +249,16 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="linkedin">LinkedIn URL</label>
+          <label className="required" htmlFor="linkedin">LinkedIn URL</label>
           <input
-            type="url"
+            type="text"
             name="linkedin"
             value={formValues.linkedin}
             onChange={changeHandler}
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="github">GitHub URL</label>
+          <label className="required"  htmlFor="github">GitHub URL</label>
           <input
             type="text"
             name="githubUsername"
@@ -269,7 +269,7 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="bio">Bio</label>
+          <label className="required" htmlFor="bio">Bio</label>
           <textarea
             id="bio"
             name="bio"

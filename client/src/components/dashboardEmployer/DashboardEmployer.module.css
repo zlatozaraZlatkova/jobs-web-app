@@ -97,6 +97,10 @@
   flex-wrap: wrap;
   gap: 1.5rem;
 }
+.companyInfo  form {
+  width: 100%;
+}
+
 .companyLogoSection {
   display: flex;
   align-items: center;
@@ -258,6 +262,15 @@
   gap: 0.5rem;
 }
 
+.tableActions a {
+  color: var(--text-secondary);
+}
+.tableActions a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+
 .actionButton {
   width: 32px;
   height: 32px;
@@ -315,14 +328,11 @@
 }
 
 .buttonSecondary {
-  background-color: var(--bg-secondary);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: none;
 }
 
-.buttonSecondary:hover {
-  background-color: var(--border-color);
-}
 
 .actionButtons {
   margin-top: 1.5rem;

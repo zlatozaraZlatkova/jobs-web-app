@@ -5,34 +5,53 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLogout } from "../../apiHooks/useAuth";
 import { AuthContext } from "../../contexts/AuthContext";
 
-
 export default function Navigation() {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [serverError, setServerError] = useState(null);
+  const [isDark, setIsDark] = useState(
+    localStorage.getItem("darkMode") === "true"
+  );
 
-  const { isAuthenticated, role, logoutAuthState  } = useContext(AuthContext);
+  const { isAuthenticated, role, logoutAuthState } = useContext(AuthContext);
   const { logoutHandler, error } = useLogout();
   const isEmployee = role === "employee";
 
-    useEffect(() => {
-      if (error) {
-        setServerError(error);
-        const timer = setTimeout(() => {
-          setServerError(null);
-        }, 3000);
-  
-        return () => {
-          clearTimeout(timer);
-        };
-      }
-    }, [error]);
+  useEffect(() => {
+    if (error) {
+      setServerError(error);
+      const timer = setTimeout(() => {
+        setServerError(null);
+      }, 3000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [error]);
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", isDark.toString());
+
+    console.log(
+      "Theme toggled:",
+      isDark,
+      "localStorage value:",
+      localStorage.getItem("darkMode")
+    );
+
+    if (isDark) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  }, [isDark]);
 
   const handleLogout = async () => {
     try {
       setServerError(null);
       const success = await logoutHandler();
-      if(success && !error) {
+      if (success && !error) {
         logoutAuthState();
         navigate("/");
       }
@@ -45,6 +64,9 @@ export default function Navigation() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const toggleTheme = () => {
+    setIsDark((prevState) => !prevState);
+  };
 
   return (
     <nav className={styles.navbar}>
@@ -66,6 +88,8 @@ export default function Navigation() {
               type="checkbox"
               id="theme-toggle"
               aria-label="Toggle dark mode"
+              checked={isDark}
+              onChange={toggleTheme}
             />
             <span className={styles.slider} />
           </label>
@@ -83,27 +107,46 @@ export default function Navigation() {
           </button>
 
           {/* Navigation Links */}
-          <ul className={`${styles.navLinks} ${isMobileMenuOpen ? styles.active : ""}`}>
-            <li><Link to="/jobs">Jobs</Link></li>
-            <li><Link to="/profile/catalog">Devs</Link></li>
+          <ul
+            className={`${styles.navLinks} ${
+              isMobileMenuOpen ? styles.active : ""
+            }`}
+          >
+            <li>
+              <Link to="/jobs">Jobs</Link>
+            </li>
+            <li>
+              <Link to="/profile/catalog">Devs</Link>
+            </li>
 
             {isAuthenticated ? (
               <>
                 {isEmployee ? (
                   <>
-                    <li><Link to="/profile/create">Create CV</Link></li>
-                    <li><Link to="/profile">Dashboard</Link></li>
-
+                    <li>
+                      <Link to="/profile/create">Create CV</Link>
+                    </li>
+                    <li>
+                      <Link to="/profile">Dashboard</Link>
+                    </li>
                   </>
                 ) : (
                   <>
-                    <li><Link to="/jobs/create">Add Job</Link></li>
-                    <li><Link to="/company/profile">Dashboard</Link></li>
+                    <li>
+                      <Link to="/jobs/create">Add Job</Link>
+                    </li>
+                    <li>
+                      <Link to="/company/profile">Dashboard</Link>
+                    </li>
                   </>
                 )}
 
                 <li>
-                  <button onClick={handleLogout} className={styles.loginBtn} type="button">
+                  <button
+                    onClick={handleLogout}
+                    className={styles.loginBtn}
+                    type="button"
+                  >
                     Logout
                   </button>
                   {serverError && (
@@ -113,8 +156,14 @@ export default function Navigation() {
               </>
             ) : (
               <>
-                <li><Link to="/register">Register</Link></li>
-                <li><Link to="/login" className={styles.loginBtn}>Login</Link></li>
+                <li>
+                  <Link to="/register">Register</Link>
+                </li>
+                <li>
+                  <Link to="/login" className={styles.loginBtn}>
+                    Login
+                  </Link>
+                </li>
               </>
             )}
           </ul>

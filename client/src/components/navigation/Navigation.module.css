@@ -57,7 +57,7 @@
 }
 
 .navLinks a:hover {
-  color: var(--primary-color);
+  color: var(--light-blue);
 }
 
 /* Burger menu btn */
@@ -81,7 +81,8 @@
 /* Login btn */
 .loginBtn {
   padding: 0.30rem 0.5rem;
-  background-color: var(--section-bg);
+  background-color: var(--primary-color);
+  color: white;
   border: 1px solid var(--primary-color);
   border-radius: 4px;
   cursor: pointer;
@@ -94,17 +95,34 @@
 nav .loginBtn[href],
 nav .loginBtn:link,
 nav .loginBtn:visited {
-  color: var(--text-primary);
+  color: white;
   text-decoration: none;
 }
 
-nav .loginBtn:hover,
-nav .loginBtn:active {
+nav button.loginBtn {
   background-color: var(--primary-color);
-  color: var(--white-color);
-  opacity: 1;
+  color: white;
 }
 
+nav .loginBtn:hover {
+  background-color: var(--dark-primary-color);
+  border-color: var(--dark-primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  color: white;
+}
+nav .loginBtn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+[data-theme="dark"] nav .loginBtn[href],
+[data-theme="dark"] nav .loginBtn:link,
+[data-theme="dark"] nav .loginBtn:visited,
+[data-theme="dark"] nav button.loginBtn {
+  color: white;
+  background-color: var(--primary-color);
+}
 
 /* Theme Toggle */
 .themeToggle {

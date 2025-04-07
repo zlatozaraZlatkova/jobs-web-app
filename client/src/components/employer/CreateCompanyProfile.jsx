@@ -218,8 +218,8 @@ export default function CreateCompanyProfile() {
         {/* Button Group */}
         <div className="button-group">
           <button
-            type="button"
-            className="button button-secondary"
+           type="button"
+           className="button button-secondary"
             onClick={clickCancelHandle}
           >
             Cancel

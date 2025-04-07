@@ -87,6 +87,7 @@ export function useGetEmployeeProfile() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [profileExists, setProfileExists] = useState(false);
 
   function refreshData() {
     setRefreshKey((prevKey) => prevKey + 1);
@@ -101,6 +102,7 @@ export function useGetEmployeeProfile() {
           setEmployee(null);
           setError(null);
           setIsLoading(false);
+          setProfileExists(false);
         }
         return;
       }
@@ -114,12 +116,24 @@ export function useGetEmployeeProfile() {
         const response = await getEmployeeProfile();
 
         if (isMounted) {
-          if (response.isError === true) {
-            setError(response.message);
+          if (response && response.isError === true) {
+           
+            if (response.message.includes("There is no profile for this user.") || response.status === 400 || response.statusCode === 400) {
+              setError(null);
+              setProfileExists(false);
+            } else {
+              setError(response.message);
+              setProfileExists(false);
+            }
+            
             setEmployee(null);
+
           } else {
             setEmployee(response);
+            setProfileExists(true);
+            setError(null);
           }
+          
           setIsLoading(false);
         }
       } catch (err) {
@@ -127,6 +141,7 @@ export function useGetEmployeeProfile() {
           setError(err.message);
           setEmployee(null);
           setIsLoading(false);
+          setProfileExists(false);
         }
       }
     };
@@ -143,6 +158,7 @@ export function useGetEmployeeProfile() {
     isLoading,
     error,
     refreshData,
+    profileExists
   };
 }
 

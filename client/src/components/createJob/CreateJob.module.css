@@ -45,13 +45,13 @@
 .formSelect,
 .formTextarea {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  border: 1px solid #ddd;
   border-radius: 6px;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-size: 1rem;
-  transition: border-color 0.3s;
+  transition: all 0.2s ease;
 }
 
 .formInput:focus,

@@ -11,12 +11,20 @@ export default function CreateProfilePage() {
   const [displayError, setDisplayError] = useState(null);
   const [step, setStep] = useState(1);
 
-  const { employee, isLoading, error } = useGetEmployeeProfile();
+  const { employee, isLoading, error, profileExists } = useGetEmployeeProfile();
 
   useEffect(() => {
     if (error) {
       setDisplayError(error);
+      const timer = setTimeout(() => {
+        setDisplayError(null);
+      }, 10000);
+  
+      return () => {
+        clearTimeout(timer);
+      };
     }
+   
   }, [error]);
  
 
@@ -43,7 +51,7 @@ export default function CreateProfilePage() {
           <div className="loading-spinner"></div>
           <p>Loading your profile information...</p>
         </div>
-      ) : (employee && employee._id) ? (
+      ) : (profileExists && employee && employee._id) ? (
         <div className="container-profile">
           {displayError && <div className="error-message">{displayError}</div>}
           <div className="profile-completion-message">

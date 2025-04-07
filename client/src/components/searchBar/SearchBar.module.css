@@ -19,6 +19,9 @@
   background-color: var(--job-card-bg);
   color: var(--text-primary);
 }
+.searchInput input[type="text"] {
+  background-color: var(--job-card-bg);
+}
 
 /* Submit btn  */
 .submitBtn {

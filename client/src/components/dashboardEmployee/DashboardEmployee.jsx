@@ -11,7 +11,7 @@ export default function DashboardEmployee() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
   const [displayError, setDisplayError] = useState(null);
-  const { employee, isLoading, error, refreshData } = useGetEmployeeProfile();
+  const { employee, isLoading, error, refreshData, profileExists } = useGetEmployeeProfile();
 
   const { isAuthenticated, role } = useContext(AuthContext);
   console.log("Logged in User is", role,  "and is authenticated", isAuthenticated);
@@ -20,7 +20,15 @@ export default function DashboardEmployee() {
   useEffect(() => {
     if (error) {
       setDisplayError(error);
+      const timer = setTimeout(() => {
+        setDisplayError(null);
+      }, 10000);
+  
+      return () => {
+        clearTimeout(timer);
+      };
     }
+   
   }, [error]);
 
   const onClickCreateProfileBtn = () => {
@@ -32,7 +40,8 @@ export default function DashboardEmployee() {
       <div className="container-profile">
         {isLoading ? (
           <div>Loading employees...</div>
-        ) : error ? (
+        ) : !profileExists ? (
+       
           <div className="container-profile">
             {displayError && (
               <div className="error-message">{displayError}</div>
@@ -54,6 +63,7 @@ export default function DashboardEmployee() {
             </div>
           </div>
         ) : employee ? (
+      
           <>
             <header className="profile-dashboard-header">
               <div className="profile-tab-nav">
@@ -147,7 +157,16 @@ export default function DashboardEmployee() {
             </div>
           </>
         ) : (
-          <div>No employee data available. Please create your profile</div>
+        
+          <div className="error-state">
+            {displayError ? (
+              <div className="error-message">{displayError}</div>
+            ) : (
+              <div className="error-message">
+                Error loading profile. Please try again.
+              </div>
+            )}
+          </div>
         )}
       </div>
     </>
