@@ -162,12 +162,17 @@ nav .loginBtn:active {
   border-radius: 50%;
 }
 
-input:checked + .slider {
+.themeToggle input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.themeToggle input:checked + .slider {
   background-color: var(--primary-color);
 }
 
-input:checked + .slider:before {
-  transform: translateX(24px);
+
+[data-theme="dark"] .themeToggle input:checked + .slider {
+  background-color: var(--primary-color);
 }
 
 

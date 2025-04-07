@@ -4,14 +4,14 @@ import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogout } from "../../apiHooks/useAuth";
 import { AuthContext } from "../../contexts/AuthContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 export default function Navigation() {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const {isDark, toggleTheme} = useContext(ThemeContext);
   const [serverError, setServerError] = useState(null);
-  const [isDark, setIsDark] = useState(
-    localStorage.getItem("darkMode") === "true"
-  );
+
 
   const { isAuthenticated, role, logoutAuthState } = useContext(AuthContext);
   const { logoutHandler, error } = useLogout();
@@ -30,22 +30,6 @@ export default function Navigation() {
     }
   }, [error]);
 
-  useEffect(() => {
-    localStorage.setItem("darkMode", isDark.toString());
-
-    console.log(
-      "Theme toggled:",
-      isDark,
-      "localStorage value:",
-      localStorage.getItem("darkMode")
-    );
-
-    if (isDark) {
-      document.documentElement.setAttribute("data-theme", "dark");
-    } else {
-      document.documentElement.setAttribute("data-theme", "light");
-    }
-  }, [isDark]);
 
   const handleLogout = async () => {
     try {
@@ -64,9 +48,6 @@ export default function Navigation() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const toggleTheme = () => {
-    setIsDark((prevState) => !prevState);
-  };
 
   return (
     <nav className={styles.navbar}>

@@ -26,52 +26,56 @@ import RequireEmployerRole from "./guards/RequireEmployerRole";
 import RequireEmployeeRole from "./guards/RequireEmployeeRole";
 import RequireCompanyOwnership from "./guards/RequireCompanyOwnership";
 import PublicRoute from "./guards/PublicRoute";
+import ThemeContextProvider from "./contexts/ThemeContextProvider";
 
 function App() {
   return (
-    <AuthContextProvider>
-      <SearchContextProvider>
-        <BrowserRouter>
-          <MainLayout>
-            <Routes>
+    <ThemeContextProvider>
+      <AuthContextProvider>
+        <SearchContextProvider>
+          <BrowserRouter>
+            <MainLayout>
+              <Routes>
 
-              <Route path="/" element={<HomePage />} />
-              <Route path="/home" element={<Navigate to="/" replace />} />
-              <Route path="/jobs" element={<JobsPage />} />
-              <Route path="/jobs/:id" element={<JobDetailsPage />} />
-              <Route path="/profile/catalog" element={<EmployeesPage />} />
+                <Route path="/" element={<HomePage />} />
+                <Route path="/home" element={<Navigate to="/" replace />} />
+                <Route path="/jobs" element={<JobsPage />} />
+                <Route path="/jobs/:id" element={<JobDetailsPage />} />
+                <Route path="/profile/catalog" element={<EmployeesPage />} />
 
-              <Route element={<RequireEmployerRole />}>
-                <Route path="/company/profile" element={<DashboardEmployer />} />
-                <Route path="/jobs/create" element={<CreateJob />} />
-              </Route>
-              <Route element={<RequireEmployerOwnership />}>
-                <Route path="/jobs/update/:id" element={<EditJob />} />
-              </Route>
+                <Route element={<RequireEmployerRole />}>
+                  <Route path="/company/profile" element={<DashboardEmployer />} />
+                  <Route path="/jobs/create" element={<CreateJob />} />
+                </Route>
+                <Route element={<RequireEmployerOwnership />}>
+                  <Route path="/jobs/update/:id" element={<EditJob />} />
+                </Route>
 
-              <Route element={<RequireCompanyOwnership />}>
-                <Route path="/company/profile/update/:id" element={<EditCompanyProfile />} />
-              </Route>
+                <Route element={<RequireCompanyOwnership />}>
+                  <Route path="/company/profile/update/:id" element={<EditCompanyProfile />} />
+                </Route>
 
-              <Route element={<RequireEmployeeRole />}>
-                <Route path="/profile" element={<DashboardEmployee />} />
-                <Route path="/profile/create" element={<CreateProfilePage />} />
-              </Route>
-              <Route element={<ProtectedRoute />}>
-                <Route path="/profile/catalog/:id" element={<CVPage />} />
-              </Route>
+                <Route element={<RequireEmployeeRole />}>
+                  <Route path="/profile" element={<DashboardEmployee />} />
+                  <Route path="/profile/create" element={<CreateProfilePage />} />
+                </Route>
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/profile/catalog/:id" element={<CVPage />} />
+                </Route>
 
-              <Route element={<PublicRoute />}>
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/login" element={<LoginPage />} />
-              </Route>
+                <Route element={<PublicRoute />}>
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                </Route>
 
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </MainLayout>
-        </BrowserRouter>
-      </SearchContextProvider>
-    </AuthContextProvider>
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </MainLayout>
+          </BrowserRouter>
+        </SearchContextProvider>
+      </AuthContextProvider>
+
+    </ThemeContextProvider>
   );
 }
 
