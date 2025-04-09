@@ -270,7 +270,6 @@ Devjobs web app/
 │   ├── package-lock.json
 │   └── vite.config.js
 |
-├── Rest-api/ 
 ├── server/ 
 │   ├── config/
 │   │   ├── cors.js
@@ -308,13 +307,12 @@ Devjobs web app/
 │   ├── util/
 │   │   ├── errorParser.js
 │   │   └── formatPaginatedResponse.js
-│   ├── index.js
-│   ├── package.json
-│   └── package-lock.json
 │
 ├── .gitignore
 ├── package.json
-└── package-lock.json
+├── Procfile
+└── server.js
+
 ```
 </details>
 
@@ -373,7 +371,7 @@ Application uses MongoDB with Mongoose and consists of the following main models
 
 </details>
 
-<details open>
+<details>
 <summary><h3>4. API Documentation</h3></summary>
 
 <details>
@@ -590,6 +588,21 @@ All API requests from the frontend are automatically proxied to the backend serv
 <details open>
 <summary><h4>6.1. Authentication</h4></summary>
 
+6.1.1. Client-side 
+
+- JWT generation and storage in HTTP-only cookies
+- Role-based access control for Employee and Employer users
+- React Context API implementation for global auth state management
+- Loading states during authentication checks
+- `<PrivateRoute>` Component that redirects unauthenticated users
+- `<PublicRoute>`Component that restricts authenticated users from accessing login/registration pages
+- `<RequireEmployeeRole>, <RequireEmployerRole>`Role-specific route guards
+- `<RequireCompanyOwnership>` Verifies if employer owns the job being accessed/modified
+- `<RequireEmployeeOwnership>` Validates if employee has created the company profile being accessed
+
+  
+6.1.2. Server-side 
+
 - JWT-based authentication with secure cookie session storage
 - Session duration: 1 hour
 - Protected routes using middleware guards:
@@ -614,12 +627,14 @@ All API requests from the frontend are automatically proxied to the backend serv
 <details open>
 <summary><h4>7.1. Validation and Error Types</h4></summary>
  
- 1. Client
+ 1. Client-side
+   
    - Form validation error display and handling
    - API error response parsing and presentation
    - User-friendly error messages for production
    
- 2. Server
+ 2. Server-side
+   
   - Global Error Handling
   - Pre-request validation with express-validator middleware
   - Model-level Mongoose schema validation
@@ -631,6 +646,18 @@ All API requests from the frontend are automatically proxied to the backend serv
 <details>
 <summary><h3>8. References & Resources Used</h3></summary>
 
+- Heroku Deployment: Top 3 Ways to Deploy Apps to Heroku
+  - Source: [Link](https://codefresh.io/learn/heroku-deployment-top-3-ways-to-deploy-apps-to-heroku/)
+- How to implement pagination in React
+   - Source: [Link](https://hygraph.com/blog/react-pagination)
+- App Router: Adding Search and Pagination
+   - Source: [Link](https://nextjs.org/learn/dashboard-app/adding-search-and-pagination)
+- Pagination in React with a Back-End API and react-router's Hooks API
+  - Source: [Link](https://firxworx.com/blog/code/pagination-in-react-with-a-back-end-api-and-react-routers-hooks-api/)
+- Creating Light/Dark mode on a React App with Context
+  - Source: [Link](https://medium.com/lets-make-something-up/creating-light-dark-mode-on-a-react-app-with-context-589a5465f639)
+  
+  
 - Securing APIs: Express rate limit and slow down
   - Source: [Link](https://developer.mozilla.org/en-US/blog/securing-apis-express-rate-limit-and-slow-down/)
 - Express cors middleware
