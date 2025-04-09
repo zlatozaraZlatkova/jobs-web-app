@@ -25,7 +25,7 @@ router.post("/register",
       res.cookie("jwt", accessToken, {
         httpOnly: true,
         maxAge: 3600000, // 1 hour in ms
-        secure: process.env.NODE_ENV === "production", 
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
       });
 
@@ -43,7 +43,6 @@ router.post("/login",
   validateRequest,
   async (req, res, next) => {
     try {
-
       const { _id, email, accessToken, role } = await login(
         req.body.email,
         req.body.password
@@ -52,12 +51,11 @@ router.post("/login",
       res.cookie("jwt", accessToken, {
         httpOnly: true,
         maxAge: 3600000, // 1 hour in ms
-        secure: process.env.NODE_ENV === "production",  
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
       });
 
       res.status(200).json({ _id, email, role });
-
     } catch (error) {
       next(error);
     }
@@ -67,7 +65,6 @@ router.post("/login",
 router.get("/logout", hasUser(), async (req, res, next) => {
   const token = req.cookies.jwt;
   try {
-
     if (!token) {
       return res.status(401).json({ message: "No token found" });
     }
@@ -76,7 +73,7 @@ router.get("/logout", hasUser(), async (req, res, next) => {
 
     res.clearCookie("jwt", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
     });
 
@@ -86,23 +83,21 @@ router.get("/logout", hasUser(), async (req, res, next) => {
   }
 });
 
-
 router.get("/validate", async (req, res, next) => {
   try {
     const token = req.cookies.jwt;
-    
+
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
     }
-    
+
     const userData = await validateUserToken(token);
-    
+
     res.json({
       _id: userData._id,
       email: userData.email,
       role: userData.role,
     });
-    
   } catch (error) {
     console.error("Token validation error:", error.message);
     next(error);

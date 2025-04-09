@@ -1,7 +1,7 @@
 # Node modules (server + client)
 node_modules/
 client/node_modules/
-Rest-api/node_modules/
+
 
 # Build output (client + optional server build)
 client/build/
@@ -28,19 +28,12 @@ coverage/
 *.lcov
 
 # Production files (server-side build output)
-Rest-api/dist/
-Rest-api/build/
+dist/
+build/
 
 # Heroku build artifacts
 heroku-postbuild.log
 
-# Optional lock files 
+# lock files 
 package-lock.json
 
-
-# Misc
-*.tgz
-*.gz
-*.zip
-*.bak
-*.swp

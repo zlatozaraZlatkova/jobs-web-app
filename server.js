@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 const rateLimit = require("express-rate-limit");
 
 require("dotenv").config();
@@ -22,7 +23,6 @@ async function start() {
   await databaseConfig(app);
 
   const maxRequests = NODE_ENV === "production" ? 1000 : 10000;
-
   app.use(
     rateLimit({
       windowMs: 15 * 60 * 1000,
@@ -33,23 +33,24 @@ async function start() {
     })
   );
 
+  app.use(express.urlencoded({ extended: true }));
+  app.set("trust proxy", 1);
+  app.use(express.json({ limit: "10mb" }));
+  app.use(cookieParser());
+  app.use(corsConfig);
+  app.use(session());
+
   if (NODE_ENV === "production") {
     const clientPath = path.join(__dirname, "client/dist");
     app.use(express.static(clientPath));
   }
 
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.json());
-
-  app.use(cookieParser());
-
   app.use(corsConfig);
-
   app.use(session());
 
   routesConfig(app);
 
-  app.get("/", (req, res) => {
+  app.get("/api/test", (req, res) => {
     res.json({ message: "REST service operational" });
   });
 
