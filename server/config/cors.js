@@ -3,7 +3,7 @@ const cors = require("cors");
 const corsWhitelists = {
   development: ["http://localhost:4200"],
   production: [
-    "https://morning-beyond-40685-d755912316dc.herokuapp.com"
+    "https://shrouded-ocean-76495-526ebbd06de6.herokuapp.com"
   ]
 };
   const environment = process.env.NODE_ENV || "development";
