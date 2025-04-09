@@ -25,7 +25,7 @@ router.post("/register",
       res.cookie("jwt", accessToken, {
         httpOnly: true,
         maxAge: 3600000, // 1 hour in ms
-        secure: false, // true in production
+        secure: process.env.NODE_ENV === "production", 
         sameSite: "lax",
       });
 
@@ -52,7 +52,7 @@ router.post("/login",
       res.cookie("jwt", accessToken, {
         httpOnly: true,
         maxAge: 3600000, // 1 hour in ms
-        secure: false, // true in production
+        secure: process.env.NODE_ENV === "production",  
         sameSite: "lax",
       });
 
@@ -76,7 +76,7 @@ router.get("/logout", hasUser(), async (req, res, next) => {
 
     res.clearCookie("jwt", {
       httpOnly: true,
-      secure: false, // true in production
+      secure: process.env.NODE_ENV === "production", 
       sameSite: "lax",
     });
 
