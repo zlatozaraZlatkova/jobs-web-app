@@ -26,7 +26,7 @@ router.post("/register",
         httpOnly: true,
         maxAge: 3600000, // 1 hour in ms
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: process.env.NODE_ENV === "production" ? "lax" : "none",
       });
 
       res.status(200).json({ _id, email, role });
@@ -52,7 +52,7 @@ router.post("/login",
         httpOnly: true,
         maxAge: 3600000, // 1 hour in ms
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: process.env.NODE_ENV === "production" ? "lax" : "none",
       });
 
       res.status(200).json({ _id, email, role });
@@ -74,7 +74,7 @@ router.get("/logout", hasUser(), async (req, res, next) => {
     res.clearCookie("jwt", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "lax" : "none",
     });
 
     res.status(204).end();

@@ -10,7 +10,7 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 
 const databaseConfig = require("./server/config/database");
 const routesConfig = require("./server/config/routes");
-const corsConfig = require("./server/config/cors");
+const corsMiddleware = require("./server/config/cors");
 
 const session = require("./server/middlewares/session");
 const errorHandler = require("./server/middlewares/errorHandler");
@@ -21,6 +21,8 @@ async function start() {
   const app = express();
 
   await databaseConfig(app);
+  
+  app.use(corsMiddleware);
 
   const maxRequests = NODE_ENV === "production" ? 1000 : 10000;
   app.use(
@@ -37,16 +39,14 @@ async function start() {
   app.set("trust proxy", 1);
   app.use(express.json({ limit: "10mb" }));
   app.use(cookieParser());
-  app.use(corsConfig);
+
+
   app.use(session());
 
   if (NODE_ENV === "production") {
     const clientPath = path.join(__dirname, "client/dist");
     app.use(express.static(clientPath));
   }
-
-  app.use(corsConfig);
-  app.use(session());
 
   routesConfig(app);
 

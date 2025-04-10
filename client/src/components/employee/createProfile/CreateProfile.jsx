@@ -38,7 +38,6 @@ export default function CreateProfile({ onComplete }) {
 
 
   const initialValues = {
-    fullName: "",
     company: "",
     website: "",
     location: "",
@@ -52,7 +51,7 @@ export default function CreateProfile({ onComplete }) {
 
   const validateForm = (formValues) => {
  
-    if (!formValues.fullName && !formValues.company &&
+    if (!formValues.company &&
        !formValues.location && !formValues.status &&
        !formValues.githubUsername && !formValues.skills &&
        !formValues.bio
@@ -61,14 +60,6 @@ export default function CreateProfile({ onComplete }) {
       return false;
     }
 
-    if (!formValues.fullName) {
-      setFormErrors("Full name is required");
-      return false;
-    }
-    if (formValues.fullName.length < 5) {
-      setFormErrors("Full name must be at least 5 characters");
-      return false;
-    }
 
     if (!formValues.company) {
       setFormErrors("Company name is required");
@@ -131,7 +122,6 @@ export default function CreateProfile({ onComplete }) {
 
     try {
       const basicProfileInputData = {
-        fullName: formData.fullName,
         company: formData.company,
         website: formData.website,
         location: formData.location,
@@ -173,17 +163,6 @@ export default function CreateProfile({ onComplete }) {
           )}
         <form onSubmit={submitHandler}>
           <div className="form-grid">
-            <div className="form-group">
-              <label className="required">Full Name</label>
-              <input
-                type="text"
-                name="fullName"
-                value={formValues.fullName}
-                onChange={changeHandler}
-                placeholder="e.g. John Doe"
-              />
-
-            </div>
             <div className="form-group">
               <label className="required">Company</label>
               <input

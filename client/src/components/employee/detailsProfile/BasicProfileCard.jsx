@@ -15,13 +15,13 @@ export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = f
   const { submitDelProfile, error } = useDeleteEmployeeProfile();
 
   const { _id, isAuthenticated } = useContext(AuthContext);
-  
+
   const isProfileOwner = isAuthenticated && _id && employee?.ownerId?._id === _id;
 
   useEffect(() => {
     if (error) {
       let errorMessage;
-      
+
       if (error.message) {
         errorMessage = error.message;
       } else if (typeof error === "string") {
@@ -29,7 +29,7 @@ export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = f
       } else {
         errorMessage = "BSONError: input must be a 24 character hex string";
       }
-      
+
       setDisplayError(errorMessage);
     }
   }, [error]);
@@ -103,18 +103,20 @@ export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = f
             </div>
           )}
 
+          {isCVPage && (
+            <p className={styles.profileBio}>
+              {`${employee.bio}`}
+            </p>)}
+
+
           <div className={styles.contactLink}>
-            {employee.github && (
-              <Link to={employee.github} className={styles.contactLink}>
-                GitHub Repo
-              </Link>
-            )}
             {employee.socialMedia?.linkedin && (
               <Link to={employee.socialMedia.linkedin} className={styles.contactLink} target="_blank">
                 LinkedIn Profile
               </Link>
             )}
           </div>
+
         </div>
         {!isEmployeesPage && isProfileOwner ? (
           <>
