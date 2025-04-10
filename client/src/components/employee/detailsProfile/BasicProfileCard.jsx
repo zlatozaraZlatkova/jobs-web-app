@@ -103,10 +103,11 @@ export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = f
             </div>
           )}
 
-          {isCVPage && (
+          {(isCVPage || isProfileOwner) && employee.bio && (
             <p className={styles.profileBio}>
-              {`${employee.bio}`}
-            </p>)}
+              {employee.bio}
+            </p>
+          )}
 
 
           <div className={styles.contactLink}>
