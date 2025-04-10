@@ -550,16 +550,14 @@ Required: `id=[string]`
 2. Configure your `.env` file with appropriate values
 3. Install dependencies for both server and client:
    
-   - Install server dependencies
-     - `cd Rest-api`
+   - Install root/server dependencies
      - `npm install`
   
    - Install client dependencies
       - `cd ../client`
       - `npm install`
 
-4. Return to Rest-api folder to run both servers concurrently:
-    - `cd ../Rest-api`
+4. Run both servers concurrently from the project root:
     - `npm run dev`
   
     This will start:
@@ -568,7 +566,7 @@ Required: `id=[string]`
 
 - **To run servers independently:**
   - For backend only: `npm run server`
-  - For frontend only: `npm run dev`
+  - For frontend only: `cd client && npm run dev`
   
 - **Note about API Proxy:**
 All API requests from the frontend are automatically proxied to the backend server through the Vite configuration. Here's how it works:
