@@ -108,7 +108,7 @@ export default function CreateJob() {
       };
 
       const newJob = await submitJob(jobData);
-      console.log("Response job data:", newJob);
+
 
       if (newJob && !error) {
         navigate(`/jobs/${newJob._id}`);

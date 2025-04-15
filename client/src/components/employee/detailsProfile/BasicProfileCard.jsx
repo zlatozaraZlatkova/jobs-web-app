@@ -51,10 +51,6 @@ export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = f
   };
 
 
-  const handleSaveProfile = (updatedData) => {
-    console.log("Profile updated:", updatedData);
-  };
-
   const handleDeleteProfile = async () => {
     try {
       await submitDelProfile();
@@ -156,7 +152,6 @@ export default function BasicProfileCard({ isEmployeesPage = false, isCVPage = f
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         userData={employee}
-        onSave={handleSaveProfile}
         refreshData={refreshData}
       />
     </>

@@ -14,9 +14,6 @@ async function register(name, email, password, role) {
 
   if (existingEmail) {
     throw new Error("Username or Email is already taken");
-    // const error = new Error("Username or Email is already taken");
-    // console.log('Error type created:', error.name);  
-    // throw error;
   }
 
   const avatar = gravatar.url(email, {
@@ -44,18 +41,13 @@ async function login(email, password) {
 
   if (!user) {
     throw new Error("Incorrect email or password");
-    // const error = new Error("Incorrect email or password");
-    // console.log('Error type created:', error.name);  
-    // throw error;
+   
   }
 
   const matchedPass = await bcrypt.compare(password, user.hashedPassword);
 
   if (!matchedPass) {
     throw new Error("Incorrect email or password");
-    // const error = new Error("Incorrect email or password");
-    // console.log('Error type created:', error.name);  
-    // throw error;
   }
   return createToken(user);
 

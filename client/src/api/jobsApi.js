@@ -53,7 +53,7 @@ export const unpinJob = async(id) => {
   });
 }
 
-export const searchJobs = async (searchParams = {}) => {
+export const searchJobs = async (searchParams = {}, currentPage, limit = 3) => {
   let url = `${BASE_URL}/search`;
   const queryParams = new URLSearchParams();
 
@@ -66,7 +66,7 @@ export const searchJobs = async (searchParams = {}) => {
   const queryString = queryParams.toString();
 
   if (queryString) {
-    url = `${url}?${queryString}`;
+    url = `${url}?${queryString}&page=${currentPage}&limit=${limit}`;
   }
 
   

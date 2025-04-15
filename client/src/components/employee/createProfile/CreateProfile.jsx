@@ -133,7 +133,6 @@ export default function CreateProfile({ onComplete }) {
       }
 
       const basicProfile = submitProfile(basicProfileInputData);
-      //console.log("Response basic profile data:", basicProfile);
 
       if (basicProfile && onComplete) {
         onComplete();

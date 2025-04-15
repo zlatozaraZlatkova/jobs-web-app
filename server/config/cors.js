@@ -26,12 +26,10 @@ const corsMiddleware = cors({
   origin: function (origin, callback) {
 
     if (!origin) {
-      // console.log("Allowing request with no origin");
       return callback(null, true);
     }
     
     if (whitelist.indexOf(origin) !== -1) {
-      // console.log("Allowing origin:", origin);
       return callback(null, true);
     }
 

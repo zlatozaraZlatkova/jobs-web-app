@@ -134,7 +134,6 @@ export default function AddEducation({ onBack, onComplete }) {
       };
 
       const newEducation = await submitEducation(educationInputData);
-      //console.log("Response education data", newEducation);
 
       if (newEducation) {
         refreshData();

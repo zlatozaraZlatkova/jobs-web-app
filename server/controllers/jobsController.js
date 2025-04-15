@@ -113,7 +113,7 @@ router.post("/create", hasUser(), checkUserRole("employer"),
         ownerId: req.user._id,
         company: company._id
       }
-      console.log(newJob)
+    
 
       const createJob = await createItem(req.user._id, newJob);
 

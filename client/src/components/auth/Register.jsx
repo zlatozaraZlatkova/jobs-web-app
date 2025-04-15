@@ -100,7 +100,6 @@ export default function Register() {
 
     try {
       const userData = await registerHandler(name, email, password, role);
-      //console.log("Submitting user data:", userData);
 
       if (userData && !error) {
         navigate("/");

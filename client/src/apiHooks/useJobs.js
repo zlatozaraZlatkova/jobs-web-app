@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, } from "react";
 import { getAllJobs, getPaginatedJobs, createJob, getJobById, updateJob, deleteJob, pinJob, unpinJob, searchJobs } from "../api/jobsApi";
 import { useGetEmployeeProfile } from "./useEmployee";
 
@@ -11,50 +11,43 @@ export function useGetPaginatedJobs(urlPageNumber, technologyFilter) {
 
   useEffect(() => {
     if (urlPageNumber) {
-      //console.log("URL page changed to:", urlPageNumber);
       setCurrentPage(urlPageNumber);
     }
   }, [urlPageNumber]);
 
-  //console.log("Current internal page:", currentPage);
-
   useEffect(() => {
-    let isMounted = true;
 
     const fetchJobs = async () => {
-      if (isMounted) {
-        setIsLoading(true);
-        setError(null);
-      }
+
+      setIsLoading(true);
+      setError(null);
+
 
       try {
         const result = await getPaginatedJobs(currentPage, technologyFilter);
 
-        if (isMounted) {
-          if (result.isError === true) {
-            setError(result.message);
-            setJobs([]);
-          } else if (result.data && Array.isArray(result.data.items)) {
-            setJobs(result.data.items);
-            setTotalPages(result.data.pagination.totalPages);
-          } else {
-            setJobs([]);
-          }
-          setIsLoading(false);
+
+        if (result.isError === true) {
+          setError(result.message);
+          setJobs([]);
+        } else if (result.data && Array.isArray(result.data.items)) {
+          setJobs(result.data.items);
+          setTotalPages(result.data.pagination.totalPages);
+        } else {
+          setJobs([]);
         }
+        setIsLoading(false);
+
       } catch (err) {
-        if (isMounted) {
-          setError(err);
-          setIsLoading(false);
-        }
+
+        setError(err);
+        setIsLoading(false);
+
       }
     };
 
     fetchJobs();
 
-    return () => {
-      isMounted = false;
-    };
   }, [currentPage, technologyFilter]);
 
   return {
@@ -71,43 +64,40 @@ export function useGetJobDetails(id) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
+
 
     const fetchData = async () => {
-      if (isMounted) {
-        setIsLoading(true);
-        setError(null);
-      }
+
+      setIsLoading(true);
+      setError(null);
+
 
       try {
         const response = await getJobById(id);
 
-        if (isMounted) {
-          if (!response) {
-            setCurrentJob(null);
-            return;
 
-          } else if (response.isError === true) {
-            setError(response.message);
+        if (!response) {
+          setCurrentJob(null);
+          return;
 
-          } else {
-            setCurrentJob(response);
-          }
-          setIsLoading(false);
+        } else if (response.isError === true) {
+          setError(response.message);
+
+        } else {
+          setCurrentJob(response);
         }
+        setIsLoading(false);
+
       } catch (err) {
-        if (isMounted) {
-          setError(err);
-          setIsLoading(false);
-        }
+
+        setError(err);
+        setIsLoading(false);
+
       }
     };
 
     fetchData();
 
-    return () => {
-      isMounted = false;
-    };
   }, [id]);
   return {
     currentJob,
@@ -124,56 +114,52 @@ export function useGetCategoriesJob() {
   const [erros, setErros] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
+
 
     const fetchAllJobs = async () => {
-      if (isMounted) {
-        setIsLoading(true);
-        setErros(null);
-      }
+
+      setIsLoading(true);
+      setErros(null);
+
 
       try {
         const reasponse = await getAllJobs();
 
-        if (isMounted) {
-          if (reasponse.isError === true) {
-            setErros(reasponse.message);
+        if (reasponse.isError === true) {
+          setErros(reasponse.message);
 
-          } else if (reasponse.length === 0) {
-            setJobs([]);
-            setFrontendTechnologies([]);
-            setBackendTechnologies([]);
-
-          } else {
-            setJobs(reasponse);
-
-            const frontend = reasponse.filter(
-              (job) => job.technologies === "frontend"
-            );
-            const backend = reasponse.filter(
-              (job) => job.technologies === "backend"
-            );
-
-            setFrontendTechnologies(frontend);
-            setBackendTechnologies(backend);
-          }
-          setIsLoading(false);
-        }
-      } catch (err) {
-        if (isMounted) {
+        } else if (reasponse.length === 0) {
           setJobs([]);
           setFrontendTechnologies([]);
           setBackendTechnologies([]);
-          setIsLoading(false);
+
+        } else {
+          setJobs(reasponse);
+
+          const frontend = reasponse.filter(
+            (job) => job.technologies === "frontend"
+          );
+          const backend = reasponse.filter(
+            (job) => job.technologies === "backend"
+          );
+
+          setFrontendTechnologies(frontend);
+          setBackendTechnologies(backend);
         }
+        setIsLoading(false);
+
+      } catch (err) {
+
+        setJobs([]);
+        setFrontendTechnologies([]);
+        setBackendTechnologies([]);
+        setIsLoading(false);
+
       }
     };
 
     fetchAllJobs();
 
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
   return {
@@ -250,32 +236,29 @@ export function useFetchingInitialData(id) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
+
     async function fetchJobData() {
       if (!id) {
         return;
       }
-      if (isMounted) {
-        setError(null);
-      }
+
+      setError(null);
+
 
       try {
         const response = await getJobById(id);
-        if (isMounted) {
-          if (response.isError === true) {
-            setError(response.message);
-          }
-          setInitialJobData(response);
+
+        if (response.isError === true) {
+          setError(response.message);
         }
+        setInitialJobData(response);
+
       } catch (err) {
         setError(err);
       }
     }
 
     fetchJobData();
-    return () => {
-      isMounted = false;
-    };
   }, [id]);
 
   return {
@@ -375,11 +358,11 @@ export function useCanPinJobs(isEmployee) {
 export function useSearchJobs() {
   const [error, setError] = useState(null);
 
-  const submitSearch = async (searchParams) => {
+  const submitSearch = async (searchParams, currentPageNumber = 1) => {
     try {
       setError(null);
 
-      const response = await searchJobs(searchParams);
+      const response = await searchJobs(searchParams, currentPageNumber);
       if (response.isError === true) {
         setError(response.message);
       }
@@ -401,38 +384,36 @@ export function useFeaturedJobs() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
+
 
     const fetchFeaturedJobs = async () => {
-      if (isMounted) {
-        setIsLoading(true);
-        setError(null);
-      }
+
+      setIsLoading(true);
+      setError(null);
+
 
       try {
         const response = await getAllJobs();
 
-        if (isMounted) {
-          if (response.isError === true) {
-            setError(response.message);
-            setJobs([]);
-          } else {
-            setJobs(response);
-          }
-          setIsLoading(false);
+
+        if (response.isError === true) {
+          setError(response.message);
+          setJobs([]);
+        } else {
+          setJobs(response);
         }
+        setIsLoading(false);
+
       } catch (err) {
-        if (isMounted) {
-          setError(err);
-          setIsLoading(false);
-        }
+
+        setError(err);
+        setIsLoading(false);
+
       }
     };
 
     fetchFeaturedJobs();
-    return () => {
-      isMounted = false;
-    };
+
   }, []);
 
   return { jobs, isLoading, error };

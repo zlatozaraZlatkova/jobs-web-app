@@ -1,7 +1,5 @@
 function errorParser(err) {
-  console.log('Error received in parser:', err);
-  console.log('Error type in parser:', err.name);
-
+ 
   const errorResponse = {
     message: "",
     statusCode: 500,

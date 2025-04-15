@@ -3,7 +3,7 @@ import styles from "./ProfileCard.module.css";
 import { formatDate } from "../../../utils/formatDate";
 
 export default function EducationCard({ educationData }) {
-  console.log("Props data:", educationData);
+  
   return (
     <>
         <div className={styles.sectionCard}>

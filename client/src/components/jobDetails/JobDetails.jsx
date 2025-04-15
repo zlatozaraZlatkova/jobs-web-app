@@ -8,7 +8,6 @@ export default function JobDetails({ currentJob, onEditClick, onDeleteClick }) {
   const { _id } = useContext(AuthContext);
     
   const isOwner = currentJob.ownerId === _id;
-  console.log("is owner", isOwner)
 
   return (
     <>

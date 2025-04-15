@@ -10,7 +10,6 @@ module.exports = async (app) => {
     
   } catch (err) {
     console.log(`Error initializing DB: ${err.message}`);
-    console.log(`Full error object: ${JSON.stringify(err)}`);
     process.exit(1);
   }
 };

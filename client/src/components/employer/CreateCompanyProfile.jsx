@@ -100,7 +100,7 @@ export default function CreateCompanyProfile() {
     }
 
     try {
-      console.log("provided form data", formData)
+      
 
       const companyData = {
         companyName: formData.companyName,
@@ -111,7 +111,7 @@ export default function CreateCompanyProfile() {
       };
 
       const newCompany = await submitCompanyProfile(companyData);
-      console.log("Response company data:", newCompany);
+  
 
       navigate("/");
     } catch (err) {
@@ -160,11 +160,7 @@ export default function CreateCompanyProfile() {
               type="text"
               name="companyLogo"
               value={formValues.companyLogo}
-              // onChange={changeHandler}
-              onChange={(e) => {
-                console.log("Logo input changed:", e.target.value);
-                changeHandler(e);
-              }}
+              onChange={changeHandler}
               placeholder="https://example.com/logo.png"
               required
             />

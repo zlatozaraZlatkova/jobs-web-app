@@ -23,7 +23,6 @@ export default function CategoryCard({ isBackend, technologies }) {
   }
 
   const clickHandler = () => {
-    console.log("Clicked button:", `/jobs?technology=${technologyType}`)
     navigate(`/jobs?technology=${technologyType}`)
   }
   

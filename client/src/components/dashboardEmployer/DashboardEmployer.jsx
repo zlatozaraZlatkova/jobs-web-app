@@ -15,9 +15,6 @@ export default function DashboardEmployer() {
   const { _id, isAuthenticated, role} = useContext(AuthContext);
   const navigate = useNavigate();
 
-  console.log("Logged in User is", role,  "and is authenticated", isAuthenticated);
-
-
   const { profileData, isLoading, refreshData, error } = useGetAdminProfile();
   const { submitDelJob } = useDeleteJob();
 

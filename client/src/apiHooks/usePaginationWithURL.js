@@ -9,11 +9,9 @@ export function usePaginationWithURL() {
   const urlPageNumber = parseInt(searchParams.get("page") || "1");
   const technologyFilter = searchParams.get("technology");
 
-
   const setUrlPageNumber = useCallback(
     (newPage) => {
       const newParams = createPageURLParams(newPage, searchParams);
-      //console.log("URL page changed to:", newParams);
       setSearchParams(newParams);
     },
     [searchParams, setSearchParams]

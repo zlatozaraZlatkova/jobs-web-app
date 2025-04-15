@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createCompanyProfile, editProfile, getProfileById, getCompanyList} from "../api/employerApi";
+import { createCompanyProfile, editProfile, getProfileById, getCompanyList } from "../api/employerApi";
 
 export function useCreateCompanyProfile() {
   const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
@@ -44,25 +44,25 @@ export function useGetAdminProfile() {
   }
 
   useEffect(() => {
-    let isMounted = true;
+
 
     const fetchProfileData = async () => {
-      if (isMounted) {
-        setIsLoading(true);
-        setError(null);
-      }
+
+      setIsLoading(true);
+      setError(null);
+
       try {
         const response = await getProfileById();
 
-        if (isMounted) {
-          if (response.isError === true) {
-            setError(response.message);
-          } else {
-            setProfileData(response);
-          }
 
-          setIsLoading(false);
+        if (response.isError === true) {
+          setError(response.message);
+        } else {
+          setProfileData(response);
         }
+
+        setIsLoading(false);
+
       } catch (err) {
         setError(null);
         setProfileData(null);
@@ -71,9 +71,7 @@ export function useGetAdminProfile() {
     };
 
     fetchProfileData();
-    return () => {
-      isMounted = false;
-    };
+
   }, [refreshKey]);
 
   return {
@@ -118,39 +116,36 @@ export function useFetchingInitialData(id) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
+
 
     if (!id) {
       return;
     }
 
     async function fetchCompanyData() {
-      if (isMounted) {
-        setError(null);
-      }
+
+      setError(null);
+
 
       try {
         const response = await getProfileById(id);
 
-        if (isMounted) {
-          if (response.isError === true) {
-            setError(response.message);
-          }
 
-          setInitialCompanyData(response);
+        if (response.isError === true) {
+          setError(response.message);
         }
+
+        setInitialCompanyData(response);
+
       } catch (err) {
-        if (isMounted) {
-          setError(err.message);
-          setInitialCompanyData(null);
-        }
+
+        setError(err.message);
+        setInitialCompanyData(null);
+
       }
     }
 
     fetchCompanyData();
-    return () => {
-      isMounted = false;
-    };
   }, [id]);
 
   return {
@@ -164,32 +159,30 @@ export function useGetCompanyList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
+
     const fetchCompaniesData = async () => {
-      if (isMounted) {
-        setError(null);
-      }
+
+      setError(null);
+
       try {
         const response = await getCompanyList();
 
-        if (isMounted) {
-          if (response.isError === true) {
-            setError(response.message);
-          }
 
-          setCompanies(response);
+        if (response.isError === true) {
+          setError(response.message);
         }
+
+        setCompanies(response);
+
       } catch (err) {
-        if (isMounted) {
-          setError(err.message);
-        }
+
+        setError(err.message);
+
       }
     };
 
     fetchCompaniesData();
-    return () => {
-      isMounted = false;
-    };
+
   }, []);
 
   return {

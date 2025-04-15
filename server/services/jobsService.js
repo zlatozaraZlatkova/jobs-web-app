@@ -100,7 +100,7 @@ async function getSearchItem(title, type, location, salary, skip = 0, limit = 3)
     .skip(skip)
     .limit(limit);
 
-  const totalJobs = await Job.countDocuments();
+  const totalJobs = await Job.countDocuments(query);
 
   return { paginatedJobs, totalJobs }
 
@@ -128,7 +128,6 @@ async function unpinItem(jobId, userId) {
     { $pull: { pinnedJobList: jobId } },
     { new: true });
 
-  console.log("userId", userId)
 
   await Job.findByIdAndUpdate(jobId,
     { $pull: { pinnedByEmployees: userId } },

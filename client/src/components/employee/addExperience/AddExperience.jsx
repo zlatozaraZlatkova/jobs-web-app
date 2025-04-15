@@ -10,6 +10,7 @@ import {
 
 export default function AddExperience({ onBack, onComplete }) {
   const { submitExperience, isSubmittingExperience } = useExperienceApi();
+  
   const { employee, refreshData, isLoading, error } = useGetEmployeeProfile();
   const { submitDelExp } = useDeleteExperience();
 
@@ -142,7 +143,6 @@ export default function AddExperience({ onBack, onComplete }) {
       };
 
       const newExperience = await submitExperience(experienceInputData);
-      //console.log("Response exp data", newExperience);
 
       if (newExperience) {
         refreshData();

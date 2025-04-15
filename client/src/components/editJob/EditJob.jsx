@@ -114,7 +114,6 @@ export default function EditJob() {
       };
 
       const updatedJob = await editJob(jobData, id);
-      //console.log("Response edited data:", updatedJob);
 
       navigate(`/jobs/${id}`);
     } catch (err) {

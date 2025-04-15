@@ -25,52 +25,48 @@ export function useGetPaginatedEmployeeProfile(urlPageNumber) {
 
   useEffect(() => {
     if (urlPageNumber) {
-      console.log("URL page changed to:", urlPageNumber);
       setCurrentPage(urlPageNumber);
     }
   }, [urlPageNumber]);
 
   useEffect(() => {
-    let isMounted = true;
+
 
     const fetchEmployees = async () => {
-      if (isMounted) {
-        setIsLoading(true);
-        setError(null);
-      }
+
+      setIsLoading(true);
+      setError(null);
+
 
       try {
         const response = await getPaginatedEmployees(currentPage);
 
-        if (isMounted) {
-          if (response.isError === true) {
-            setError(response.message);
-            setEmployees([]);
-          }
 
-          //the response structure is { success, data: { items: [] } }
-          else if (!response.data || !Array.isArray(response.data.items)) {
-            setEmployees([]);
-          } else {
-            setEmployees(response.data.items);
-
-            setTotalPages(response.data.pagination.totalPages);
-          }
-          setIsLoading(false);
+        if (response.isError === true) {
+          setError(response.message);
+          setEmployees([]);
         }
+
+        //the response structure is { success, data: { items: [] } }
+        else if (!response.data || !Array.isArray(response.data.items)) {
+          setEmployees([]);
+        } else {
+          setEmployees(response.data.items);
+
+          setTotalPages(response.data.pagination.totalPages);
+        }
+        setIsLoading(false);
+
       } catch (err) {
-        if (isMounted) {
-          setError(err);
-          setIsLoading(false);
-        }
+
+        setError(err);
+        setIsLoading(false);
+
       }
     };
 
     fetchEmployees();
 
-    return () => {
-      isMounted = false;
-    };
   }, [currentPage]);
 
   return {
@@ -94,63 +90,60 @@ export function useGetEmployeeProfile() {
   }
 
   useEffect(() => {
-    let isMounted = true;
+
 
     const fetchProfileData = async () => {
       if (role !== "employee") {
-        if (isMounted) {
-          setEmployee(null);
-          setError(null);
-          setIsLoading(false);
-          setProfileExists(false);
-        }
+
+        setEmployee(null);
+        setError(null);
+        setIsLoading(false);
+        setProfileExists(false);
+
         return;
       }
 
       try {
-        if (isMounted) {
-          setIsLoading(true);
-          setError(null);
-        }
+
+        setIsLoading(true);
+        setError(null);
+
 
         const response = await getEmployeeProfile();
 
-        if (isMounted) {
-          if (response && response.isError === true) {
-           
-            if (response.message.includes("There is no profile for this user.") || response.status === 400 || response.statusCode === 400) {
-              setError(null);
-              setProfileExists(false);
-            } else {
-              setError(response.message);
-              setProfileExists(false);
-            }
-            
-            setEmployee(null);
 
-          } else {
-            setEmployee(response);
-            setProfileExists(true);
+        if (response && response.isError === true) {
+
+          if (response.message.includes("There is no profile for this user.") || response.status === 400 || response.statusCode === 400) {
             setError(null);
+            setProfileExists(false);
+          } else {
+            setError(response.message);
+            setProfileExists(false);
           }
-          
-          setIsLoading(false);
-        }
-      } catch (err) {
-        if (isMounted) {
-          setError(err.message);
+
           setEmployee(null);
-          setIsLoading(false);
-          setProfileExists(false);
+
+        } else {
+          setEmployee(response);
+          setProfileExists(true);
+          setError(null);
         }
+
+        setIsLoading(false);
+
+      } catch (err) {
+
+        setError(err.message);
+        setEmployee(null);
+        setIsLoading(false);
+        setProfileExists(false);
+
       }
     };
 
     fetchProfileData();
 
-    return () => {
-      isMounted = false;
-    };
   }, [refreshKey, role]);
 
   return {
@@ -333,40 +326,37 @@ export function useGetEmployeeProfileById(id) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
 
     const fetchData = async () => {
-      if (isMounted) {
-        setIsLoading(true);
-        setError(null);
-      }
+
+      setIsLoading(true);
+      setError(null);
+
 
       try {
         const response = await getEmployeeProfileById(id);
 
-        if (isMounted) {
-          if (!response) {
-            setEmployee(null);
-          } else if (response.isError === true) {
-            setError(response.message);
-          } else {
-            setEmployee(response);
-          }
 
-          setIsLoading(false);
+        if (!response) {
+          setEmployee(null);
+        } else if (response.isError === true) {
+          setError(response.message);
+        } else {
+          setEmployee(response);
         }
+
+        setIsLoading(false);
+
       } catch (err) {
-        if (isMounted) {
-          setError(err);
-          setIsLoading(false);
-        }
+
+        setError(err);
+        setIsLoading(false);
+
       }
     };
 
     fetchData();
-    return () => {
-      isMounted = false;
-    };
+
   }, [id]);
 
   return {
@@ -382,38 +372,35 @@ export function useGetGitHubProfile(username) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
+
 
     const fetchData = async () => {
-      if (isMounted) {
-        setIsLoading(true);
-        setError(null);
-      }
+
+      setIsLoading(true);
+      setError(null);
+
 
       try {
         const response = await getGitHubRepo(username);
-        if (isMounted) {
-          if (!response) {
-            setprofileRepo(null);
-          } else if (response.isError === true) {
-            setError(response.message);
-          } else {
-            setprofileRepo(response);
-          }
-          setIsLoading(false);
+
+        if (!response) {
+          setprofileRepo(null);
+        } else if (response.isError === true) {
+          setError(response.message);
+        } else {
+          setprofileRepo(response);
         }
+        setIsLoading(false);
+
       } catch (err) {
-        if (isMounted) {
-          setError(err);
-          setIsLoading(false);
-        }
+
+        setError(err);
+        setIsLoading(false);
+
       }
     };
 
     fetchData();
-    return () => {
-      isMounted = false;
-    };
   }, [username]);
 
   return {

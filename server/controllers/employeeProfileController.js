@@ -125,7 +125,7 @@ router.post("/update", hasUser(), checkUserRole("employee"),
       const userId = req.user._id;
 
       const { company, website, location, status, linkedin, githubUsername, bio, skills } = req.body;
-      console.log("Received profile update:", req.body);
+  
 
       const profileInputFields = {
         company,

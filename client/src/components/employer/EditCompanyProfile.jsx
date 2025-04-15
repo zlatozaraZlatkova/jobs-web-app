@@ -100,7 +100,6 @@ export default function EditCompanyProfile() {
       return;
     }
     try {
-      console.log("Submitting edited data:", formData);
 
       const companyData = {
         companyName: formData.companyName,
@@ -111,10 +110,9 @@ export default function EditCompanyProfile() {
       };
 
       const updatedCompany = await editCompany(companyData, id);
-      console.log("Response edited data:", updatedCompany);
+      
       navigate("/company/profile");
     } catch (err) {
-      console.log("Error message:", err.message);
       setServerError(err.message);
       resetForm();
     }

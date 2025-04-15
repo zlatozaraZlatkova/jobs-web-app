@@ -14,7 +14,6 @@ export default function JobCard({ job }) {
   const isEmployee = role === "employee";
   const canPinJobs = useCanPinJobs(isEmployee);
   const userCanPin = canPinJobs && canPinJobs.canPinJobs === true;
-  //console.log("can user pin a job:", canPinJobs);
 
   const { submitPinJob, error: pinError } = usePinJob();
   const { submitUnpinJob, error: unpinError } = useUnpinJob();

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import JobsListSection from "../jobsListSection/JobsListSection";
 import Pagination from "../pagination/Pagination";
 import SearchBar from "../searchBar/SearchBar";
@@ -7,23 +8,53 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { usePaginationWithURL } from "../../apiHooks/usePaginationWithURL";
 import { useGetPaginatedJobs } from "../../apiHooks/useJobs";
 import { SearchContext } from "../../contexts/SearchContext";
+import { useSearchJobs } from "../../apiHooks/useJobs";
 
 export default function JobsPage() {
   const sectionRef = useRef(null);
 
   const { urlPageNumber, setUrlPageNumber, technologyFilter } = usePaginationWithURL();
-  
   const { jobs, isLoading, totalPages, error } = useGetPaginatedJobs(urlPageNumber, technologyFilter);
-  const [displayError, setDisplayError] = useState(null);
 
-  const { searchContextResults } = useContext(SearchContext);
+  const { 
+    searchParams, 
+    searchContextResults, 
+    setSearchContextResults,
+    searchTotalPage,
+    setSearchTotalPage,
+   } = useContext(SearchContext);
+
+  const { submitSearch } = useSearchJobs();
 
   const [updateJobList, setUpdatedJobList] = useState([]);
+  const [displayError, setDisplayError] = useState(null);
 
+
+  // Fetch search results with pagination
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (!searchParams) return;
+
+      const result = await submitSearch(searchParams, urlPageNumber );
+      
+      if (result?.data?.items) {
+        setSearchContextResults(result.data.items);
+      }
+
+      if(result?.data?.pagination) {
+        setSearchTotalPage(result.data.pagination.totalPages);
+      }
+    };
+
+    fetchSearchResults();
+  }, [searchParams, urlPageNumber]);
+  
+
+  // Decide what jobs to show
   useEffect(() => {
     if (searchContextResults) {
       setUpdatedJobList(searchContextResults);
-
+      
     } else if (jobs && jobs.length > 0) {
       setUpdatedJobList(jobs);
     }
@@ -31,6 +62,7 @@ export default function JobsPage() {
 
   const handleLocalSearch = (searchResults) => {
     setUpdatedJobList(searchResults);
+      
   };
 
   useEffect(() => {
@@ -47,8 +79,10 @@ export default function JobsPage() {
     }
   }, [urlPageNumber]);
 
+  const effectivePage = setSearchTotalPage ? searchTotalPage : totalPages;
+
   const nextPage = () => {
-    if (urlPageNumber < totalPages) {
+    if (urlPageNumber < effectivePage) {
       setUrlPageNumber(urlPageNumber + 1);
     }
   };
@@ -58,6 +92,7 @@ export default function JobsPage() {
       setUrlPageNumber(urlPageNumber - 1);
     }
   };
+
 
   return (
     <>
@@ -80,7 +115,7 @@ export default function JobsPage() {
 
             <Pagination
               currentPage={urlPageNumber}
-              totalPages={totalPages}
+              totalPages={effectivePage}
               onPrevPage={prevPage}
               onNextPage={nextPage}
             />

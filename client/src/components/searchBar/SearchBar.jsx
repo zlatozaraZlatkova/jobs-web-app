@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
 import styles from "./SearchBar.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useForm } from "../../apiHooks/useForm";
 import { useSearchJobs } from "../../apiHooks/useJobs";
+import { SearchContext } from "../../contexts/SearchContext";
+
 
 export default function SearchBar({ onSearch }) {
   const [serverError, setServerError] = useState(null);
   const [formErrors, setFormErrors] = useState(null);
+
 
   const { submitSearch, error } = useSearchJobs();
 
@@ -64,6 +67,13 @@ export default function SearchBar({ onSearch }) {
     return true;
   };
 
+  
+  const { 
+    setSearchContextResults, 
+    setSearchParams, 
+    setCurrentPage,
+   } = useContext(SearchContext);
+  
   const handleFormSubmit = async (formData) => {
     setServerError(null);
     setFormErrors(null);
@@ -71,19 +81,22 @@ export default function SearchBar({ onSearch }) {
     if (!validateForm(formData)) {
       return;
     }
-
     try {
       const searchParams = {
         title: formData.title || "",
         location: formData.location || "",
         type: formData.type || "",
       };
+    
       const result = await submitSearch(searchParams);
-      console.log("Submit search params:", result);
 
-      if (result && result.data && result.data.items) {
+      if (result?.data?.items) {
+        setSearchParams(searchParams);
+        setCurrentPage(1);
+        setSearchContextResults(result.data.items); 
         onSearch(result.data.items);
       }
+
     } catch (err) {
       setServerError(err);
     }

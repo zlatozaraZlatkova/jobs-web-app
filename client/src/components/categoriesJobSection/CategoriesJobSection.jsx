@@ -8,10 +8,6 @@ export default function CategoriesJobSection() {
   const {jobs, frontendTechnologies, backendTechnologies, isLoading, error } = useGetCategoriesJob();
   const [displayError, setDisplayError] = useState(null);
   
-  // console.log("Fetched data at CategoriesJobSection component:", jobs)
-  // console.log("frontend", frontendTechnologies.length);
-  // console.log("backend", backendTechnologies.length)
-
   useEffect(() => {
     if (error) {
       setDisplayError(error);

@@ -58,7 +58,7 @@ export function useRegister() {
       setError(null);
 
       const result = await register(name, email, password, role);
-      //console.log("Registration successful:", result);
+
 
       if (result.isError === true) {
         setError(result.message);
@@ -131,32 +131,28 @@ export function useLogout() {
 export function useInitializeAuth(changeAuthState) {
 
   useEffect(() => {
-    let isMounted = true;
 
     const fetchCurrentUser = async () => {
       try {
         const validateToken = await verifyToken();
 
-        if (validateToken && validateToken._id && isMounted) {
-          console.log("Authentication successful:", validateToken);
+        if (validateToken && validateToken._id) {
+
           changeAuthState(validateToken);
 
-        } else if (isMounted) {
-          console.log("Invalid token response:", validateToken);
+        } else {
+
           changeAuthState({});
         }
       } catch (error) {
-        console.error('Failed to fetch user data:', error);
-        if (isMounted) {
-          changeAuthState({});
-        }
+
+        changeAuthState({});
+
       }
     };
 
     fetchCurrentUser();
 
-    return () => {
-      isMounted = false;
-    };
+
   }, []);
 }

@@ -117,7 +117,7 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
     }
 
     try {
-      console.log("Data from Input", formData)
+
 
       const profileData = {
         company: formData.company,
@@ -169,14 +169,11 @@ export default function BasicProfileEdit({ isOpen, onClose, onSave, userData, re
           bio: userData.bio || "",
         });
 
-        //console.log("Form values set");
+        
       }, 10);
 
       return () => {
         clearTimeout(timer);
-        if (!isOpen) {
-          //console.log("Modal is unmounted");
-        }
       };
     }
   }, [userData, isOpen, setFormValues]);
