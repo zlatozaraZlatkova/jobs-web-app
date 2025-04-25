@@ -676,3 +676,19 @@ All API requests from the frontend are automatically proxied to the backend serv
   - Source: [Link](https://medium.com/@faazfajib7/setup-proxy-in-vite-react-2eb1454bff62)
 </details>
 
+<details>
+  <summary><h3>9. Certificate</h3></summary>
+<div>
+<table>
+  <tr>
+    <th>Course</th>
+    <th>Certificate</th>
+    </tr>
+     <tr>
+     <td>ReactJS</td>
+      <td><a href="https://softuni.bg/certificates/details/242157/be03c545"><strong>See certificate</strong></a></td>
+  </tr> 
+</table>
+</div>
+</details>  
+
