@@ -27,7 +27,7 @@ This application is a modern job board platform designed to seamlessly connect e
 
 Developed as part of a university final project, this platform enhances the recruitment experience by offering a user-friendly interface and powerful tools that make job searching and hiring more efficient.
 
-Demo site is here: [Link](https://shrouded-ocean-76495-526ebbd06de6.herokuapp.com/)
+Demo site is here: [Link](https://job-board-2b643bc0aa15.herokuapp.com)
   </details>
 
 <details open>
@@ -60,7 +60,7 @@ Demo site is here: [Link](https://shrouded-ocean-76495-526ebbd06de6.herokuapp.co
 - Browse employee profiles
 </details>
 
-<details open>
+<details>
 <summary><h5>1.2.4. Core Platform Features</h5></summary>
 
 - Secure authentication using JWT
@@ -111,7 +111,7 @@ Demo site is here: [Link](https://shrouded-ocean-76495-526ebbd06de6.herokuapp.co
 </details>
 </details>
 
-<details open>
+<details>
 <summary><h4>1.3. Technical Stack (MERN)</h4></summary>
 
 - MongoDB: NoSQL database for flexible data storage
@@ -121,7 +121,7 @@ Demo site is here: [Link](https://shrouded-ocean-76495-526ebbd06de6.herokuapp.co
 </details>
 </details>
 
-<details open>
+<details>
 <summary><h3>2. Project Architecture</h3></summary>
 
 <details open>
