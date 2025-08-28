@@ -28,12 +28,33 @@ This application is a modern job board platform designed to seamlessly connect e
 Developed as part of a university final project, this platform enhances the recruitment experience by offering a user-friendly interface and powerful tools that make job searching and hiring more efficient.
 
 Demo site is here: [Link](https://job-board-2b643bc0aa15.herokuapp.com)
+
+### Test Accounts
+
+You can use the following demo accounts to log in:
+
+| Role       | Email           | Password   |
+|------------|-----------------|------------|
+| employee   | luke@gmail.com  |  12345678! |
+| employer   | merry@gmail.com |12345678!   |
+
+
+### Application Preview
+![Home Page](assets/images/home-page.png)
+![Jobs Page](assets/images/catalog-jobs.png)
+![Jobs Page Dark Mode](assets/images/catalog-jobs-dark.png)
+![Employer Dashbord Page](assets/images/admin-dashboard-company.png)
+![Employer Post Jobs Page](assets/images/admin-dashboard-posted-jobs-offer.png)
+![Employee Create CV Page](assets/images/cv-create-step3.png)
+![Employee Dashboard Page](assets/images/cv-employee.png)
+
+
   </details>
 
 <details open>
 <summary><h4>1.2. Main Features/Functionalities</h4></summary>
 
-<details>
+<details open>
 <summary><h5>1.2.1. User Management</h5></summary>
 
 - User registration and authentication (Employee/Employer roles)
@@ -42,7 +63,7 @@ Demo site is here: [Link](https://job-board-2b643bc0aa15.herokuapp.com)
 - Avatar/profile picture support using Gravatar (Employee/Employer)
 </details>
 
-<details>
+<details open>
 <summary><h5>1.2.2. Employees Features</h5></summary>
 
 - Create, Read, Update, and Delete professional profiles
@@ -52,7 +73,7 @@ Demo site is here: [Link](https://job-board-2b643bc0aa15.herokuapp.com)
 - GitHub portfolio integration
 </details>
 
-<details>
+<details open>
 <summary><h5>1.2.3. Employer Features<h5></summary>
 
 - Create, Read, Update company profile
@@ -345,7 +366,7 @@ Application uses MongoDB with Mongoose and consists of the following main models
   Represents post listings
 
 </details>
-<details open>
+<details>
 <summary><h4>3.2. Model Relationships</h4></summary>
 
 ![Relationship Models](./assets/images/relationship-models-dev-job-app.png)
@@ -435,7 +456,7 @@ Required: `id=[string]`
 </details>
 </details>
 
-<details open>
+<details>
 <summary><h3>5. Environment Setup</h3></summary>
 
 <details>
@@ -543,7 +564,7 @@ Required: `id=[string]`
 </details>
 </details>
 
-<details open>
+<details>
 <summary><h4>5.5. Build Setup</h4></summary>
 
 1. Start MongoDB service (must be running before server start)
@@ -619,10 +640,10 @@ All API requests from the frontend are automatically proxied to the backend serv
 </details>
 </details>
 
-<details open>
+<details>
 <summary><h3>7. Error Handling</h3></summary>
 
-<details open>
+<details>
 <summary><h4>7.1. Validation and Error Types</h4></summary>
  
  1. Client-side
