@@ -9,7 +9,7 @@ const employeeProfileSchema = new Schema(
     },
     website: {
       type: String,
-      validator: (value) => URL_REGEX.text(value),
+      validator: (value) => URL_REGEX.test(value),
       message: (props) => {
         return `${props.value} is not a valid URL`;
       },
@@ -91,7 +91,7 @@ const employeeProfileSchema = new Schema(
     socialMedia: {
       linkedin: {
         type: String,
-        validator: (value) => URL_REGEX.text(value),
+        validator: (value) => URL_REGEX.test(value),
         message: (props) => {
           return `${props.value} is not a valid URL`;
         },

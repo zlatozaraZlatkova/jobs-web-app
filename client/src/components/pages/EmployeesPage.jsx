@@ -50,9 +50,7 @@ export default function EmployeesPage() {
             )}
             <h2 className="section-title">Looking for experts?</h2>
             <p className="section-description">
-              Lorem ipsum dolor sit amet, non odio tincidunt ut ante, lorem a
-              euismod suspendisse vel, sed quam nulla mauris iaculis. Erat eget
-              vitae malesuada, tortor tincidunt porta lorem lectus.
+             Our mission is to make finding the right expert fast, simple, and reliable — whether you’re looking for a specialist for a single project or a trusted partner for the long term.
             </p>
           </div>
 
